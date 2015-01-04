@@ -12,11 +12,11 @@ import com.milkenknights.frc2015.subsystems.DriveSubsystem;
  * @author Daniel
  */
 public abstract class ControlSystem {
-	protected DriveSubsystem driveSub;
-	
-	protected ControlSystem(DriveSubsystem sDrive) {
-		driveSub = sDrive;
-	}
-	
-	public abstract void teleopPeriodic();
+        protected DriveSubsystem driveSub;
+        
+        protected ControlSystem(DriveSubsystem sDrive) {
+                driveSub = sDrive;
+        }
+        
+        public abstract void teleopPeriodic();
 }
