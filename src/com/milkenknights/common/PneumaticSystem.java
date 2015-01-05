@@ -33,7 +33,7 @@ public class PneumaticSystem {
         }
         
         /**
-         * Changes the solenoid to the specified state, but only if the rquired
+         * Changes the solenoid to the specified state, but only if the required
          * pressure has been accumulated. Does nothing if there is not enough
          * pressure.
          * @param state The desired state.
@@ -42,6 +42,15 @@ public class PneumaticSystem {
             if (okayToToggle()) {
                 forceSet(state);
             }
+        }
+        
+        /**
+         * Toggles the solenoid to the opposite state that it is currently in, but only
+         * if the required pressure has been accumulated. Does nothing if there is not
+         * enough pressure.
+         */
+        public final void toggle() {
+            set(!get());
         }
 
         /**
