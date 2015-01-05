@@ -117,9 +117,9 @@ public class PneumaticSystem {
          * Makes a new RestrictedDoubleSolenoid.
          * @param sachannel The channel of solenoid A.
          * @param sbchannel The channel of solenoid B.
-         * @param on Whether the solenoid should be on or off when this pair created.
-         * @param requiredOnPressure The pressure required to set this pair to true.
-         * @param requiredOffPressure The pressure required to set this pair to false.
+         * @param on Whether the solenoid should be on or off when this double solenoid created.
+         * @param requiredOnPressure The pressure required to set this double solenoid to true.
+         * @param requiredOffPressure The pressure required to set this double solenoid to false.
          */
         public RestrictedDoubleSolenoid(int sachannel, int sbchannel,
                 boolean initialState,
@@ -150,6 +150,55 @@ public class PneumaticSystem {
 
             sola.set(s);
             solb.set(!s);
+        }
+    }
+    
+    public class RestrictedSolenoidPair extends RestrictedSolenoid {
+        private Solenoid sola;
+        private Solenoid solb;
+
+        private double onPressure;
+        private double offPressure;
+
+        private boolean state;
+
+        /**
+         * Makes a new RestrictedSolenoidPair.
+         * @param sachannel The channel of solenoid A.
+         * @param sbchannel The channel of solenoid B.
+         * @param on Whether the solenoid pair should be on or off when this pair created.
+         * @param requiredOnPressure The pressure required to set this pair to true.
+         * @param requiredOffPressure The pressure required to set this pair to false.
+         */
+        public RestrictedSolenoidPair(int sachannel, int sbchannel,
+                boolean initialState,
+                double requiredOnPressure, double requiredOffPressure) {
+            onPressure = requiredOnPressure;
+            offPressure = requiredOffPressure;
+
+            sola = new Solenoid(sachannel);
+            solb = new Solenoid(sbchannel);
+
+            forceSet(initialState);
+        }
+
+        public boolean get() {
+            return state;
+        }
+
+        public double getRequiredOnPressure() {
+            return onPressure;
+        }
+
+        public double getRequiredOffPressure() {
+            return offPressure;
+        }
+
+        public void forceSet(boolean s) {
+            state = s;
+
+            sola.set(s);
+            solb.set(s);
         }
     }
 }
