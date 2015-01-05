@@ -33,7 +33,7 @@ public class PneumaticSystem {
         }
         
         /**
-         * Changes the solenoid to the specified state, but only if the rquired
+         * Changes the solenoid to the specified state, but only if the required
          * pressure has been accumulated. Does nothing if there is not enough
          * pressure.
          * @param state The desired state.
@@ -42,6 +42,15 @@ public class PneumaticSystem {
             if (okayToToggle()) {
                 forceSet(state);
             }
+        }
+        
+        /**
+         * Toggles the solenoid to the opposite state that it is currently in, but only
+         * if the required pressure has been accumulated. Does nothing if there is not
+         * enough pressure.
+         */
+        public final void toggle() {
+            set(!get());
         }
 
         /**
@@ -68,14 +77,17 @@ public class PneumaticSystem {
         /**
          * Makes a new RestrictedSingleSolenoid.
          * @param channel The solenoid's channel on the PCM to control.
+         * @param initialState If this solenoid should be on upon initialization.
          * @param requiredOnPressure The pressure required to turn this solenoid on.
          * @param requiredOffPressure The pressure required to turn this solenoid off.
          */
-        public RestrictedSingleSolenoid(int channel, double requiredOnPressure,
-                double requiredOffPressure) {
+        public RestrictedSingleSolenoid(int channel, boolean initialState,
+                double requiredOnPressure, double requiredOffPressure) {
             s = new Solenoid(channel);
             onp = requiredOnPressure;
             offp = requiredOffPressure;
+            
+            forceSet(initialState);
         }
 
         public boolean get() {
@@ -95,46 +107,41 @@ public class PneumaticSystem {
         }
     }
 
+    /**
+     * A Double Solenoid is a pair of solenoids that always have opposite 
+     * states.
+     */
     public class RestrictedDoubleSolenoid extends RestrictedSolenoid {
         private Solenoid sola;
         private Solenoid solb;
 
-        private boolean onA;
-        private boolean onB;
-
         private double onPressure;
         private double offPressure;
 
-        private boolean state;
-
         /**
          * Makes a new RestrictedDoubleSolenoid.
-         * @param sachannel The channel of solenoid A.
-         * @param sbchannel The channel of solenoid B.
-         * @param onA Whether solenoid A should be on or off when this pair is
-         *            set to true.
-         * @param onB Whether solenoid B should be on or off when this pair is
-         *            set to true.
-         * @param requiredOnPressure The pressure required to set this pair to true.
-         * @param requiredOffPressure The pressure required to set this pair to false.
+         * @param sachannel The channel of solenoid A. When this DoubleSolenoid
+         *                  is set to true, this solenoid will be on.
+         * @param sbchannel The channel of solenoid B. When this DoubleSolenoid
+         *                  is set to true, this solenoid will be off.
+         * @param initialState If this should be on upon initialization.
+         * @param requiredOnPressure The pressure required to set this double solenoid to true.
+         * @param requiredOffPressure The pressure required to set this double solenoid to false.
          */
         public RestrictedDoubleSolenoid(int sachannel, int sbchannel,
-                boolean onA, boolean onB,
+                boolean initialState,
                 double requiredOnPressure, double requiredOffPressure) {
             onPressure = requiredOnPressure;
             offPressure = requiredOffPressure;
 
-            this.onA = onA;
-            this.onB = onB;
-
             sola = new Solenoid(sachannel);
             solb = new Solenoid(sbchannel);
 
-            forceSet(false);
+            forceSet(initialState);
         }
 
         public boolean get() {
-            return state;
+            return sola.get();
         }
 
         public double getRequiredOnPressure() {
@@ -146,10 +153,56 @@ public class PneumaticSystem {
         }
 
         public void forceSet(boolean s) {
-            state = s;
+            sola.set(s);
+            solb.set(!s);
+        }
+    }
+    
+    /**
+     * A Solenoid Pair is two solenoids that always have the same state.
+     */
+    public class RestrictedSolenoidPair extends RestrictedSolenoid {
+        private Solenoid sola;
+        private Solenoid solb;
 
-            sola.set(onA == s);
-            solb.set(onB == s);
+        private double onPressure;
+        private double offPressure;
+
+        /**
+         * Makes a new RestrictedSolenoidPair.
+         * @param sachannel The channel of solenoid A.
+         * @param sbchannel The channel of solenoid B.
+         * @param initialState If this should be on upon initialization.
+         * @param requiredOnPressure The pressure required to set this pair to true.
+         * @param requiredOffPressure The pressure required to set this pair to false.
+         */
+        public RestrictedSolenoidPair(int sachannel, int sbchannel,
+                boolean initialState,
+                double requiredOnPressure, double requiredOffPressure) {
+            onPressure = requiredOnPressure;
+            offPressure = requiredOffPressure;
+
+            sola = new Solenoid(sachannel);
+            solb = new Solenoid(sbchannel);
+
+            forceSet(initialState);
+        }
+
+        public boolean get() {
+            return sola.get();
+        }
+
+        public double getRequiredOnPressure() {
+            return onPressure;
+        }
+
+        public double getRequiredOffPressure() {
+            return offPressure;
+        }
+
+        public void forceSet(boolean s) {
+            sola.set(s);
+            solb.set(s);
         }
     }
 }
