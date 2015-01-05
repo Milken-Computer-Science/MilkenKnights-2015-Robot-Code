@@ -99,9 +99,6 @@ public class PneumaticSystem {
         private Solenoid sola;
         private Solenoid solb;
 
-        private boolean onA;
-        private boolean onB;
-
         private double onPressure;
         private double offPressure;
 
@@ -111,26 +108,20 @@ public class PneumaticSystem {
          * Makes a new RestrictedDoubleSolenoid.
          * @param sachannel The channel of solenoid A.
          * @param sbchannel The channel of solenoid B.
-         * @param onA Whether solenoid A should be on or off when this pair is
-         *            set to true.
-         * @param onB Whether solenoid B should be on or off when this pair is
-         *            set to true.
+         * @param on Whether the solenoid should be on or off when this pair created.
          * @param requiredOnPressure The pressure required to set this pair to true.
          * @param requiredOffPressure The pressure required to set this pair to false.
          */
         public RestrictedDoubleSolenoid(int sachannel, int sbchannel,
-                boolean onA, boolean onB,
+                boolean initialState,
                 double requiredOnPressure, double requiredOffPressure) {
             onPressure = requiredOnPressure;
             offPressure = requiredOffPressure;
 
-            this.onA = onA;
-            this.onB = onB;
-
             sola = new Solenoid(sachannel);
             solb = new Solenoid(sbchannel);
 
-            forceSet(false);
+            forceSet(initialState);
         }
 
         public boolean get() {
@@ -148,8 +139,8 @@ public class PneumaticSystem {
         public void forceSet(boolean s) {
             state = s;
 
-            sola.set(onA == s);
-            solb.set(onB == s);
+            sola.set(s);
+            solb.set(!s);
         }
     }
 }
