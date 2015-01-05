@@ -77,6 +77,7 @@ public class PneumaticSystem {
         /**
          * Makes a new RestrictedSingleSolenoid.
          * @param channel The solenoid's channel on the PCM to control.
+         * @param initialState If this solenoid should be on upon initialization.
          * @param requiredOnPressure The pressure required to turn this solenoid on.
          * @param requiredOffPressure The pressure required to turn this solenoid off.
          */
@@ -123,8 +124,7 @@ public class PneumaticSystem {
          *                  is set to true, this solenoid will be on.
          * @param sbchannel The channel of solenoid B. When this DoubleSolenoid
          *                  is set to true, this solenoid will be off.
-         * @param initialState Whether the solenoid should be on or off when
-         *                     this double solenoid is created.
+         * @param initialState If this should be on upon initialization.
          * @param requiredOnPressure The pressure required to set this double solenoid to true.
          * @param requiredOffPressure The pressure required to set this double solenoid to false.
          */
@@ -172,7 +172,7 @@ public class PneumaticSystem {
          * Makes a new RestrictedSolenoidPair.
          * @param sachannel The channel of solenoid A.
          * @param sbchannel The channel of solenoid B.
-         * @param on Whether the solenoid pair should be on or off when this pair created.
+         * @param initialState If this should be on upon initialization.
          * @param requiredOnPressure The pressure required to set this pair to true.
          * @param requiredOffPressure The pressure required to set this pair to false.
          */
