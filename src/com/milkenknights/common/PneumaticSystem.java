@@ -15,9 +15,11 @@ public class PneumaticSystem {
     }
     
     /**
-     * Gets the amount of pressure we have
+     * Gets the amount of pressure in the pneumatic system.
      * 
-     * @return  PSI of the pneumatic system
+     * TOBE Tested
+     * 
+     * @return PSI of the pneumatic system
      */
     public double getPressure() {
         return pressureTransducer.getVoltage()*transducerScaleFactor + transducerOffset;
