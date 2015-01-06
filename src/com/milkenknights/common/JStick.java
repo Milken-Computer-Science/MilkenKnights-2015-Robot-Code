@@ -49,6 +49,9 @@ public class JStick {
         slow = 2;
     }
 
+    /**
+     * Update the stored joystick values. Should be called only once per loop.
+     */
     public void update() {
         for(int i = 1; i < buttonPressed.length; ++i) {
             buttonLastPressed[i] = buttonPressed[i];
@@ -89,7 +92,7 @@ public class JStick {
      * Gets the button value
      *
      * @param b The button number to be read.
-     * @return The state of the button.
+     * @return The state of the button since the last update.
      */
     public boolean isPressed(int b) {
         if(b >= 0 && b < buttonPressed.length)
@@ -113,7 +116,7 @@ public class JStick {
      * Gets the value of the axis.
      *
      * @param b The axis to read.
-     * @return The value of the axis.
+     * @return The value of the axis since the last update.
      */
     public double getAxis(int b) {
         if(b >= 0 && b < axes.length)
@@ -121,6 +124,9 @@ public class JStick {
         else return 0;
     }
 
+    /**
+     * @see #setSlow(double)
+     */
     public double getSlowedAxis(int b) {
         if(b >= 0 && b < axes.length)
             return slowAxes[b];
