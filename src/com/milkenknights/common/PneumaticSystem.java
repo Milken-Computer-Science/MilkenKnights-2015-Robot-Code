@@ -1,13 +1,26 @@
 package com.milkenknights.common;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class PneumaticSystem {
+    
+    private final AnalogInput pressureTransducer;
+    
+    private final double transducerScaleFactor = 50;
+    private final double transducerOffset = -25;
+    
+    public PneumaticSystem() {
+        pressureTransducer = new AnalogInput(0);
+    }
+    
     /**
-     * Gets the amount of pressure we have. TO BE IMPLEMENTED
+     * Gets the amount of pressure we have
+     * 
+     * @return  PSI of the pneumatic system
      */
     public double getPressure() {
-        return 0.0;
+        return pressureTransducer.getVoltage()*transducerScaleFactor + transducerOffset;
     }
 
     public abstract class RestrictedSolenoid  {
