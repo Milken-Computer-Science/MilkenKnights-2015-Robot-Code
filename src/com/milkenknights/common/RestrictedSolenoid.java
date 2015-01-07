@@ -68,18 +68,29 @@ public class RestrictedSolenoid extends Solenoid {
         set(initialState);
     }
 
-    /** Gets the pressure required to turn this solenoid on. */
+    /**
+     * Gets the pressure required to turn this solenoid on.
+     * 
+     * @return The pressure required to turn on this solenoid
+     */
     public double getRequiredOnPressure() {
         return onp;
     }
 
-    /** Gets the pressure required to turn this solenoid off. */
+    /**
+     * Gets the pressure required to turn this solenoid off.
+     * 
+     * @return The pressure required to turn off this solenoid
+     */
     public double getRequiredOffPressure() {
         return offp;
     }
 
     /**
-     * Returns true if we have enough pressure to toggle this solenoid's state.
+     * Compares the current pressure with the pressure required to change this
+     * solenoid's state.
+     * 
+     * @return true if we have enough pressure to toggle this solenoid's state.
      */
     public boolean okayToToggle() {
         return (get() && getRequiredOffPressure() > getPressure()) ||
