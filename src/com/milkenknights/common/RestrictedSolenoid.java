@@ -78,8 +78,8 @@ public class RestrictedSolenoid extends Solenoid {
      * Returns true if we have enough pressure to toggle this solenoid's state.
      */
     public boolean okayToToggle() {
-        return (get() && getRequiredOffPressure() > getPressure()) ||
-            (!get() && getRequiredOnPressure() > getPressure());
+        return (get() && getRequiredOffPressure() <= getPressure()) ||
+            (!get() && getRequiredOnPressure() <= getPressure());
     }
 
     /**
