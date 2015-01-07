@@ -87,9 +87,18 @@ public class Drive extends RobotDrive {
         tankDrive(lPower, rPower);
     }
     
+    /**
+     * Get the speed of the right side of the robot.
+     * @return The speed of the right side of the robot.
+     */
     public double getRight() {
         return m_rearRightMotor.get();
     }
+    
+    /**
+     * Get the speed of the left side of the robot.
+     * @return The speed of the left side of the robot.
+     */
     public double getLeft() {
         return m_rearLeftMotor.get();
     }
@@ -117,7 +126,8 @@ public class Drive extends RobotDrive {
      * Applies a sine function to input
      * @param in The original input
      * @param iterations How many times the sine function should be applied
-     * @return  */
+     * @return The result of applying the sine function that many times.
+     */
     private double curveInput(double in, int iterations) {
         if (iterations > 0) {
             return curveInput(Math.sin(Math.PI*in/2),iterations-1);

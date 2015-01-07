@@ -53,7 +53,12 @@ public class DriveSubsystem extends MSubsystem {
         driveMode = mode;
     }
 
-    /** Set the speeds of the left and right side of the robot. */
+    /**
+     * Set the speeds of the left and right side of the robot.
+     * 
+     * @param left The desired speed of the robot's left side.
+     * @param right The desired speed of the robot's right side.
+     */
     public void tankDrive(double left, double right) {
         leftSpeed = left;
         rightSpeed = right;
@@ -63,7 +68,7 @@ public class DriveSubsystem extends MSubsystem {
     /**
      * Set robot speeds based on CheesyDrive.
      * 
-     * @see Drive#cheesyDrive(double, double, boolean)
+     * {@inheritDoc Drive#cheesyDrive(double, double, boolean)}
      */
     public void cheesyDrive(double power, double turn, boolean quickturn) {
         drive.cheesyDrive(power, turn, quickturn);
@@ -94,6 +99,10 @@ public class DriveSubsystem extends MSubsystem {
         driveGear.set(g);
     }
     
+    /**
+     * Get the current state of the gear solenoids.
+     * @return true if we are in high gear.
+     */
     public boolean getGearState() {
         return driveGear.get();
     }

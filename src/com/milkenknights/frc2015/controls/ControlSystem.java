@@ -18,5 +18,8 @@ public abstract class ControlSystem {
         driveSub = sDrive;
     }
     
+    /**
+     * This function is run periodically during the teleop period.
+     */
     public abstract void teleopPeriodic();
 }

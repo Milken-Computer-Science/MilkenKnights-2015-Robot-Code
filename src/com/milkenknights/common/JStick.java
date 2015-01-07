@@ -39,6 +39,10 @@ public class JStick {
 
     private double slow;
 
+    /**
+     * Make a new JStick.
+     * @param port The port of the joystick.
+     */
     public JStick(int port) {
         // initialize everything
         jstick = new Joystick(port);
@@ -84,6 +88,10 @@ public class JStick {
         slow = Math.abs(s);
     }
 
+    /**
+     * @see setSlow
+     * @return The slow value.
+     */
     public double getSlow() {
         return slow;
     }
@@ -126,6 +134,9 @@ public class JStick {
 
     /**
      * @see #setSlow(double)
+     * 
+     * @param b The axis to read.
+     * @return The value of the axis, modified by the slow value.
      */
     public double getSlowedAxis(int b) {
         if(b >= 0 && b < axes.length)
