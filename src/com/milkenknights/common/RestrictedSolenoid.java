@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Solenoid;
  * will not actuate solenoids unless the required pressure is obtained.
  * 
  * @author Daniel Kessler
+ * @author Austin Shalit
  *
  */
 public class RestrictedSolenoid extends Solenoid {
@@ -37,6 +38,8 @@ public class RestrictedSolenoid extends Solenoid {
      * functions.
      * 
      * @param int The channel number of the pressure transducer
+     * @param double The scale factor of the transducer
+     * @param double The offset value of the transducer
      */
     public static void initPressureSensor(int pressureTransducerChannel, double transducerScaleFactor, double transducerOffset) {
         pressureTransducer = new AnalogInput(pressureTransducerChannel);
@@ -66,6 +69,8 @@ public class RestrictedSolenoid extends Solenoid {
 
     /**
      * Gets the pressure required to turn this solenoid on.
+     * 
+     * @return double The required pressure to turn the solenoid on. 
      */
     public double getRequiredOnPressure() {
         return onp;
@@ -73,6 +78,8 @@ public class RestrictedSolenoid extends Solenoid {
 
     /**
      * Gets the pressure required to turn this solenoid off.
+     * 
+     * @return double The required pressure to turn the solenoid off.
      */
     public double getRequiredOffPressure() {
         return offp;
@@ -80,6 +87,8 @@ public class RestrictedSolenoid extends Solenoid {
 
     /**
      * Returns true if we have enough pressure to toggle this solenoid's state.
+     * 
+     * @return boolean Do we have enough pressue to toggle this solenoid's state. 
      */
     public boolean okayToToggle() {
         return (get() && getRequiredOffPressure() > getPressure()) ||
@@ -90,6 +99,7 @@ public class RestrictedSolenoid extends Solenoid {
      * Changes the solenoid to the specified state, but only if the required
      * pressure has been accumulated.  Does nothing if there is not enough
      * pressure.
+     * 
      * @param state The desired state.
      */
     public void set(boolean state) {
@@ -101,6 +111,7 @@ public class RestrictedSolenoid extends Solenoid {
     /**
      * Changes the solenoid to the specified state, regardless of whether
      * the required pressure has been accumulated.
+     * 
      * @param state The desired state.
      */
     public void forceSet(boolean state) {
