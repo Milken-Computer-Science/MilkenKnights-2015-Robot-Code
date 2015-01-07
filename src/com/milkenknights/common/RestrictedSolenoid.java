@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class RestrictedSolenoid extends Solenoid {
     private static AnalogInput pressureTransducer;
 
-    private static double transducerScaleFactor = 50;
-    private static double transducerOffset = -25;
+    private static double transducerScaleFactor;
+    private static double transducerOffset;
 
     /**
      * Gets the amount of pressure in the pneumatic system.
@@ -35,9 +35,13 @@ public class RestrictedSolenoid extends Solenoid {
     /**
      * This should be called before using getPressure() or any of the setter
      * functions.
+     * 
+     * @param int The channel number of the pressure transducer
      */
-    public static void initPneumaticSystem() {
-        pressureTransducer = new AnalogInput(0);
+    public static void initPressureSensor(int pressureTransducerChannel, double transducerScaleFactor, double transducerOffset) {
+        pressureTransducer = new AnalogInput(pressureTransducerChannel);
+        RestrictedSolenoid.transducerScaleFactor = transducerScaleFactor;
+        RestrictedSolenoid.transducerOffset = transducerOffset;
     }
 
     private double onp;
