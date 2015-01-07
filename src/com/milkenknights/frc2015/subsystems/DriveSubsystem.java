@@ -35,8 +35,9 @@ public class DriveSubsystem extends MSubsystem {
     
     DriveMode driveMode;
     
-    public DriveSubsystem(int leftPort, int rightPort) {
-        drive = new Drive(new CANTalon(leftPort), new CANTalon(rightPort));
+    public DriveSubsystem() {
+        // TODO: replace these with config values
+        drive = new Drive(new CANTalon(1), new CANTalon(2));
         // this solenoid pair is TRUE if the robot is in high gear
         driveGear = new SolenoidPair(2, 1, true, false, true);
     }
@@ -49,12 +50,18 @@ public class DriveSubsystem extends MSubsystem {
         driveMode = mode;
     }
 
+    /** Set the speeds of the left and right side of the robot. */
     public void tankDrive(double left, double right) {
         leftSpeed = left;
         rightSpeed = right;
         setDriveMode(DriveMode.TANK);
     }
     
+    /**
+     * Set robot speeds based on CheesyDrive.
+     * 
+     * @see Drive#cheesyDrive(double, double, boolean)
+     */
     public void cheesyDrive(double power, double turn, boolean quickturn) {
         drive.cheesyDrive(power, turn, quickturn);
         setDriveMode(DriveMode.CHEESY);
