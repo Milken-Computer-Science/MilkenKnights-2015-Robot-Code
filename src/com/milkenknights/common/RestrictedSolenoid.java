@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 /**
  * Pneumatic appliances on our robot (solenoids) generally require a certain
- * amount of accumulated pressure to be used. A solenoid cannot work properly
+ * amount of accumulated pressure to be used.  A solenoid cannot work properly
  * if our compressor doesn't have enough pressure, and attempting to use them
  * in this circumstance can cause leakages.  The RestrictedSolenoid class fixes
  * this by providing static methods that check for compressor pressure, and
@@ -41,7 +41,8 @@ public class RestrictedSolenoid extends Solenoid {
      * @param double The scale factor of the transducer
      * @param double The offset value of the transducer
      */
-    public static void initPressureSensor(int pressureTransducerChannel, double transducerScaleFactor, double transducerOffset) {
+    public static void initPressureSensor(int pressureTransducerChannel,
+            double transducerScaleFactor, double transducerOffset) {
         pressureTransducer = new AnalogInput(pressureTransducerChannel);
         RestrictedSolenoid.transducerScaleFactor = transducerScaleFactor;
         RestrictedSolenoid.transducerOffset = transducerOffset;
@@ -67,28 +68,18 @@ public class RestrictedSolenoid extends Solenoid {
         set(initialState);
     }
 
-    /**
-     * Gets the pressure required to turn this solenoid on.
-     * 
-     * @return double The required pressure to turn the solenoid on. 
-     */
+    /** Gets the pressure required to turn this solenoid on. */
     public double getRequiredOnPressure() {
         return onp;
     }
 
-    /**
-     * Gets the pressure required to turn this solenoid off.
-     * 
-     * @return double The required pressure to turn the solenoid off.
-     */
+    /** Gets the pressure required to turn this solenoid off. */
     public double getRequiredOffPressure() {
         return offp;
     }
 
     /**
      * Returns true if we have enough pressure to toggle this solenoid's state.
-     * 
-     * @return boolean Do we have enough pressue to toggle this solenoid's state. 
      */
     public boolean okayToToggle() {
         return (get() && getRequiredOffPressure() > getPressure()) ||
