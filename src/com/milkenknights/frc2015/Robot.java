@@ -18,7 +18,7 @@ public class Robot extends IterativeRobot {
     ControlSystem controlSystem;
 
     public void robotInit() {
-        driveSubsystem = new DriveSubsystem(1, 2);
+        driveSubsystem = new DriveSubsystem();
 
         controlSystem = new TripleATKControl(driveSubsystem);
 
