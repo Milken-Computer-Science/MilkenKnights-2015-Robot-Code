@@ -3,6 +3,7 @@ package com.milkenknights.frc2015;
 import java.util.LinkedList;
 
 import com.milkenknights.common.MSubsystem;
+import com.milkenknights.common.RestrictedSolenoid;
 import com.milkenknights.frc2015.controls.ControlSystem;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
@@ -18,6 +19,8 @@ public class Robot extends IterativeRobot {
     ControlSystem controlSystem;
 
     public void robotInit() {
+        RestrictedSolenoid.initPressureSensor(Constants.pressureTransducerChannel, 
+                Constants.transducerScaleFactor, Constants.transducerOffset);
         driveSubsystem = new DriveSubsystem();
 
         controlSystem = new TripleATKControl(driveSubsystem);
