@@ -3,6 +3,7 @@ package com.milkenknights.frc2015.subsystems;
 import com.milkenknights.common.Drive;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.SolenoidPair;
+import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
 
@@ -37,9 +38,11 @@ public class DriveSubsystem extends MSubsystem {
     
     public DriveSubsystem() {
         // TODO: replace these with config values
-        drive = new Drive(new CANTalon(1), new CANTalon(2));
+        drive = new Drive(new CANTalon(Constants.leftTalonDeviceNumber),
+                new CANTalon(Constants.rightTalonDeviceNumber));
         // this solenoid pair is TRUE if the robot is in high gear
-        driveGear = new SolenoidPair(2, 1, true, false, true);
+        driveGear = new SolenoidPair(Constants.gearSolenoidAChannel,
+                Constants.gearSolenoidBChannel, true, false, true);
     }
     
     public void teleopInit() {
