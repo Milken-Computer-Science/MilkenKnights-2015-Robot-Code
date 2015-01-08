@@ -2,10 +2,10 @@ package com.milkenknights.frc2015.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
 
-/*
- * @author Jake
+/**
+ * The subsystem that controls the elevator subsystem.
+ * @author Jake Reiner
  */
-
 public class ElevatorSubsystem {
     public enum Positions {GROUND, SCORINGPLATFORM, STEP, FIRSTTOTE, SECONDTOTE, THIRDTOTE};
     Positions elevatorPosition;
@@ -19,6 +19,10 @@ public class ElevatorSubsystem {
         elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
     }
 
+    /**
+     * Tell the elevator to move to a predetermined height.
+     * @param position The desired elevator position.
+     */
     public void setPosition(Positions position) {
         elevatorPosition = position;
     }
