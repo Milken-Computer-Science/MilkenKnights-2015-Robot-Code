@@ -25,11 +25,6 @@ public class GamepadControl extends ControlSystem {
     public void teleopPeriodic() {
         xbox.update();
         atk.update();
-        // GEAR TOGGLE
-        // controlled by xbox left bumper
-        if (xbox.isReleased(JStick.XBOX_LB)) {
-            driveSub.toggleGear();
-        }
         
         if (isCheesy) {
             // CHEESY DRIVE

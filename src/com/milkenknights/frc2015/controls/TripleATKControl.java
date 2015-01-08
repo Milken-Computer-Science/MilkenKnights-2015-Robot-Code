@@ -26,11 +26,6 @@ public class TripleATKControl extends ControlSystem {
         atkl.update();
         atkr.update();
         atka.update();
-        // GEAR TOGGLE
-        // controlled by right ATK trigger
-        if (atkr.isReleased(1)) {
-            driveSub.toggleGear();
-        }
         
         if (isCheesy) {
             // CHEESY DRIVE

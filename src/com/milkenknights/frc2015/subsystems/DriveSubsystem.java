@@ -2,7 +2,6 @@ package com.milkenknights.frc2015.subsystems;
 
 import com.milkenknights.common.Drive;
 import com.milkenknights.common.MSubsystem;
-import com.milkenknights.common.SolenoidPair;
 import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -15,9 +14,7 @@ import edu.wpi.first.wpilibj.CANTalon;
  */
 public class DriveSubsystem extends MSubsystem {
     Drive drive;
-    SolenoidPair driveGear;
         
-    boolean normalDriveGear;
     boolean slowMode;
     boolean reverseMode;
     boolean runPID;
@@ -40,9 +37,6 @@ public class DriveSubsystem extends MSubsystem {
         // TODO: replace these with config values
         drive = new Drive(new CANTalon(Constants.leftTalonDeviceNumber),
                 new CANTalon(Constants.rightTalonDeviceNumber));
-        // this solenoid pair is TRUE if the robot is in high gear
-        driveGear = new SolenoidPair(Constants.gearSolenoidAChannel,
-                Constants.gearSolenoidBChannel, true, false, true);
     }
     
     public void teleopInit() {
@@ -85,27 +79,6 @@ public class DriveSubsystem extends MSubsystem {
         return leftPID.onTarget(threshold) && rightPID.onTarget(threshold);
     }
     */
-    
-    /** Changes the gear solenoids to the opposite of whatever they are. */
-    public void toggleGear() {
-        driveGear.toggle();
-    }
-    
-    /**
-     * Change the gear solenoids to either high gear or low gear.
-     * @param g A value of true means high gear; false means low gear.
-     */
-    public void setGear(boolean g) {
-        driveGear.set(g);
-    }
-    
-    /**
-     * Get the current state of the gear solenoids.
-     * @return true if we are in high gear.
-     */
-    public boolean getGearState() {
-        return driveGear.get();
-    }
     
     /**
      * Updates wheel speeds depending on driveMode (which should be set to the
