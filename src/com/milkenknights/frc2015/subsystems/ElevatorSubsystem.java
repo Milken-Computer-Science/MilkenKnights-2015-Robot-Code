@@ -1,5 +1,7 @@
 package com.milkenknights.frc2015.subsystems;
 
+import com.milkenknights.frc2015.Constants;
+
 import edu.wpi.first.wpilibj.CANTalon;
 
 /**
@@ -7,14 +9,26 @@ import edu.wpi.first.wpilibj.CANTalon;
  * @author Jake Reiner
  */
 public class ElevatorSubsystem {
-    public enum Positions {GROUND, SCORINGPLATFORM, STEP, FIRSTTOTE, SECONDTOTE, THIRDTOTE};
+    public enum Positions {
+        GROUND(0),
+        SCORINGPLATFORM(1),
+        STEP(2),
+        FIRSTTOTE(3),
+        SECONDTOTE(4),
+        THIRDTOTE(5);
+        
+        public final double position;
+        private Positions(double p) {
+            position = p;
+        }
+    }
+    
     Positions elevatorPosition;
 
     CANTalon elevatorTalon;
 
-
     public ElevatorSubsystem() {
-        elevatorTalon = new CANTalon(0);
+        elevatorTalon = new CANTalon(Constants.elevatorTalonDeviceNumber);
 
         elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
     }
@@ -28,19 +42,6 @@ public class ElevatorSubsystem {
     }
 
     public void update(){
-        switch (elevatorPosition) {
-        case GROUND:
-            elevatorTalon.set(0);
-        case SCORINGPLATFORM:
-            elevatorTalon.set(1);
-        case STEP:
-            elevatorTalon.set(2);
-        case FIRSTTOTE:
-            elevatorTalon.set(3);
-        case SECONDTOTE:
-            elevatorTalon.set(4);
-        case THIRDTOTE:
-            elevatorTalon.set(5);
-        }
+        elevatorTalon.set(elevatorPosition.position);
     }
 }
