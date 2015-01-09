@@ -10,6 +10,8 @@ public class Constants {
     public static final int leftTalonDeviceNumber = 1;
     public static final int rightTalonDeviceNumber = 2;
     
+    public static final int elevatorTalonDeviceNumber = 3;
+    
     public static final int gearSolenoidAChannel = 1;
     public static final int gearSolenoidBChannel = 2;
 }
