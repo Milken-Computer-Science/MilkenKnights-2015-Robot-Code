@@ -1,6 +1,7 @@
 package com.milkenknights.frc2015;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.RestrictedSolenoid;
@@ -29,21 +30,57 @@ public class Robot extends IterativeRobot {
         subsystems.add(driveSubsystem);
     }
 
+    private abstract class AutonomousAction {
+        /** This will be run once before the action starts */
+        public abstract void start();
+        /**
+         * Run this periodically when this action is active
+         * @return true when this action is done
+         */
+        public abstract boolean run();
+    }
+
+    ListIterator<AutonomousAction> autonomousSequence;
+    AutonomousAction currentAction;
     Timer autonTimer;
 
     public void autonomousInit() {
-        autonTimer = new Timer();
-        autonTimer.start();
+        class PIDStraightAction extends AutonomousAction {
+            double setpoint;
+            
+            public PIDStraightAction(double setpoint) {
+                this.setpoint = setpoint;
+            }
+
+            @Override
+            public void start() {
+                driveSubsystem.resetPIDPosition();
+                driveSubsystem.setStraightPIDSetpoint(setpoint);
+                driveSubsystem.startStraightPID();
+            }
+
+            @Override
+            public boolean run() {
+                return driveSubsystem.pidOnTarget(1); 
+            }
+        }
+
+        LinkedList<AutonomousAction> autonomousList =
+                new LinkedList<AutonomousAction>();
+        autonomousList.add(new PIDStraightAction(15));
+
+        autonomousSequence = autonomousList.listIterator();
+        currentAction = autonomousSequence.next();
     }
 
     public void autonomousPeriodic() {
-        // Move the robot forward at full speed for 3 seconds
-        if (autonTimer.get() < 3) {
-            driveSubsystem.tankDrive(1,1);
-        } else {
-            driveSubsystem.tankDrive(0,0);
+        if (currentAction != null && currentAction.run()) {
+            if (autonomousSequence.hasNext()) {
+                currentAction = autonomousSequence.next();
+            } else {
+                currentAction = null;
+            }
         }
-
     }
 
     public void teleopInit() {

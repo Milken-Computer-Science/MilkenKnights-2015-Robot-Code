@@ -6,6 +6,7 @@ import com.milkenknights.common.SolenoidPair;
 import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.PIDController;
 
 /**
  * The subsystem that manages the robot's wheels and gear solenoids.
@@ -31,15 +32,17 @@ public class DriveSubsystem extends MSubsystem {
     boolean cheesyQuickturn;
     
     private enum DriveMode {
-        TANK, CHEESY
+        TANK, CHEESY, PIDSTRAIGHT
     }
     
     DriveMode driveMode;
     
     public DriveSubsystem() {
         // TODO: replace these with config values
-        drive = new Drive(new CANTalon(Constants.leftTalonDeviceNumber),
-                new CANTalon(Constants.rightTalonDeviceNumber));
+        CANTalon leftWheels = new CANTalon(Constants.leftTalonDeviceNumber);
+        CANTalon rightWheels = new CANTalon(Constants.rightTalonDeviceNumber);
+
+        drive = new Drive(leftWheels, rightWheels);
         // this solenoid pair is TRUE if the robot is in high gear
         driveGear = new SolenoidPair(Constants.gearSolenoidAChannel,
                 Constants.gearSolenoidBChannel, true, false, true);
@@ -75,16 +78,54 @@ public class DriveSubsystem extends MSubsystem {
         setDriveMode(DriveMode.CHEESY);
     }
     
+    /**
+     * Set the setpoint for PID straight driving mode.
+     * This should be how far forward you want the robot to move.
+     * NOT IMPLEMENTED
+     *
+     * @param setpoint The desired PID straight setpoint.
+     */
     public void setStraightPIDSetpoint(double setpoint) {
-        //leftPID.changeSetpoint(setpoint);
-        //rightPID.changeSetpoint(setpoint);
+        
+    }
+
+    /**
+     * Get whatever we set the setpoint to be.
+     * NOT IMPLEMENTED
+     *
+     * @return The last set PID straight setpoint.
+     */
+    public double getStraightPIDSetpoint() {
+        return 0;
     }
     
-    /*
+    /**
+     * Find out if we have reached our PID target.
+     * NOT IMPLEMENTED
+     *
+     * @param threshold How close/presice we want to be
+     * @return true if we have reachde the target
+     */
     public boolean pidOnTarget(double threshold) {
-        return leftPID.onTarget(threshold) && rightPID.onTarget(threshold);
+        return false;
     }
-    */
+
+    /**
+     * "Zero out" our position. If the robot has moved forward or rotated, this will
+     * reset the position back to zero.
+     * NOT IMPLEMENTED
+     */
+    public void resetPIDPosition() {
+
+    }
+
+    /**
+     * Go to the setpoint that we have set.
+     * NOT IMPLEMENTED
+     */
+    public void startStraightPID() {
+
+    }
     
     /** Changes the gear solenoids to the opposite of whatever they are. */
     public void toggleGear() {
