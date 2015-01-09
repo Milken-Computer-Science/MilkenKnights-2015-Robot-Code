@@ -85,8 +85,29 @@ public class Robot extends IterativeRobot {
             }
         }
 
+        class PIDWaitAction extends AutonomousAction {
+            double startTime;
+            double waitTime;
+
+            public PIDWaitAction(double time) {
+                waitTime = time;
+            }
+
+            @Override
+            public void start() {
+                startTime = Timer.getFPGATimestamp();
+            }
+
+            @Override
+            public boolean run() {
+                return Timer.getFPGATimestamp() - startTime >= waitTime;
+            }
+        }
+
         LinkedList<AutonomousAction> autonomousList =
                 new LinkedList<AutonomousAction>();
+
+        // COMPOSE THE PID STEPS HERE
         autonomousList.add(new PIDStraightAction(15));
 
         autonomousSequence = autonomousList.listIterator();
