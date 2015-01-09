@@ -65,6 +65,26 @@ public class Robot extends IterativeRobot {
             }
         }
 
+        class PIDPivotAction extends AutonomousAction {
+            double setpoint;
+            
+            public PIDPivotAction(double setpoint) {
+                this.setpoint = setpoint;
+            }
+
+            @Override
+            public void start() {
+                driveSubsystem.resetPIDPosition();
+                driveSubsystem.setPivotPIDSetpoint(setpoint);
+                driveSubsystem.startPivotPID();
+            }
+
+            @Override
+            public boolean run() {
+                return driveSubsystem.pidOnTarget(1); 
+            }
+        }
+
         LinkedList<AutonomousAction> autonomousList =
                 new LinkedList<AutonomousAction>();
         autonomousList.add(new PIDStraightAction(15));
