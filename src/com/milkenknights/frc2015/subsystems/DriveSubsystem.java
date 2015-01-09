@@ -90,7 +90,7 @@ public class DriveSubsystem extends MSubsystem {
     }
 
     /**
-     * Get whatever we set the setpoint to be.
+     * Get whatever we set the straight drive setpoint to be.
      * NOT IMPLEMENTED
      *
      * @return The last set PID straight setpoint.
@@ -100,14 +100,40 @@ public class DriveSubsystem extends MSubsystem {
     }
     
     /**
-     * Find out if we have reached our PID target.
+     * Go to the setpoint that we have set for driving straight.
+     * NOT IMPLEMENTED
+     */
+    public void startStraightPID() {
+
+    }
+
+    /**
+     * Set the setpoint for PID pivot mode.
+     * This should be the angle you want the robot to be facing.
      * NOT IMPLEMENTED
      *
-     * @param threshold How close/presice we want to be
-     * @return true if we have reachde the target
+     * @param setpoint The desired PID angle setpoint.
      */
-    public boolean pidOnTarget(double threshold) {
-        return false;
+    public void setPivotPIDSetpoint(double setpoint) {
+
+    }
+
+    /**
+     * Get whatever we set the pivot setpoint to be.
+     * NOT IMPLEMENTED
+     *
+     * @return The last set PID pivot setpoint.
+     */
+    public double getPivotPIDSetpoint() {
+        return 0;
+    }
+
+    /**
+     * Go to the setpoint hta we ahve set for pivoting.
+     * NOT IMPLEMENTED
+     */
+    public void startPivotPID() {
+
     }
 
     /**
@@ -120,13 +146,16 @@ public class DriveSubsystem extends MSubsystem {
     }
 
     /**
-     * Go to the setpoint that we have set.
+     * Find out if we have reached our PID target.
      * NOT IMPLEMENTED
+     *
+     * @param threshold How close/presice we want to be
+     * @return true if we have reachde the target
      */
-    public void startStraightPID() {
-
+    public boolean pidOnTarget(double threshold) {
+        return false;
     }
-    
+
     /** Changes the gear solenoids to the opposite of whatever they are. */
     public void toggleGear() {
         driveGear.toggle();
