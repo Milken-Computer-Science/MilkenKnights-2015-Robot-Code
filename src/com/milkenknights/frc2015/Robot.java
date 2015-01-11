@@ -105,6 +105,10 @@ public class Robot extends IterativeRobot {
             nextAction.start();
             runningActions.add(nextAction);
         }
+        
+        for (MSubsystem s : subsystems) {
+            s.update();
+        }
     }
 
     public void teleopInit() {
@@ -115,10 +119,13 @@ public class Robot extends IterativeRobot {
 
     public void teleopPeriodic() {
         controlSystem.teleopPeriodic();
+        
+        for (MSubsystem s : subsystems) {
+            s.update();
+        }
     }
 
     public void testPeriodic() {
 
     }
-
 }
