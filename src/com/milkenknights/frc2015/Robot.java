@@ -101,7 +101,9 @@ public class Robot extends IterativeRobot {
         }
         
         if (startNextAction && autonomousSequence.hasNext()) {
-            runningActions.add(autonomousSequence.next());
+            AutonomousAction nextAction = autonomousSequence.next();
+            nextAction.start();
+            runningActions.add(nextAction);
         }
     }
 
