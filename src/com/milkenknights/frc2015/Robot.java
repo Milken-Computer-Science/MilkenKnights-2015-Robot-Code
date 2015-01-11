@@ -3,6 +3,7 @@ package com.milkenknights.frc2015;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.RestrictedSolenoid;
 import com.milkenknights.frc2015.controls.ControlSystem;
@@ -30,19 +31,8 @@ public class Robot extends IterativeRobot {
         subsystems.add(driveSubsystem);
     }
 
-    private abstract class AutonomousAction {
-        /** This will be run once before the action starts */
-        public abstract void start();
-        /**
-         * Run this periodically when this action is active
-         * @return true when this action is done
-         */
-        public abstract boolean run();
-    }
-
     ListIterator<AutonomousAction> autonomousSequence;
-    AutonomousAction currentAction;
-    Timer autonTimer;
+    LinkedList<AutonomousAction> runningActions;
 
     public void autonomousInit() {
         class PIDStraightAction extends AutonomousAction {
@@ -60,8 +50,12 @@ public class Robot extends IterativeRobot {
             }
 
             @Override
-            public boolean run() {
-                return driveSubsystem.pidOnTarget(1); 
+            public EndState run() {
+                if (driveSubsystem.pidOnTarget(1)) {
+                    return EndState.END;
+                } else {
+                    return EndState.CONTINUE;
+                }
             }
         }
 
@@ -80,8 +74,12 @@ public class Robot extends IterativeRobot {
             }
 
             @Override
-            public boolean run() {
-                return driveSubsystem.pidOnTarget(1); 
+            public EndState run() {
+                if (driveSubsystem.pidOnTarget(1)) {
+                    return EndState.END;
+                } else {
+                    return EndState.CONTINUE;
+                }
             }
         }
 
@@ -99,28 +97,59 @@ public class Robot extends IterativeRobot {
             }
 
             @Override
-            public boolean run() {
-                return Timer.getFPGATimestamp() - startTime >= waitTime;
+            public EndState run() {
+                if (Timer.getFPGATimestamp() - startTime >= waitTime) {
+                    return EndState.END;
+                } else {
+                    return EndState.CONTINUE;
+                }
             }
         }
 
         LinkedList<AutonomousAction> autonomousList =
                 new LinkedList<AutonomousAction>();
+        
+        runningActions = new LinkedList<AutonomousAction>();
 
         // COMPOSE THE PID STEPS HERE
         autonomousList.add(new PIDStraightAction(15));
 
         autonomousSequence = autonomousList.listIterator();
-        currentAction = autonomousSequence.next();
     }
 
     public void autonomousPeriodic() {
-        if (currentAction != null && currentAction.run()) {
-            if (autonomousSequence.hasNext()) {
-                currentAction = autonomousSequence.next();
-            } else {
-                currentAction = null;
+        // if this ends up being true at the end of the while loop, start the
+        // next queued AutonomousAction.
+        // If runningActions is ever empty (e.g. at the beginning of
+        // autonomous), the while loop will never happen, startNextAction will
+        // stay true, and we will find the next action to add.
+        boolean startNextAction = true;
+        
+        // Loop through the list of currently running actions. We use a manual
+        // ListIterator instead of the syntax shortcut because we need to
+        // remove the element mid-loop when it ends.
+        ListIterator<AutonomousAction> i = runningActions.listIterator();
+        while (i.hasNext()) {
+            AutonomousAction a = i.next();
+            startNextAction = false;
+            
+            // run the action and find out what to do next based on its return
+            // value.
+            switch(a.run()) {
+            case CONTINUE:
+                break;
+            // END doesn't break because it falls through and sets
+            // startNextAction to true.
+            case END:
+                i.remove();
+            case BACKGROUND:
+                startNextAction = true;
+                break;
             }
+        }
+        
+        if (startNextAction && autonomousSequence.hasNext()) {
+            runningActions.add(autonomousSequence.next());
         }
     }
 
