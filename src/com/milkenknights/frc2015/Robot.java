@@ -23,6 +23,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         RestrictedSolenoid.initPressureSensor(Constants.pressureTransducerChannel, 
                 Constants.transducerScaleFactor, Constants.transducerOffset);
+        
         driveSubsystem = new DriveSubsystem();
 
         controlSystem = new TripleATKControl(driveSubsystem);
@@ -30,11 +31,18 @@ public class Robot extends IterativeRobot {
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
     }
-
+    
+    /** An iterator through all the sequence of autonomous actions. */
     ListIterator<AutonomousAction> autonomousSequence;
+    
+    /**
+     * The list of autonomous actions that are currently running, including
+     * ones that have been backgrounded.
+     */
     LinkedList<AutonomousAction> runningActions;
 
     public void autonomousInit() {
+        /** This AutonomousAction stalls for a given amount of time. */
         class PIDWaitAction extends AutonomousAction {
             double startTime;
             double waitTime;

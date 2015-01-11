@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.PIDController;
 
 /**
- * The subsystem that manages the robot's wheels and gear solenoids.
+ * The subsystem that manages the robot's wheels.
  * 
  * @author Daniel Kessler
  * @author Jake Reiner
