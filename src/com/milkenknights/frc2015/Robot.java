@@ -35,54 +35,6 @@ public class Robot extends IterativeRobot {
     LinkedList<AutonomousAction> runningActions;
 
     public void autonomousInit() {
-        class PIDStraightAction extends AutonomousAction {
-            double setpoint;
-            
-            public PIDStraightAction(double setpoint) {
-                this.setpoint = setpoint;
-            }
-
-            @Override
-            public void start() {
-                driveSubsystem.resetPIDPosition();
-                driveSubsystem.setStraightPIDSetpoint(setpoint);
-                driveSubsystem.startStraightPID();
-            }
-
-            @Override
-            public EndState run() {
-                if (driveSubsystem.pidOnTarget(1)) {
-                    return EndState.END;
-                } else {
-                    return EndState.CONTINUE;
-                }
-            }
-        }
-
-        class PIDPivotAction extends AutonomousAction {
-            double setpoint;
-            
-            public PIDPivotAction(double setpoint) {
-                this.setpoint = setpoint;
-            }
-
-            @Override
-            public void start() {
-                driveSubsystem.resetPIDPosition();
-                driveSubsystem.setPivotPIDSetpoint(setpoint);
-                driveSubsystem.startPivotPID();
-            }
-
-            @Override
-            public EndState run() {
-                if (driveSubsystem.pidOnTarget(1)) {
-                    return EndState.END;
-                } else {
-                    return EndState.CONTINUE;
-                }
-            }
-        }
-
         class PIDWaitAction extends AutonomousAction {
             double startTime;
             double waitTime;
@@ -112,7 +64,7 @@ public class Robot extends IterativeRobot {
         runningActions = new LinkedList<AutonomousAction>();
 
         // COMPOSE THE PID STEPS HERE
-        autonomousList.add(new PIDStraightAction(15));
+        autonomousList.add(driveSubsystem.newPIDStraightAction(15));
 
         autonomousSequence = autonomousList.listIterator();
     }
