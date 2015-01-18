@@ -3,13 +3,11 @@ package com.milkenknights.frc2015.controls;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 
 /**
- * An abstract class for control systems. Implementations should access this
- * class and and the teleopPeriodic method, and control the subsystems based on
+ * An abstract class for control systems. A control system should extend this
+ * class and override the teleopPeriodic method to control subsystems based on
  * joystick inputs.
  * 
- * Getting Joystick instances should be handled by the implementing class.
- * 
- * @author Daniel
+ * @author Daniel Kessler
  */
 public abstract class ControlSystem {
     protected DriveSubsystem driveSub;
