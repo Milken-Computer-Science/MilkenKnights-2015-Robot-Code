@@ -19,17 +19,16 @@ public class JStick {
     public static final int XBOX_LJ = 9;
     public static final int XBOX_RJ = 10;
 
-    public static final int XBOX_LSX = 1; // left stick x
-    public static final int XBOX_LSY = 2; // left stick y
-    public static final int XBOX_TRIG = 3; // left is positive
+    public static final int XBOX_LSX = 0; // left stick x
+    public static final int XBOX_LSY = 1; // left stick y
+    public static final int XBOX_LTRIG = 2; // always greater than 0.5
+    public static final int XBOX_RTRIG = 3; // always greater than 0.5
     public static final int XBOX_RSX = 4; // right stick x
     public static final int XBOX_RSY = 5; // right stick y
-    public static final int XBOX_DPAD = 6; // buggy
 
-    public static final int JOYSTICK_KNOB = 3;
-    
-    public static final int MAX_BUTTONS = 12; // as specified in the docs
-    public static final int MAX_AXES = 6; // as specificed in the docs
+    public static final int ATK3_X = 0; // ATK3 stick x
+    public static final int ATK3_Y = 1; // ATK3 stick y
+    public static final int ATK3_KNOB = 2; // + side is negative
 
     private Joystick jstick;
     private boolean[] buttonPressed;
@@ -46,10 +45,10 @@ public class JStick {
     public JStick(int port) {
         // initialize everything
         jstick = new Joystick(port);
-        buttonPressed = new boolean[MAX_BUTTONS+1];
-        buttonLastPressed = new boolean[MAX_BUTTONS+1];
-        axes = new double[MAX_AXES+1];
-        slowAxes = new double[MAX_AXES+1];
+        buttonPressed = new boolean[jstick.getButtonCount() + 1];
+        buttonLastPressed = new boolean[jstick.getButtonCount() + 1];
+        axes = new double[jstick.getAxisCount()];
+        slowAxes = new double[jstick.getAxisCount()];
         slow = 2;
     }
 
@@ -64,7 +63,7 @@ public class JStick {
 
         for(int i = 1; i < axes.length; ++i) {
             double newAxis = jstick.getRawAxis(i);
-            
+
             if (newAxis - axes[i] > slow) {
                 slowAxes[i] += slow;
             } else if (axes[i] - newAxis > slow) {
@@ -95,7 +94,7 @@ public class JStick {
     public double getSlow() {
         return slow;
     }
-    
+
     /**
      * Gets the button value
      *

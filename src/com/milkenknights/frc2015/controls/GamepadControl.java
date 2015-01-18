@@ -30,10 +30,10 @@ public class GamepadControl extends ControlSystem {
             // CHEESY DRIVE
             // Power: left stick Y
             // Turning: right stick X
-            // Quickturn: either trigger 50% down
+            // Quickturn: left trigger 50% down
             driveSub.cheesyDrive(xbox.getAxis(JStick.XBOX_LSY),
                     xbox.getAxis(JStick.XBOX_RSX),
-                    Math.abs(xbox.getAxis(JStick.XBOX_TRIG)) > 0.5);
+                    xbox.getAxis(JStick.XBOX_LTRIG) > 0.75);
         } else {
             // TANK DRIVE
             // controlled by left and right xbox y axes
