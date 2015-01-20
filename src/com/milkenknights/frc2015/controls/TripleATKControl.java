@@ -54,6 +54,5 @@ public class TripleATKControl extends ControlSystem {
         if (atkl.isReleased(9)) {
             isCheesy = true;
         }
-
     }
 }

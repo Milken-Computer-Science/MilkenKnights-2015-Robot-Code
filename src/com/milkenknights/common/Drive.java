@@ -8,7 +8,10 @@ import edu.wpi.first.wpilibj.SpeedController;
  * future.
  * @author Daniel Kessler
  */
-public class Drive extends RobotDrive {
+public class Drive {
+    SpeedController[] leftMotors;
+    SpeedController[] rightMotors;
+    
     // thanks to team 254 for CheesyDrive
     // cheesy drive uses one joystick for throttle, and the other for turning
     // also supports a "quickturn" function that allows the robot to spin
@@ -87,12 +90,21 @@ public class Drive extends RobotDrive {
         tankDrive(lPower, rPower);
     }
     
+    public void tankDrive(double lPower, double rPower) {
+        for (SpeedController m : leftMotors) {
+            m.set(lPower);
+        }
+        for (SpeedController m : rightMotors) {
+            m.set(rPower);
+        }
+    }
+    
     /**
      * Get the speed of the right side of the robot.
      * @return The speed of the right side of the robot.
      */
     public double getRight() {
-        return m_rearRightMotor.get();
+        return rightMotors[0].get();
     }
     
     /**
@@ -100,27 +112,13 @@ public class Drive extends RobotDrive {
      * @return The speed of the left side of the robot.
      */
     public double getLeft() {
-        return m_rearLeftMotor.get();
+        return leftMotors[0].get();
     }
     
-    public Drive(int frontLeftMotor, int rearLeftMotor, int frontRightMotor,
-            int rearRightMotor) {
-        super(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+    public Drive(SpeedController[] left, SpeedController[] right) {
+        leftMotors = left;
+        rightMotors = right;
     }
-
-    public Drive(SpeedController frontLeftMotor, SpeedController rearLeftMotor,
-            SpeedController frontRightMotor, SpeedController rearRightMotor) {
-        super(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
-    }
-
-    public Drive(int leftMotorChannel, int rightMotorChannel) {
-        super(leftMotorChannel, rightMotorChannel);
-    }
-
-    public Drive(SpeedController leftMotor, SpeedController rightMotor) {
-        super(leftMotor, rightMotor);
-    }
-
     
     /**
      * Applies a sine function to input

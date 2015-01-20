@@ -36,9 +36,14 @@ public class DriveSubsystem extends MSubsystem {
     DriveMode driveMode;
     
     public DriveSubsystem() {
-        CANTalon leftWheels = new CANTalon(Constants.leftTalonDeviceNumber);
-        CANTalon rightWheels = new CANTalon(Constants.rightTalonDeviceNumber);
-
+        CANTalon[] leftWheels = {new CANTalon(Constants.leftTalonDeviceNumberA),
+                new CANTalon(Constants.leftTalonDeviceNumberB),
+                new CANTalon(Constants.leftTalonDeviceNumberC)};
+        
+        CANTalon[] rightWheels = {new CANTalon(Constants.rightTalonDeviceNumberA),
+                new CANTalon(Constants.rightTalonDeviceNumberB),
+                new CANTalon(Constants.rightTalonDeviceNumberC)};
+        
         drive = new Drive(leftWheels, rightWheels);
     }
     
