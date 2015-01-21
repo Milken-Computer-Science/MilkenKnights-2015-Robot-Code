@@ -18,4 +18,9 @@ public class Constants {
     // Pressure Transducer
     public static final double transducerScaleFactor = 50;
     public static final double transducerOffset = -25;
+    
+    // PID constants for driving straight
+    public static final double pidStraightP = 0;
+    public static final double pidStraightI = 0;
+    public static final double pidStraightD = 0;
 }
