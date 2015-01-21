@@ -16,8 +16,8 @@ public class GamepadControl extends ControlSystem {
     
     public GamepadControl(DriveSubsystem sDrive) {
         super(sDrive);
-        xbox = new JStick(1);
-        atk = new JStick(2);
+        xbox = new JStick(0);
+        atk = new JStick(1);
         
         isCheesy = false;
     }
