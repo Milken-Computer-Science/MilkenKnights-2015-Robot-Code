@@ -9,9 +9,9 @@ import com.milkenknights.common.RestrictedSolenoid;
 import com.milkenknights.frc2015.controls.ControlSystem;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
+import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
 
 public class Robot extends IterativeRobot {
     LinkedList<MSubsystem> subsystems;
@@ -42,37 +42,13 @@ public class Robot extends IterativeRobot {
     LinkedList<AutonomousAction> runningActions;
 
     public void autonomousInit() {
-        /** This AutonomousAction stalls for a given amount of time. */
-        class PIDWaitAction extends AutonomousAction {
-            double startTime;
-            double waitTime;
-
-            public PIDWaitAction(double time) {
-                waitTime = time;
-            }
-
-            @Override
-            public void start() {
-                startTime = Timer.getFPGATimestamp();
-            }
-
-            @Override
-            public EndState run() {
-                if (Timer.getFPGATimestamp() - startTime >= waitTime) {
-                    return EndState.END;
-                } else {
-                    return EndState.CONTINUE;
-                }
-            }
-        }
-
         LinkedList<AutonomousAction> autonomousList =
                 new LinkedList<AutonomousAction>();
         
         runningActions = new LinkedList<AutonomousAction>();
 
         // COMPOSE THE PID STEPS HERE
-        autonomousList.add(driveSubsystem.newPIDStraightAction(15));
+        autonomousList.add(new PIDStraightAction(driveSubsystem, 15, 1));
 
         autonomousSequence = autonomousList.listIterator();
     }

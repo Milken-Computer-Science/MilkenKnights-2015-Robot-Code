@@ -1,6 +1,5 @@
 package com.milkenknights.frc2015.subsystems;
 
-import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.common.Drive;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
@@ -197,71 +196,6 @@ public class DriveSubsystem extends MSubsystem {
                 Math.abs(pid_r.getError()) <= threshold;
     }
 
-    /**
-     * Publicly accessible constructor for PIDStraightAction.
-     * @see PIDStraightAction
-     */
-    public PIDStraightAction newPIDStraightAction(double setpoint) {
-        return new PIDStraightAction(setpoint);
-    }
-    /**
-     * An action that will move the robot straight using PID
-     */
-    public class PIDStraightAction extends AutonomousAction {
-        double setpoint;
-        
-        public PIDStraightAction(double setpoint) {
-            this.setpoint = setpoint;
-        }
-
-        @Override
-        public void start() {
-            resetPIDPosition();
-            setStraightPIDSetpoint(setpoint);
-            startStraightPID();
-        }
-
-        @Override
-        public EndState run() {
-            if (pidOnTarget(1)) {
-                return EndState.END;
-            } else {
-                return EndState.CONTINUE;
-            }
-        }
-    }
-
-    /**
-     * Publicly accessible constructor for PIDPivotAction.
-     * @see PIDPivotAction
-     */
-    public PIDPivotAction newPIDPivotAction(double setpoint) {
-        return new PIDPivotAction(setpoint);
-    }
-    /** An action that wil pivot the robot using PID and Gyro */
-    class PIDPivotAction extends AutonomousAction {
-        double setpoint;
-        
-        public PIDPivotAction(double setpoint) {
-            this.setpoint = setpoint;
-        }
-
-        @Override
-        public void start() {
-            resetPIDPosition();
-            setPivotPIDSetpoint(setpoint);
-            startPivotPID();
-        }
-
-        @Override
-        public EndState run() {
-            if (pidOnTarget(1)) {
-                return EndState.END;
-            } else {
-                return EndState.CONTINUE;
-            }
-        }
-    }
     /**
      * Updates wheel speeds depending on driveMode (which should be set to the
      * desired mode with setDriveMode().
