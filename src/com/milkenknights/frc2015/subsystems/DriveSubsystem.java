@@ -2,10 +2,10 @@ package com.milkenknights.frc2015.subsystems;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.common.Drive;
-import com.milkenknights.common.MKCANTalon;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -47,26 +47,22 @@ public class DriveSubsystem extends MSubsystem {
     DriveMode driveMode;
     
     public DriveSubsystem() {
-        MKCANTalon leftTalonA = new MKCANTalon(Constants.leftTalonDeviceNumberA);
-        MKCANTalon leftTalonB = new MKCANTalon(Constants.leftTalonDeviceNumberB);
-        MKCANTalon leftTalonC = new MKCANTalon(Constants.leftTalonDeviceNumberC);
+        CANTalon leftTalonA = new CANTalon(Constants.leftTalonDeviceNumberA);
+        CANTalon leftTalonB = new CANTalon(Constants.leftTalonDeviceNumberB);
+        CANTalon leftTalonC = new CANTalon(Constants.leftTalonDeviceNumberC);
         
-        MKCANTalon rightTalonA = new MKCANTalon(Constants.rightTalonDeviceNumberA);
-        MKCANTalon rightTalonB = new MKCANTalon(Constants.rightTalonDeviceNumberB);
-        MKCANTalon rightTalonC = new MKCANTalon(Constants.rightTalonDeviceNumberC);
+        CANTalon rightTalonA = new CANTalon(Constants.rightTalonDeviceNumberA);
+        CANTalon rightTalonB = new CANTalon(Constants.rightTalonDeviceNumberB);
+        CANTalon rightTalonC = new CANTalon(Constants.rightTalonDeviceNumberC);
         
-        MKCANTalon[] leftWheels = {leftTalonA, leftTalonB, leftTalonC};
-        MKCANTalon[] rightWheels = {rightTalonA, rightTalonB, rightTalonC};
-        
-        
-        rightTalonA.reversePolarity(true);
-        rightTalonB.reversePolarity(true);
-        leftTalonC.reversePolarity(true);
+        CANTalon[] leftWheels = {leftTalonA, leftTalonB, leftTalonC};
+        CANTalon[] rightWheels = {rightTalonA, rightTalonB, rightTalonC};
         
         Encoder enc_l = new Encoder(0, 1);
         Encoder enc_r = new Encoder(2, 3);
         
-        drive = new Drive(leftWheels, rightWheels);
+        drive = new Drive(leftWheels, rightWheels,
+                Constants.reversedLeftTalons, Constants.reversedRightTalons);
         
         class LPIDOut implements PIDOutput {
             @Override

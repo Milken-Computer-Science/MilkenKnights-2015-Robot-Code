@@ -13,6 +13,9 @@ public class Drive {
     SpeedController[] leftMotors;
     SpeedController[] rightMotors;
     
+    int[] flippedLeftMotors;
+    int[] flippedRightMotors;
+    
     // thanks to team 254 for CheesyDrive
     // cheesy drive uses one joystick for throttle, and the other for turning
     // also supports a "quickturn" function that allows the robot to spin
@@ -92,8 +95,25 @@ public class Drive {
     }
     
     public void tankDrive(double lPower, double rPower) {
-        Arrays.stream(leftMotors).parallel().forEach(m -> m.set(lPower));
-        Arrays.stream(rightMotors).parallel().forEach(m -> m.set(rPower));
+        int i = 0;
+        for (SpeedController m : leftMotors) {
+            if (Arrays.asList(flippedLeftMotors).contains(i)) {
+                m.set(-lPower);
+            } else {
+                m.set(lPower);
+            }
+            i++;
+        }
+        i = 0;
+        for (SpeedController m : rightMotors) {
+            if (Arrays.asList(flippedRightMotors).contains(i)) {
+                m.set(-rPower);
+            } else {
+                m.set(rPower);
+            }
+            i++;
+        }
+
     }
     
     /**
@@ -113,8 +133,24 @@ public class Drive {
     }
     
     public Drive(SpeedController[] left, SpeedController[] right) {
+        this(left, right, new int[0], new int[0]);
+    }
+    
+    /**
+     * Make a new Drive instance, and reverse motors
+     * @param left all of the SpeedControllers on the left side of the robot
+     * @param right all of the SpeedControllers on the right side of the robot
+     * @param reversedLeftMotors The array indexes of SpeedControllers in the
+     *                           left parameter that should be flipped
+     * @param reversedRightMotors The array indexes of SpeedControllers in the
+     *                            right parameter that should be flipped
+     */
+    public Drive(SpeedController[] left, SpeedController[] right,
+            int[] reversedLeftMotors, int[] reversedRightMotors) {
         leftMotors = left;
         rightMotors = right;
+        flippedLeftMotors = reversedLeftMotors;
+        flippedRightMotors = reversedRightMotors;
     }
     
     /**
