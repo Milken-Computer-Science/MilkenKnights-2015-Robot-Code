@@ -15,9 +15,9 @@ public class TripleATKControl extends ControlSystem {
 
     public TripleATKControl(DriveSubsystem sDrive) {
         super(sDrive);
-        atkl = new JStick(1);
-        atkr = new JStick(2);
-        atka = new JStick(3);
+        atkl = new JStick(0);
+        atkr = new JStick(1);
+        atka = new JStick(2);
 
         isCheesy = false;
     }

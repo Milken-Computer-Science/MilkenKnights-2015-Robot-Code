@@ -6,7 +6,9 @@ import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 
 /**
  * The subsystem that manages the robot's wheels.
@@ -29,6 +31,15 @@ public class DriveSubsystem extends MSubsystem {
     double cheesyTurn;
     boolean cheesyQuickturn;
     
+    PIDController pid_l;
+    PIDController pid_r;
+    
+    Encoder enc_l;
+    Encoder enc_r;
+    
+    double leftSpeedPID;
+    double rightSpeedPID;
+    
     private enum DriveMode {
         TANK, CHEESY, PIDSTRAIGHT
     }
@@ -45,6 +56,30 @@ public class DriveSubsystem extends MSubsystem {
                 new CANTalon(Constants.rightTalonDeviceNumberC)};
         
         drive = new Drive(leftWheels, rightWheels);
+        
+        class LPIDOut implements PIDOutput {
+            @Override
+            public void pidWrite(double output) {
+                leftSpeedPID = output;
+            }
+        }
+        class RPIDOut implements PIDOutput {
+            @Override
+            public void pidWrite(double output) {
+                rightSpeedPID = output;
+            }
+        }
+        
+        pid_l = new PIDController(Constants.pidStraightP,
+                Constants.pidStraightI,
+                Constants.pidStraightD,
+                enc_l,
+                new LPIDOut());
+        pid_r = new PIDController(Constants.pidStraightP,
+                Constants.pidStraightI,
+                Constants.pidStraightD,
+                enc_r,
+                new RPIDOut());
     }
     
     public void teleopInit() {
@@ -80,30 +115,29 @@ public class DriveSubsystem extends MSubsystem {
     /**
      * Set the setpoint for PID straight driving mode.
      * This should be how far forward you want the robot to move.
-     * NOT IMPLEMENTED
      *
      * @param setpoint The desired PID straight setpoint.
      */
     public void setStraightPIDSetpoint(double setpoint) {
-        
+        pid_l.setSetpoint(setpoint);
+        pid_r.setSetpoint(setpoint);
     }
 
     /**
      * Get whatever we set the straight drive setpoint to be.
-     * NOT IMPLEMENTED
      *
      * @return The last set PID straight setpoint.
      */
     public double getStraightPIDSetpoint() {
-        return 0;
+        return pid_l.getSetpoint();
     }
     
     /**
      * Go to the setpoint that we have set for driving straight.
-     * NOT IMPLEMENTED
      */
     public void startStraightPID() {
-
+        pid_l.enable();
+        pid_r.enable();
     }
 
     /**
@@ -128,7 +162,7 @@ public class DriveSubsystem extends MSubsystem {
     }
 
     /**
-     * Go to the setpoint hta we ahve set for pivoting.
+     * Go to the setpoint that we have set for pivoting.
      * NOT IMPLEMENTED
      */
     public void startPivotPID() {
@@ -138,21 +172,21 @@ public class DriveSubsystem extends MSubsystem {
     /**
      * "Zero out" our position. If the robot has moved forward or rotated, this will
      * reset the position back to zero.
-     * NOT IMPLEMENTED
      */
     public void resetPIDPosition() {
-
+        enc_l.reset();
+        enc_r.reset();
     }
 
     /**
      * Find out if we have reached our PID target.
-     * NOT IMPLEMENTED
      *
-     * @param threshold How close/presice we want to be
-     * @return true if we have reachde the target
+     * @param threshold How close/precise we want to be
+     * @return true if we have reached the target
      */
     public boolean pidOnTarget(double threshold) {
-        return false;
+        return Math.abs(pid_l.getError()) <= threshold &&
+                Math.abs(pid_r.getError()) <= threshold;
     }
 
     /**
@@ -236,6 +270,7 @@ public class DriveSubsystem extends MSubsystem {
             break;
 
         case PIDSTRAIGHT:
+            drive.tankDrive(leftSpeedPID, rightSpeedPID);
             break;
         }
     }
