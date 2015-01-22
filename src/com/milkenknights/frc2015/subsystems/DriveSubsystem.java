@@ -136,6 +136,7 @@ public class DriveSubsystem extends MSubsystem {
      * Go to the setpoint that we have set for driving straight.
      */
     public void startStraightPID() {
+        setDriveMode(DriveMode.PIDSTRAIGHT);
         pid_l.enable();
         pid_r.enable();
     }
