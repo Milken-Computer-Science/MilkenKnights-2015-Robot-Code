@@ -1,6 +1,7 @@
 package com.milkenknights.common;
 
-import edu.wpi.first.wpilibj.RobotDrive;
+import java.util.Arrays;
+
 import edu.wpi.first.wpilibj.SpeedController;
 
 /**
@@ -91,12 +92,8 @@ public class Drive {
     }
     
     public void tankDrive(double lPower, double rPower) {
-        for (SpeedController m : leftMotors) {
-            m.set(lPower);
-        }
-        for (SpeedController m : rightMotors) {
-            m.set(rPower);
-        }
+        Arrays.stream(leftMotors).parallel().forEach(m -> m.set(lPower));
+        Arrays.stream(rightMotors).parallel().forEach(m -> m.set(rPower));
     }
     
     /**
