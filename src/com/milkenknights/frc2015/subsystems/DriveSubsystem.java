@@ -58,7 +58,7 @@ public class DriveSubsystem extends MSubsystem {
         CANTalon[] rightWheels = {rightTalonA, rightTalonB, rightTalonC};
         
         Encoder enc_l = new Encoder(0, 1);
-        Encoder enc_r = new Encoder(2, 3);
+        Encoder enc_r = new Encoder(7, 6);
         
         drive = new Drive(leftWheels, rightWheels,
                 Constants.reversedLeftTalons, Constants.reversedRightTalons);
