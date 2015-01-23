@@ -1,6 +1,8 @@
 package com.milkenknights.common;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.wpi.first.wpilibj.SpeedController;
 
@@ -13,8 +15,8 @@ public class Drive {
     SpeedController[] leftMotors;
     SpeedController[] rightMotors;
     
-    int[] flippedLeftMotors;
-    int[] flippedRightMotors;
+    List<Integer> flippedLeftMotors;
+    List<Integer> flippedRightMotors;
     
     // thanks to team 254 for CheesyDrive
     // cheesy drive uses one joystick for throttle, and the other for turning
@@ -97,7 +99,7 @@ public class Drive {
     public void tankDrive(double lPower, double rPower) {
         int i = 0;
         for (SpeedController m : leftMotors) {
-            if (Arrays.asList(flippedLeftMotors).contains(i)) {
+            if (flippedLeftMotors.contains(i)) {
                 m.set(-lPower);
             } else {
                 m.set(lPower);
@@ -106,7 +108,7 @@ public class Drive {
         }
         i = 0;
         for (SpeedController m : rightMotors) {
-            if (Arrays.asList(flippedRightMotors).contains(i)) {
+            if (flippedRightMotors.contains(i)) {
                 m.set(-rPower);
             } else {
                 m.set(rPower);
@@ -149,9 +151,11 @@ public class Drive {
             int[] reversedLeftMotors, int[] reversedRightMotors) {
         leftMotors = left;
         rightMotors = right;
-        flippedLeftMotors = reversedLeftMotors;
-        flippedRightMotors = reversedRightMotors;
-    }
+        flippedLeftMotors = Arrays.stream(reversedLeftMotors)
+                .boxed().collect(Collectors.toList());
+        flippedRightMotors = Arrays.stream(reversedRightMotors)
+                .boxed().collect(Collectors.toList());
+        }
     
     /**
      * Applies a sine function to input
