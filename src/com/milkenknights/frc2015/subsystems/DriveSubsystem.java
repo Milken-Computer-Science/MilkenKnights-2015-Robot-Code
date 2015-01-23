@@ -119,6 +119,14 @@ public class DriveSubsystem extends MSubsystem {
     }
     
     /**
+     * Set the PID constants for driving straight
+     */
+    public void setStraightPID(double p, double i, double d) {
+        pid_l.setPID(p, i, d);
+        pid_r.setPID(p, i, d);
+    }
+    
+    /**
      * Set the setpoint for PID straight driving mode.
      * This should be how far forward you want the robot to move.
      *
