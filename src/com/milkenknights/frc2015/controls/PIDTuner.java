@@ -12,6 +12,7 @@ public class PIDTuner extends ControlSystem {
     JStick atkr, atkl, atka;
 
     public boolean isCheesy;
+    public boolean pidEnabled;
 
     public PIDTuner(DriveSubsystem sDrive) {
         super(sDrive);
@@ -27,18 +28,20 @@ public class PIDTuner extends ControlSystem {
         atkr.update();
         atka.update();
 
-        if (isCheesy) {
-            // CHEESY DRIVE
-            // Power: left ATK y axis
-            // Turning: right ATK x axis
-            // no quickturn
-            driveSub.cheesyDrive(-atkl.getAxis(JStick.ATK3_Y),
-                    atkr.getAxis(JStick.ATK3_X), false);
-        } else {
-            // TANK DRIVE
-            // controlled by left and right ATK y axes
-            driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_Y),
-                    -atkr.getAxis(JStick.ATK3_Y));
+        if (!pidEnabled) {
+            if (isCheesy) {
+                // CHEESY DRIVE
+                // Power: left ATK y axis
+                // Turning: right ATK x axis
+                // no quickturn
+                driveSub.cheesyDrive(-atkl.getAxis(JStick.ATK3_Y),
+                        atkr.getAxis(JStick.ATK3_X), false);
+            } else {
+                // TANK DRIVE
+                // controlled by left and right ATK y axes
+                driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_Y),
+                        -atkr.getAxis(JStick.ATK3_Y));
+            }
         }
 
         // left ATK 7 toggles between cheesy and tank
@@ -54,5 +57,33 @@ public class PIDTuner extends ControlSystem {
         if (atkl.isReleased(9)) {
             isCheesy = true;
         }
+        
+        // aux ATK 1 enables PID
+        if (atka.isPressed(1)) {
+            driveSub.startStraightPID();
+            pidEnabled = true;
+        }
+        
+        // aux ATK 6 sets PID setpoint to 12 inches
+        if (atka.isPressed(6)) {
+            driveSub.setStraightPIDSetpoint(12);
+        }
+        
+        // aux ATK 7 sets PID setpoint to 72 inches
+        if (atka.isPressed(7)) {
+            driveSub.setStraightPIDSetpoint(72);
+        }
+        
+        // When PID enabled and left or right joystick Y axis is more then 0.6 
+        // or button 2 is pressed reset PID
+        if (pidEnabled) {
+            if (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6 || 
+                    Math.abs(atkr.getAxis(JStick.ATK3_Y)) > Math.abs(0.6) || 
+                    atka.isPressed(2)) {
+                driveSub.resetPIDPosition();
+                pidEnabled = false;
+            }
+        }
+        
     }
 }
