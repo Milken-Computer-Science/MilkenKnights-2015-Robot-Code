@@ -3,6 +3,8 @@ package com.milkenknights.frc2015.controls;
 import com.milkenknights.common.JStick;
 import com.milkenknights.frc2015.subsystems.*;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This control system has special controls for testing and tuning PID. It
  * uses three ATK3 controllers: two for driving and one for AUX.
@@ -74,16 +76,29 @@ public class PIDTuner extends ControlSystem {
             driveSub.setStraightPIDSetpoint(72);
         }
         
-        // When PID enabled and left or right joystick Y axis is more then 0.6 
+        // When PID enabled and left or right joystick Y axis is more then 0.6
         // or button 2 is pressed reset PID
         if (pidEnabled) {
-            if (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6 || 
-                    Math.abs(atkr.getAxis(JStick.ATK3_Y)) > Math.abs(0.6) || 
+            if (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6 ||
+                    Math.abs(atkr.getAxis(JStick.ATK3_Y)) > Math.abs(0.6) ||
                     atka.isPressed(2)) {
                 driveSub.resetPIDPosition();
                 pidEnabled = false;
             }
         }
         
+        // aux ATK 4 gets new staright PID constants from SmartDashboard
+        if (atka.isReleased(4)) {
+            double kp_in = SmartDashboard.getNumber("kp",-1);
+            double ki_in = SmartDashboard.getNumber("ki",-1);
+            double kd_in = SmartDashboard.getNumber("kd",-1);
+            
+            System.out.println("kp "+kp_in+" ki "+ki_in+" kd "+kd_in);
+            
+            SmartDashboard.putString("recently received",
+                    "kp "+kp_in+" ki "+ki_in+" kd "+kd_in);
+            
+            driveSub.setStraightPID(kp_in, ki_in, kd_in);
+        }
     }
 }
