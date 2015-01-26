@@ -85,11 +85,13 @@ public class DriveSubsystem extends MSubsystem {
                 Constants.pidStraightD,
                 enc_l,
                 new LPIDOut());
+        pid_l.setOutputRange(Constants.minimumWheelSpeed, 1);
         pid_r = new PIDController(Constants.pidStraightP,
                 Constants.pidStraightI,
                 Constants.pidStraightD,
                 enc_r,
                 new RPIDOut());
+        pid_r.setOutputRange(Constants.minimumWheelSpeed, 1);
     }
     
     public void teleopInit() {
