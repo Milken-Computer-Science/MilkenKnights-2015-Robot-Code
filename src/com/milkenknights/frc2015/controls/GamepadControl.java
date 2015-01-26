@@ -22,6 +22,8 @@ public class GamepadControl extends ControlSystem {
         isCheesy = false;
     }
     
+    public void teleopInit() {}
+    
     public void teleopPeriodic() {
         xbox.update();
         atk.update();

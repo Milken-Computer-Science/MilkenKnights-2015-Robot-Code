@@ -22,6 +22,8 @@ public class TripleATKControl extends ControlSystem {
         isCheesy = false;
     }
 
+    public void teleopInit() {}
+    
     public void teleopPeriodic() {
         atkl.update();
         atkr.update();

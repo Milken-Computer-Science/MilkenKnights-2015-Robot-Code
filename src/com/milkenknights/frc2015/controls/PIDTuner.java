@@ -24,6 +24,10 @@ public class PIDTuner extends ControlSystem {
 
         isCheesy = false;
     }
+    
+    public void teleopInit() {
+        pidEnabled = false;
+    }
 
     public void teleopPeriodic() {
         atkl.update();
@@ -76,15 +80,21 @@ public class PIDTuner extends ControlSystem {
             driveSub.setStraightPIDSetpoint(72);
         }
         
-        // When PID enabled and left or right joystick Y axis is more then 0.6
+        // if left or right joystick Y axis is more then 0.6
         // or button 2 is pressed reset PID
-        if (pidEnabled) {
-            if (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6 ||
-                    Math.abs(atkr.getAxis(JStick.ATK3_Y)) > Math.abs(0.6) ||
-                    atka.isPressed(2)) {
-                driveSub.resetPIDPosition();
-                pidEnabled = false;
-            }
+        if (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6
+                || Math.abs(atkr.getAxis(JStick.ATK3_Y)) > Math.abs(0.6)
+                || atka.isPressed(2)) {
+            driveSub.resetPIDPosition();
+            pidEnabled = false;
+        }
+        
+        // aux atk 3 resets pid constants
+        if (atka.isPressed(3)) {
+            SmartDashboard.putNumber("kp", 0.1);
+            SmartDashboard.putNumber("ki", 0.01);
+            SmartDashboard.putNumber("kd", 0.001);
+            SmartDashboard.putNumber("setpoint", 30);
         }
         
         // aux ATK 4 gets new staright PID constants from SmartDashboard
@@ -92,6 +102,7 @@ public class PIDTuner extends ControlSystem {
             double kp_in = SmartDashboard.getNumber("kp",-1);
             double ki_in = SmartDashboard.getNumber("ki",-1);
             double kd_in = SmartDashboard.getNumber("kd",-1);
+            double sp_in = SmartDashboard.getNumber("setpoint",-1);
             
             System.out.println("kp "+kp_in+" ki "+ki_in+" kd "+kd_in);
             
@@ -99,6 +110,7 @@ public class PIDTuner extends ControlSystem {
                     "kp "+kp_in+" ki "+ki_in+" kd "+kd_in);
             
             driveSub.setStraightPID(kp_in, ki_in, kd_in);
+            driveSub.setStraightPIDSetpoint(sp_in);
         }
     }
 }

@@ -7,6 +7,7 @@ import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.RestrictedSolenoid;
 import com.milkenknights.frc2015.controls.ControlSystem;
+import com.milkenknights.frc2015.controls.PIDTuner;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
@@ -26,7 +27,7 @@ public class Robot extends IterativeRobot {
         
         driveSubsystem = new DriveSubsystem();
 
-        controlSystem = new TripleATKControl(driveSubsystem);
+        controlSystem = new PIDTuner(driveSubsystem);
 
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
@@ -96,6 +97,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+        controlSystem.teleopInit();
         for (MSubsystem s : subsystems) {
             s.teleopInit();
         }

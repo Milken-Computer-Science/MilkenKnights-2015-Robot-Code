@@ -61,7 +61,7 @@ public class JStick {
             buttonPressed[i] = jstick.getRawButton(i);
         }
 
-        for(int i = 1; i < axes.length; ++i) {
+        for(int i = 0; i < axes.length; i++) {
             double newAxis = jstick.getRawAxis(i);
 
             if (newAxis - axes[i] > slow) {

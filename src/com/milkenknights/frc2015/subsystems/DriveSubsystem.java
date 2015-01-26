@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The subsystem that manages the robot's wheels.
@@ -57,8 +58,11 @@ public class DriveSubsystem extends MSubsystem {
         CANTalon[] leftWheels = {leftTalonA, leftTalonB, leftTalonC};
         CANTalon[] rightWheels = {rightTalonA, rightTalonB, rightTalonC};
         
-        Encoder enc_l = new Encoder(0, 1);
-        Encoder enc_r = new Encoder(7, 6);
+        enc_l = new Encoder(0, 1);
+        enc_r = new Encoder(7, 6);
+        
+        enc_l.setDistancePerPulse(Constants.inchesPerPulse);
+        enc_r.setDistancePerPulse(Constants.inchesPerPulse);
         
         drive = new Drive(leftWheels, rightWheels,
                 Constants.reversedLeftTalons, Constants.reversedRightTalons);
@@ -203,6 +207,12 @@ public class DriveSubsystem extends MSubsystem {
         return Math.abs(pid_l.getError()) <= threshold &&
                 Math.abs(pid_r.getError()) <= threshold;
     }
+    
+    public void moveIndividualMotor(boolean isLeft, double amount) {
+        if (isLeft) {
+            
+        }
+    }
 
     /**
      * Updates wheel speeds depending on driveMode (which should be set to the
@@ -223,5 +233,10 @@ public class DriveSubsystem extends MSubsystem {
             drive.tankDrive(leftSpeedPID, rightSpeedPID);
             break;
         }
+        
+        SmartDashboard.putNumber("l ticks", enc_l.getRaw());
+        SmartDashboard.putNumber("r ticks", enc_r.getRaw());
+        SmartDashboard.putNumber("l dist", enc_l.pidGet());
+        SmartDashboard.putNumber("r dist", enc_r.pidGet());
     }
 }

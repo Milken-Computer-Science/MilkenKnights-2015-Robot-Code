@@ -24,6 +24,8 @@ public class Constants {
     public static final double transducerScaleFactor = 50;
     public static final double transducerOffset = -25;
     
+    public static final double inchesPerPulse = 0.01745329251;
+    
     // PID constants for driving straight
     public static final double pidStraightP = 0;
     public static final double pidStraightI = 0;
