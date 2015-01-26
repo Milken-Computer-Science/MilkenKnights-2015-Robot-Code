@@ -24,7 +24,9 @@ public class Constants {
     public static final double transducerScaleFactor = 50;
     public static final double transducerOffset = -25;
     
-    public static final double inchesPerPulse = 0.01745329251;
+    // 4 inch wheel diameter. encoder does 360 pulses per revolution
+    // This is equal to 4pi/360
+    public static final double inchesPerPulse = 0.03490658503;
     
     // PID constants for driving straight
     public static final double pidStraightP = 0;
