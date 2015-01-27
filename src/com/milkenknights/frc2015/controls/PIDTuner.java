@@ -28,6 +28,7 @@ public class PIDTuner extends ControlSystem {
     
     public void teleopInit() {
         pidEnabled = false;
+        deadbandTune = false;
         updateConstants();
     }
 
@@ -36,10 +37,11 @@ public class PIDTuner extends ControlSystem {
         atkr.update();
         atka.update();
         
-        SmartDashboard.putNumber("l_knob_15",
-                -atkl.getAxis(JStick.ATK3_KNOB)/15);
-        SmartDashboard.putNumber("r_knob_15",
-                -atkr.getAxis(JStick.ATK3_KNOB)/15);
+        double l_knob_precise = (2-atkl.getAxis(JStick.ATK3_KNOB))/30;
+        double r_knob_precise = (2-atkr.getAxis(JStick.ATK3_KNOB))/30;
+        SmartDashboard.putBoolean("deadband_tune_on", deadbandTune);
+        SmartDashboard.putNumber("l_knob_precise",l_knob_precise);
+        SmartDashboard.putNumber("r_knob_precise",r_knob_precise);
         SmartDashboard.putNumber("setpoint_cur", driveSub.getStraightPIDSetpoint());
 
         if (!pidEnabled) {
@@ -47,8 +49,7 @@ public class PIDTuner extends ControlSystem {
                 // DEADBAND TUNING MODE
                 // wheel speed is controlled by the knob, but divided by
                 // 15 for precise movements
-                driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_KNOB)/15.0,
-                        -atkr.getAxis(JStick.ATK3_KNOB)/15);
+                driveSub.tankDrive(l_knob_precise, r_knob_precise);
             } else if (isCheesy) {
                 // CHEESY DRIVE
                 // Power: left ATK y axis
@@ -79,7 +80,7 @@ public class PIDTuner extends ControlSystem {
         }
         
         // aux ATK 1 enables PID
-        if (atka.isPressed(1)) {
+        if (atka.isReleased(1)) {
             driveSub.startStraightPID();
             pidEnabled = true;
         }

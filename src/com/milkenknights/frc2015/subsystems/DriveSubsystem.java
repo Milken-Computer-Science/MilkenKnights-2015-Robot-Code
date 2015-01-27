@@ -65,7 +65,8 @@ public class DriveSubsystem extends MSubsystem {
         enc_r.setDistancePerPulse(Constants.inchesPerPulse);
         
         drive = new Drive(leftWheels, rightWheels,
-                Constants.reversedLeftTalons, Constants.reversedRightTalons);
+                Constants.reversedLeftTalons, Constants.reversedRightTalons,
+                Constants.minimumWheelSpeed);
         
         class LPIDOut implements PIDOutput {
             @Override
@@ -85,7 +86,6 @@ public class DriveSubsystem extends MSubsystem {
                 Constants.pidStraightD,
                 enc_l,
                 new LPIDOut());
-        pid_l.setOutputRange(Constants.minimumWheelSpeed, 1);
         pid_r = new PIDController(Constants.pidStraightP,
                 Constants.pidStraightI,
                 Constants.pidStraightD,

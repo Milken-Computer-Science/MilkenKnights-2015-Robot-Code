@@ -33,5 +33,5 @@ public class Constants {
     public static final double pidStraightI = 0;
     public static final double pidStraightD = 0;
     
-    public static final double minimumWheelSpeed = 0.005;
+    public static final double minimumWheelSpeed = 0.0069;
 }
