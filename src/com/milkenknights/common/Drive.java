@@ -18,6 +18,8 @@ public class Drive {
     List<Integer> flippedLeftMotors;
     List<Integer> flippedRightMotors;
     
+    double deadband;
+    
     // thanks to team 254 for CheesyDrive
     // cheesy drive uses one joystick for throttle, and the other for turning
     // also supports a "quickturn" function that allows the robot to spin
@@ -97,6 +99,13 @@ public class Drive {
     }
     
     public void tankDrive(double lPower, double rPower) {
+        if (Math.abs(lPower) < deadband) {
+            lPower = 0;
+        }
+        if (Math.abs(rPower) < deadband) {
+            rPower = 0;
+        }
+        
         int i = 0;
         for (SpeedController m : leftMotors) {
             if (flippedLeftMotors.contains(i)) {
@@ -138,24 +147,39 @@ public class Drive {
         this(left, right, new int[0], new int[0]);
     }
     
+    public Drive(SpeedController[] left, SpeedController[] right,
+            double deadbandSpeed) {
+        this(left, right, new int[0], new int[0], deadbandSpeed);
+    }
+    
+    public Drive(SpeedController[] left, SpeedController[] right,
+            int[] reversedLeftMotors, int[] reversedRightMotors) {
+        this(left, right, reversedLeftMotors, reversedRightMotors, 0);
+    }
+    
     /**
-     * Make a new Drive instance, and reverse motors
+     * Make a new Drive instance, and reverse motors, and set deadband speed
      * @param left all of the SpeedControllers on the left side of the robot
      * @param right all of the SpeedControllers on the right side of the robot
      * @param reversedLeftMotors The array indexes of SpeedControllers in the
      *                           left parameter that should be flipped
      * @param reversedRightMotors The array indexes of SpeedControllers in the
      *                            right parameter that should be flipped
+     * @param deadbandSpeed The minimum speed that robot wheels should be
+     *                      allowed to move at
      */
     public Drive(SpeedController[] left, SpeedController[] right,
-            int[] reversedLeftMotors, int[] reversedRightMotors) {
+            int[] reversedLeftMotors, int[] reversedRightMotors,
+            double deadbandSpeed) {
         leftMotors = left;
         rightMotors = right;
         flippedLeftMotors = Arrays.stream(reversedLeftMotors)
                 .boxed().collect(Collectors.toList());
         flippedRightMotors = Arrays.stream(reversedRightMotors)
                 .boxed().collect(Collectors.toList());
-        }
+        
+        deadband = deadbandSpeed;
+    }
     
     /**
      * Applies a sine function to input
