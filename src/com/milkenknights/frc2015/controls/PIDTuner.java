@@ -97,8 +97,8 @@ public class PIDTuner extends ControlSystem {
         
         // if left or right joystick Y axis is more then 0.6
         // or button 2 is pressed reset PID
-        if (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6
-                || Math.abs(atkr.getAxis(JStick.ATK3_Y)) > Math.abs(0.6)
+        if ((pidEnabled && (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6
+                    || Math.abs(atkr.getAxis(JStick.ATK3_Y)) > Math.abs(0.6)))
                 || atka.isPressed(2)) {
             driveSub.resetPIDPosition();
             pidEnabled = false;

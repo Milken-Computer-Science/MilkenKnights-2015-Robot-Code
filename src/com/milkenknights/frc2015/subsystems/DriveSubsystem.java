@@ -241,5 +241,7 @@ public class DriveSubsystem extends MSubsystem {
         SmartDashboard.putNumber("r ticks", enc_r.getRaw());
         SmartDashboard.putNumber("l dist", enc_l.pidGet());
         SmartDashboard.putNumber("r dist", enc_r.pidGet());
+        SmartDashboard.putNumber("l rate", enc_l.getRate());
+        SmartDashboard.putNumber("r rate", enc_r.getRate());
     }
 }
