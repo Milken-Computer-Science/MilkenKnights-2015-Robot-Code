@@ -91,7 +91,6 @@ public class DriveSubsystem extends MSubsystem {
                 Constants.pidStraightD,
                 enc_r,
                 new RPIDOut());
-        pid_r.setOutputRange(Constants.minimumWheelSpeed, 1);
     }
     
     public void teleopInit() {
@@ -225,6 +224,8 @@ public class DriveSubsystem extends MSubsystem {
         switch (driveMode) {
         case TANK:
             drive.tankDrive(leftSpeed, rightSpeed);
+            SmartDashboard.putNumber("l speed", leftSpeed);
+            SmartDashboard.putNumber("r speed", rightSpeed);
             break;
             
         case CHEESY:

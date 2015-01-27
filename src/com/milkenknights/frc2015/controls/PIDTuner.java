@@ -15,6 +15,7 @@ public class PIDTuner extends ControlSystem {
 
     public boolean isCheesy;
     public boolean pidEnabled;
+    public boolean deadbandTune;
 
     public PIDTuner(DriveSubsystem sDrive) {
         super(sDrive);
@@ -27,15 +28,28 @@ public class PIDTuner extends ControlSystem {
     
     public void teleopInit() {
         pidEnabled = false;
+        updateConstants();
     }
 
     public void teleopPeriodic() {
         atkl.update();
         atkr.update();
         atka.update();
+        
+        SmartDashboard.putNumber("l_knob_15",
+                -atkl.getAxis(JStick.ATK3_KNOB)/15);
+        SmartDashboard.putNumber("r_knob_15",
+                -atkr.getAxis(JStick.ATK3_KNOB)/15);
+        SmartDashboard.putNumber("setpoint_cur", driveSub.getStraightPIDSetpoint());
 
         if (!pidEnabled) {
-            if (isCheesy) {
+            if (deadbandTune) {
+                // DEADBAND TUNING MODE
+                // wheel speed is controlled by the knob, but divided by
+                // 15 for precise movements
+                driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_KNOB)/15.0,
+                        -atkr.getAxis(JStick.ATK3_KNOB)/15);
+            } else if (isCheesy) {
                 // CHEESY DRIVE
                 // Power: left ATK y axis
                 // Turning: right ATK x axis
@@ -99,18 +113,31 @@ public class PIDTuner extends ControlSystem {
         
         // aux ATK 4 gets new staright PID constants from SmartDashboard
         if (atka.isReleased(4)) {
-            double kp_in = SmartDashboard.getNumber("kp",-1);
-            double ki_in = SmartDashboard.getNumber("ki",-1);
-            double kd_in = SmartDashboard.getNumber("kd",-1);
-            double sp_in = SmartDashboard.getNumber("setpoint",-1);
-            
-            System.out.println("kp "+kp_in+" ki "+ki_in+" kd "+kd_in);
-            
-            SmartDashboard.putString("recently received",
-                    "kp "+kp_in+" ki "+ki_in+" kd "+kd_in);
-            
-            driveSub.setStraightPID(kp_in, ki_in, kd_in);
-            driveSub.setStraightPIDSetpoint(sp_in);
+            updateConstants();
         }
+        
+        // aux ATK 11 puts us in deadband tuning mode. aux ATK 10 disables it
+        if (atka.isPressed(11)) {
+            deadbandTune = true;
+        } else if (atka.isPressed(10)) {
+            deadbandTune = false;
+        }
+    }
+    
+    private void updateConstants() {
+        double kp_in = SmartDashboard.getNumber("kp",-1);
+        double ki_in = SmartDashboard.getNumber("ki",-1);
+        double kd_in = SmartDashboard.getNumber("kd",-1);
+        double sp_in = SmartDashboard.getNumber("setpoint",-1);
+        
+        System.out.println("kp "+kp_in+" ki "+ki_in+" kd "+kd_in);
+        
+        SmartDashboard.putNumber("kp_cur", kp_in);
+        SmartDashboard.putNumber("ki_cur", ki_in);
+        SmartDashboard.putNumber("kd_cur", kd_in);
+        SmartDashboard.putNumber("setpoint_cur", sp_in);
+        
+        driveSub.setStraightPID(kp_in, ki_in, kd_in);
+        driveSub.setStraightPIDSetpoint(sp_in);
     }
 }
