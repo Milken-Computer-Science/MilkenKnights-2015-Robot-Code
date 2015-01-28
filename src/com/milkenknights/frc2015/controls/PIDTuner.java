@@ -1,7 +1,9 @@
 package com.milkenknights.frc2015.controls;
 
+import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.common.JStick;
 import com.milkenknights.frc2015.subsystems.*;
+import com.milkenknights.frc2015.subsystems.autonomous.PIDTrapezoidal;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,7 +17,10 @@ public class PIDTuner extends ControlSystem {
 
     public boolean isCheesy;
     public boolean pidEnabled;
+    public boolean runningAutonAction;
     public boolean deadbandTune;
+    
+    private AutonomousAction action;
 
     public PIDTuner(DriveSubsystem sDrive) {
         super(sDrive);
@@ -28,6 +33,7 @@ public class PIDTuner extends ControlSystem {
     
     public void teleopInit() {
         pidEnabled = false;
+        runningAutonAction = false;
         deadbandTune = false;
         updateConstants();
     }
@@ -57,6 +63,8 @@ public class PIDTuner extends ControlSystem {
                 // no quickturn
                 driveSub.cheesyDrive(-atkl.getAxis(JStick.ATK3_Y),
                         atkr.getAxis(JStick.ATK3_X), false);
+            } else if (runningAutonAction) {
+                action.run();
             } else {
                 // TANK DRIVE
                 // controlled by left and right ATK y axes
@@ -97,7 +105,8 @@ public class PIDTuner extends ControlSystem {
         
         // if left or right joystick Y axis is more then 0.6
         // or button 2 is pressed reset PID
-        if ((pidEnabled && (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6
+        if (((pidEnabled || runningAutonAction) &&
+                (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6
                     || Math.abs(atkr.getAxis(JStick.ATK3_Y)) > Math.abs(0.6)))
                 || atka.isPressed(2)) {
             driveSub.resetPIDPosition();
@@ -123,6 +132,17 @@ public class PIDTuner extends ControlSystem {
         } else if (atka.isPressed(10)) {
             deadbandTune = false;
         }
+        
+        // right ATK 11 starts the trapezoidal auton action
+        if (atkr.isReleased(11)) {
+            action = new PIDTrapezoidal(driveSub, 0.5, 0.5, 1, 100, 1);
+            startAutonAction();
+        }
+    }
+    
+    private void startAutonAction() {
+        action.start();
+        runningAutonAction = true;
     }
     
     private void updateConstants() {
