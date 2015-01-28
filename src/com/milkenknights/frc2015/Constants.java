@@ -29,9 +29,9 @@ public class Constants {
     public static final double inchesPerPulse = 0.03490658503;
     
     // PID constants for driving straight
-    public static final double pidStraightP = 0;
-    public static final double pidStraightI = 0;
-    public static final double pidStraightD = 0;
+    public static final double pidStraightP = 0.1;
+    public static final double pidStraightI = 0.01;
+    public static final double pidStraightD = 0.001;
     
     public static final double minimumWheelSpeed = 0.0069;
 }
