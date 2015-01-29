@@ -5,7 +5,7 @@ import com.milkenknights.common.AutonomousAction;
 import edu.wpi.first.wpilibj.Timer;
 
 /** This AutonomousAction stalls for a given amount of time. */
-class AutonWait extends AutonomousAction {
+public class AutonWait extends AutonomousAction {
     double startTime;
     double waitTime;
 

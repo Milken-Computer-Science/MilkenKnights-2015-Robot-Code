@@ -49,6 +49,9 @@ public class PIDTuner extends ControlSystem {
         SmartDashboard.putNumber("l_knob_precise",l_knob_precise);
         SmartDashboard.putNumber("r_knob_precise",r_knob_precise);
         SmartDashboard.putNumber("setpoint_cur", driveSub.getStraightPIDSetpoint());
+        
+        SmartDashboard.putBoolean("pid enabled", pidEnabled);
+        SmartDashboard.putBoolean("running auton action", runningAutonAction);
 
         if (!pidEnabled) {
             if (deadbandTune) {

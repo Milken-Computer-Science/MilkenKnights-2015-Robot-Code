@@ -11,6 +11,7 @@ import com.milkenknights.frc2015.controls.PIDTuner;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
+import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -49,7 +50,9 @@ public class Robot extends IterativeRobot {
         runningActions = new LinkedList<AutonomousAction>();
 
         // COMPOSE THE PID STEPS HERE
-        autonomousList.add(new PIDStraightAction(driveSubsystem, 15, 1));
+        autonomousList.add(new PIDStraightAction(driveSubsystem, 70, 1));
+        autonomousList.add(new AutonWait(8));
+        autonomousList.add(new PIDStraightAction(driveSubsystem, -70, 1));
 
         autonomousSequence = autonomousList.listIterator();
     }
