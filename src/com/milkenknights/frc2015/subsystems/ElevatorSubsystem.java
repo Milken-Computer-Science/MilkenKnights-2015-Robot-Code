@@ -5,7 +5,7 @@ import com.milkenknights.frc2015.Constants;
 import edu.wpi.first.wpilibj.CANTalon;
 
 /**
- * The subsystem that controls the elevator subsystem.
+ * The subsystem that controls the elevator.
  * @author Jake Reiner
  */
 public class ElevatorSubsystem {
@@ -25,12 +25,15 @@ public class ElevatorSubsystem {
     
     Positions elevatorPosition;
 
-    CANTalon elevatorTalon;
+    CANTalon elevatorTalonRight;
+    CANTalon elevatorTalonLeft;
 
     public ElevatorSubsystem() {
-        elevatorTalon = new CANTalon(Constants.elevatorTalonDeviceNumber);
+        elevatorTalonRight = new CANTalon(Constants.rightElevatorTalonDeviceNumber);
+        elevatorTalonLeft = new CANTalon(Constants.leftElevatorTalonDeviceNumber);
 
-        elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
+        elevatorTalonRight.changeControlMode(CANTalon.ControlMode.Position);
+        elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.Position);
     }
 
     /**
@@ -42,6 +45,7 @@ public class ElevatorSubsystem {
     }
 
     public void update(){
-        elevatorTalon.set(elevatorPosition.position);
+        elevatorTalonRight.set(elevatorPosition.position);
+        elevatorTalonLeft.set(-elevatorPosition.position);
     }
 }
