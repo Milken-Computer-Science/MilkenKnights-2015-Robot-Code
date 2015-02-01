@@ -15,7 +15,8 @@ public class Constants {
     public static final int[] reversedLeftTalons = {2};
     public static final int[] reversedRightTalons = {0,1};
     
-    public static final int elevatorTalonDeviceNumber = 0;
+    public static final int rightElevatorTalonDeviceNumber = 0;
+    public static final int leftElevatorTalonDeviceNumber = 1;
     
     // DIO Ports
     public static final int pressureTransducerChannel = 0;
