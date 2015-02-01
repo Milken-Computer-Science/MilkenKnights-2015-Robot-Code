@@ -9,6 +9,10 @@ import edu.wpi.first.wpilibj.CANTalon;
  * @author Jake Reiner
  */
 public class ElevatorSubsystem {
+    boolean positionMode = true;
+    
+    double elevatorSpeed;
+    
     public enum Positions {
         GROUND(0),
         SCORINGPLATFORM(1),
@@ -23,7 +27,7 @@ public class ElevatorSubsystem {
         }
     }
     
-    Positions elevatorPosition;
+    public Positions elevatorPosition;
 
     CANTalon elevatorTalonRight;
     CANTalon elevatorTalonLeft;
@@ -36,16 +40,40 @@ public class ElevatorSubsystem {
         elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.Position);
     }
 
+    
+    public void changeMode(boolean mode) {
+        positionMode = mode;
+        if (mode) {
+            elevatorTalonRight.changeControlMode(CANTalon.ControlMode.Position);
+            elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.Position);
+        }
+        else {
+            elevatorTalonRight.changeControlMode(CANTalon.ControlMode.PercentVbus);
+            elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.PercentVbus);
+        }
+    }
     /**
      * Tell the elevator to move to a predetermined height.
      * @param position The desired elevator position.
      */
     public void setPosition(Positions position) {
+        changeMode(true);
         elevatorPosition = position;
+    }
+    
+    public void setSpeed(double speed) {
+        elevatorSpeed = speed;
     }
 
     public void update(){
-        elevatorTalonRight.set(elevatorPosition.position);
-        elevatorTalonLeft.set(-elevatorPosition.position);
+        if (positionMode) {
+            elevatorTalonRight.set(elevatorPosition.position);
+            elevatorTalonLeft.set(-elevatorPosition.position);
+        }
+        else {
+            elevatorTalonRight.set(elevatorSpeed);
+            elevatorTalonLeft.set(-elevatorSpeed);
+            
+        }
     }
 }
