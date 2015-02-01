@@ -1,6 +1,7 @@
 package com.milkenknights.frc2015.controls;
 
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
+import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 
 /**
  * An abstract class for control systems. A control system should extend this
@@ -11,9 +12,11 @@ import com.milkenknights.frc2015.subsystems.DriveSubsystem;
  */
 public abstract class ControlSystem {
     protected DriveSubsystem driveSub;
+    protected ElevatorSubsystem elevatorSub;
     
-    protected ControlSystem(DriveSubsystem sDrive) {
+    protected ControlSystem(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
         driveSub = sDrive;
+        elevatorSub = sElevator;
     }
     
     /**

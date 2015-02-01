@@ -10,6 +10,7 @@ import com.milkenknights.frc2015.controls.ControlSystem;
 import com.milkenknights.frc2015.controls.PIDTuner;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
+import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
 import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
 
@@ -19,6 +20,7 @@ public class Robot extends IterativeRobot {
     LinkedList<MSubsystem> subsystems;
     
     DriveSubsystem driveSubsystem;
+    ElevatorSubsystem elevatorSubsystem;
 
     ControlSystem controlSystem;
 
@@ -27,8 +29,9 @@ public class Robot extends IterativeRobot {
                 Constants.transducerScaleFactor, Constants.transducerOffset);
         
         driveSubsystem = new DriveSubsystem();
+        elevatorSubsystem = new ElevatorSubsystem();
 
-        controlSystem = new PIDTuner(driveSubsystem);
+        controlSystem = new PIDTuner(driveSubsystem, elevatorSubsystem);
 
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);

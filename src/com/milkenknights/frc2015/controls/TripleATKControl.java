@@ -13,8 +13,8 @@ public class TripleATKControl extends ControlSystem {
 
     public boolean isCheesy;
 
-    public TripleATKControl(DriveSubsystem sDrive) {
-        super(sDrive);
+    public TripleATKControl(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
+        super(sDrive, sElevator);
         atkl = new JStick(0);
         atkr = new JStick(1);
         atka = new JStick(2);

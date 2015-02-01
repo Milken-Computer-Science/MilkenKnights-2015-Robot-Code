@@ -22,8 +22,8 @@ public class PIDTuner extends ControlSystem {
     
     private AutonomousAction action;
 
-    public PIDTuner(DriveSubsystem sDrive) {
-        super(sDrive);
+    public PIDTuner(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
+        super(sDrive, sElevator);
         atkl = new JStick(0);
         atkr = new JStick(1);
         atka = new JStick(2);
