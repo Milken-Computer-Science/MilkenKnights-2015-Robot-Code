@@ -10,44 +10,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * This control system has special controls for testing and tuning PID. It
  * uses three ATK3 controllers: two for driving and one for AUX.
- * @author Daniel
+ * @author Jake Reiner
  */
 public class PIDTunerElevator extends ControlSystem {
     JStick atka;
-    ElevatorSubsystem elevatorSub;
 
     
-    public boolean pidEnabled;
-    public boolean runningAutonAction;
-    public boolean deadbandTune;
-    
+    public boolean pidEnabled;  
 
-    public PIDTunerElevator(DriveSubsystem sDrive) {
-        super(sDrive);
+    public PIDTunerElevator(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
+        super(sDrive, sElevator);
         atka = new JStick(2);
-        elevatorSub = new ElevatorSubsystem();
 
     }
     
     public void teleopInit() {
         pidEnabled = false;
-        deadbandTune = false;
         updateConstants();
     }
 
     public void teleopPeriodic() {
         atka.update();
-        
-        SmartDashboard.putBoolean("deadband_tune_on", deadbandTune);
-        SmartDashboard.putNumber("setpoint_cur", driveSub.getStraightPIDSetpoint());
-        
+                
         SmartDashboard.putBoolean("pid enabled", pidEnabled);
-        SmartDashboard.putBoolean("running auton action", runningAutonAction);
 
 
         if (!pidEnabled) {
             elevatorSub.changeMode(false);
-            elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y));
+            elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y)/2);
         }
         if (pidEnabled) {
             elevatorSub.changeMode(true);
@@ -55,7 +45,6 @@ public class PIDTunerElevator extends ControlSystem {
         
         // aux ATK 1 enables PID
         if (atka.isReleased(1)) {
-            driveSub.startStraightPID();
             pidEnabled = true;
         }
         
@@ -68,13 +57,12 @@ public class PIDTunerElevator extends ControlSystem {
             elevatorSub.setPosition(elevatorSub.elevatorPosition.GROUND);
         }
         
-        
         // if left or right joystick Y axis is more then 0.6
         // or button 2 is pressed reset PID
-        if ((pidEnabled || runningAutonAction) &&
-                (Math.abs(atka.getAxis(JStick.ATK3_Y)) > 0.6
+        if ((Math.abs(atka.getAxis(JStick.ATK3_Y)) > 0.6
                 || atka.isPressed(2))) {
             pidEnabled = false;
+            elevatorSub.resetPosition();
         }
         
         // aux atk 3 resets pid constants
@@ -82,22 +70,12 @@ public class PIDTunerElevator extends ControlSystem {
             SmartDashboard.putNumber("kp", 0.1);
             SmartDashboard.putNumber("ki", 0.01);
             SmartDashboard.putNumber("kd", 0.001);
-            SmartDashboard.putNumber("setpoint", 30);
         }
         
         // aux ATK 4 gets new staright PID constants from SmartDashboard
         if (atka.isReleased(4)) {
             updateConstants();
         }
-        
-        // aux ATK 11 puts us in deadband tuning mode. aux ATK 10 disables it
-        if (atka.isPressed(11)) {
-            deadbandTune = true;
-        } else if (atka.isPressed(10)) {
-            deadbandTune = false;
-        }
-        
-
     }
     
     
@@ -114,5 +92,6 @@ public class PIDTunerElevator extends ControlSystem {
         SmartDashboard.putNumber("kd_cur", kd_in);
         SmartDashboard.putNumber("setpoint_cur", sp_in);
         
+        elevatorSub.setPID(kp_in, ki_in, kd_in);
     }
 }

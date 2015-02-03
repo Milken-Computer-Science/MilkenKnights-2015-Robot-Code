@@ -6,9 +6,7 @@ import java.util.ListIterator;
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.RestrictedSolenoid;
-import com.milkenknights.frc2015.controls.ControlSystem;
-import com.milkenknights.frc2015.controls.PIDTuner;
-import com.milkenknights.frc2015.controls.TripleATKControl;
+import com.milkenknights.frc2015.controls.*;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
@@ -31,7 +29,7 @@ public class Robot extends IterativeRobot {
         driveSubsystem = new DriveSubsystem();
         elevatorSubsystem = new ElevatorSubsystem();
 
-        controlSystem = new PIDTuner(driveSubsystem, elevatorSubsystem);
+        controlSystem = new PIDTunerElevator(driveSubsystem, elevatorSubsystem);
 
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);

@@ -18,6 +18,9 @@ public class Constants {
     public static final int rightElevatorTalonDeviceNumber = 0;
     public static final int leftElevatorTalonDeviceNumber = 1;
     
+    public static final int hallEffectSensorLeftDeviceNumber = 0;
+    public static final int hallEffectSensorRightDeviceNumber = 0;
+    
     // DIO Ports
     public static final int pressureTransducerChannel = 0;
     
