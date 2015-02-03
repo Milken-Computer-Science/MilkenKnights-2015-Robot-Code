@@ -13,6 +13,7 @@ public class ElevatorSubsystem {
     boolean positionMode = true;
     
     double elevatorSpeed;
+    boolean resetPosition;
     
     public enum Positions {
         GROUND(0),
@@ -77,21 +78,11 @@ public class ElevatorSubsystem {
     }
 
     public void resetPosition() {
-        changeMode(false);
-        if (hallEffectSensorLeft.get()) {
-            elevatorTalonLeft.set(0);
-            elevatorTalonLeft.setPosition(0);
-        }
-        else {
-            elevatorTalonLeft.set(0.1);
-        }
-        if (hallEffectSensorRight.get()) {
-            elevatorTalonRight.set(0);
-            elevatorTalonRight.setPosition(0);
-        }
-        else {
-            elevatorTalonRight.set(0.1);
-        }
+        resetPosition = true;
+    }
+    
+    public double getPosition() {
+        return elevatorTalonRight.getPosition();
     }
     
     public void setPID(double p, double i, double d) {
@@ -109,5 +100,28 @@ public class ElevatorSubsystem {
             elevatorTalonLeft.set(-elevatorSpeed);
             
         }
+        
+        if (resetPosition) {
+            changeMode(false);
+            if (hallEffectSensorLeft.get()) {
+                elevatorTalonLeft.set(0);
+                elevatorTalonLeft.setPosition(0);
+            }
+            else {
+                elevatorTalonLeft.set(0.1);
+            }
+            if (hallEffectSensorRight.get()) {
+                elevatorTalonRight.set(0);
+                elevatorTalonRight.setPosition(0);
+            }
+            else {
+                elevatorTalonRight.set(-0.1);
+            }
+            
+            if (getPosition() == 0) {
+                resetPosition = false;
+        }
+        
+    }
     }
 }

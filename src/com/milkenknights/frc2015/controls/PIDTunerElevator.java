@@ -16,7 +16,7 @@ public class PIDTunerElevator extends ControlSystem {
     JStick atka;
 
     
-    public boolean pidEnabled;  
+    public boolean pidEnabled;
 
     public PIDTunerElevator(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
         super(sDrive, sElevator);
@@ -43,6 +43,8 @@ public class PIDTunerElevator extends ControlSystem {
             elevatorSub.changeMode(true);
         }
         
+        
+        
         // aux ATK 1 enables PID
         if (atka.isReleased(1)) {
             pidEnabled = true;
@@ -59,8 +61,7 @@ public class PIDTunerElevator extends ControlSystem {
         
         // if left or right joystick Y axis is more then 0.6
         // or button 2 is pressed reset PID
-        if ((Math.abs(atka.getAxis(JStick.ATK3_Y)) > 0.6
-                || atka.isPressed(2))) {
+        if (atka.isPressed(2)) {
             pidEnabled = false;
             elevatorSub.resetPosition();
         }
@@ -93,5 +94,7 @@ public class PIDTunerElevator extends ControlSystem {
         SmartDashboard.putNumber("setpoint_cur", sp_in);
         
         elevatorSub.setPID(kp_in, ki_in, kd_in);
+        
+        SmartDashboard.putNumber("Elevaator Hight", elevatorSub.getPosition());
     }
 }
