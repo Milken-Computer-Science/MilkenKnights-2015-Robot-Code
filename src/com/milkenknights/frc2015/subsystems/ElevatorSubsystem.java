@@ -5,13 +5,15 @@ import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
 
 /**
  * The subsystem that controls the elevator.
  * @author Jake Reiner
  */
 public class ElevatorSubsystem extends MSubsystem {
-    boolean positionMode = true;
+    boolean positionMode;
 
     double elevatorSpeed;
     boolean resetPosition;
@@ -37,18 +39,37 @@ public class ElevatorSubsystem extends MSubsystem {
 
     DigitalInput hallEffectSensorLeft;
     DigitalInput hallEffectSensorRight;
+    
+    Encoder enc_l;
+    Encoder enc_r;
+    
+    PIDController pid_l;
+    PIDController pid_r;
 
     public ElevatorSubsystem() {
-        hallEffectSensorLeft = new DigitalInput(Constants.hallEffectSensorLeftDeviceNumber);
-        hallEffectSensorRight = new DigitalInput(Constants.hallEffectSensorRightDeviceNumber);
+        hallEffectSensorLeft = new DigitalInput(
+                Constants.hallEffectSensorLeftDeviceNumber);
+        hallEffectSensorRight = new DigitalInput(
+                Constants.hallEffectSensorRightDeviceNumber);
 
-        elevatorTalonRight = new CANTalon(Constants.rightElevatorTalonDeviceNumber);
-        elevatorTalonLeft = new CANTalon(Constants.leftElevatorTalonDeviceNumber);
+        elevatorTalonRight = new CANTalon(
+                Constants.rightElevatorTalonDeviceNumber);
+        elevatorTalonLeft = new CANTalon(
+                Constants.leftElevatorTalonDeviceNumber);
 
-        elevatorTalonRight.changeControlMode(CANTalon.ControlMode.Position);
-        elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.Position);
-        
         resetPosition = false;
+        positionMode = false;
+        
+        enc_l = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
+                Constants.elevatorLeftEncoderDeviceNumberB);
+        enc_r = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
+                Constants.elevatorRightEncoderDeviceNumberB);
+        
+        enc_l.setDistancePerPulse(1);
+        enc_r.setDistancePerPulse(1);
+        
+        pid_l = new PIDController(0,0,0, enc_l, elevatorTalonLeft);
+        pid_r = new PIDController(0,0,0, enc_r, elevatorTalonRight);
     }
 
     /**
@@ -60,11 +81,11 @@ public class ElevatorSubsystem extends MSubsystem {
     public void changeMode(boolean mode) {
         positionMode = mode;
         if (mode) {
-            elevatorTalonRight.changeControlMode(CANTalon.ControlMode.Position);
-            elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.Position);
+            pid_l.enable();
+            pid_r.enable();
         } else {
-            elevatorTalonRight.changeControlMode(CANTalon.ControlMode.PercentVbus);
-            elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.PercentVbus);
+            pid_l.disable();
+            pid_r.disable();
         }
     }
     
@@ -117,18 +138,19 @@ public class ElevatorSubsystem extends MSubsystem {
      * @return the encoder position of the right side of the elevator.
      */
     public double getPosition() {
-        return elevatorTalonRight.getPosition();
+        return enc_r.getDistance();
     }
 
     /**
      * Set PID gains for both sides of the elevator.
      */
     public void setPID(double p, double i, double d) {
-        elevatorTalonRight.setPID(p, i, d);
-        elevatorTalonLeft.setPID(p, i, d);
+        pid_l.setPID(p, i, d);
+        pid_r.setPID(p, i, d);
     }
 
     public void update(){
+        System.out.println(""+resetPosition+" "+positionMode+" "+pid_l.isEnable()+" "+pid_r.isEnable());
         if (resetPosition) {
             boolean leftDone = hallEffectSensorLeft.get();
             boolean rightDone = hallEffectSensorRight.get();
@@ -152,11 +174,11 @@ public class ElevatorSubsystem extends MSubsystem {
             }
         } else {
             if (positionMode) {
-                elevatorTalonRight.set(elevatorPosition.position);
-                elevatorTalonLeft.set(-elevatorPosition.position);
+                pid_l.setSetpoint(-elevatorPosition.position);
+                pid_r.setSetpoint(elevatorPosition.position);
             } else {
-                elevatorTalonRight.set(elevatorSpeed);
                 elevatorTalonLeft.set(-elevatorSpeed);
+                elevatorTalonRight.set(elevatorSpeed);
             }
         }
     }

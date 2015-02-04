@@ -21,8 +21,16 @@ public class Constants {
     public static final int pressureTransducerChannel = 0;
     
     // DIO Ports
-    public static final int hallEffectSensorLeftDeviceNumber = 3;
-    public static final int hallEffectSensorRightDeviceNumber = 4;
+    public static final int hallEffectSensorLeftDeviceNumber = 8;
+    public static final int hallEffectSensorRightDeviceNumber = 9;
+    public static final int elevatorLeftEncoderDeviceNumberA = 6;
+    public static final int elevatorLeftEncoderDeviceNumberB = 7;
+    public static final int elevatorRightEncoderDeviceNumberA = 4;
+    public static final int elevatorRightEncoderDeviceNumberB = 5;
+    public static final int driveLeftEncoderDeviceNumberA = 0;
+    public static final int driveLeftEncoderDeviceNumberB = 1;
+    public static final int driveRightEncoderDeviceNumberA = 2;
+    public static final int driveRightEncoderDeviceNumberB = 3;
     
     // Pressure Transducer
     public static final double transducerScaleFactor = 50;
@@ -31,6 +39,9 @@ public class Constants {
     // 4 inch wheel diameter. encoder does 360 pulses per revolution
     // This is equal to 4pi/360
     public static final double inchesPerPulse = 0.03490658503;
+    
+    // INCORRECT VALUE. FIX THIS
+    public static final double elevatorInchesPerPulse = 0.1;
     
     // PID constants for driving straight
     public static final double pidStraightP = 0.1;
