@@ -51,12 +51,12 @@ public class ElevatorSubsystem extends MSubsystem {
                 Constants.hallEffectSensorLeftDeviceNumber);
         hallEffectSensorRight = new DigitalInput(
                 Constants.hallEffectSensorRightDeviceNumber);
-
+        
         elevatorTalonRight = new CANTalon(
                 Constants.rightElevatorTalonDeviceNumber);
         elevatorTalonLeft = new CANTalon(
                 Constants.leftElevatorTalonDeviceNumber);
-
+        
         resetPosition = false;
         positionMode = false;
         
@@ -79,13 +79,14 @@ public class ElevatorSubsystem extends MSubsystem {
      * manual speed control mode.
      */
     public void changeMode(boolean mode) {
-        positionMode = mode;
-        if (mode) {
-            pid_l.enable();
-            pid_r.enable();
-        } else {
-            pid_l.disable();
-            pid_r.disable();
+        if (mode != positionMode) {
+            if (mode) {
+                pid_l.enable();
+                pid_r.enable();
+            } else {
+                pid_l.disable();
+                pid_r.disable();
+            }
         }
     }
     
@@ -150,7 +151,8 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     public void update(){
-        System.out.println(""+resetPosition+" "+positionMode+" "+pid_l.isEnable()+" "+pid_r.isEnable());
+        //System.out.println(""+resetPosition+" "+positionMode+" "+pid_l.isEnable()+" "+pid_r.isEnable());
+        /*
         if (resetPosition) {
             boolean leftDone = hallEffectSensorLeft.get();
             boolean rightDone = hallEffectSensorRight.get();
@@ -177,9 +179,12 @@ public class ElevatorSubsystem extends MSubsystem {
                 pid_l.setSetpoint(-elevatorPosition.position);
                 pid_r.setSetpoint(elevatorPosition.position);
             } else {
+            */
                 elevatorTalonLeft.set(-elevatorSpeed);
                 elevatorTalonRight.set(elevatorSpeed);
+            /*
             }
         }
+        */
     }
 }
