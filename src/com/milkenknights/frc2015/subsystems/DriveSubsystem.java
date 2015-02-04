@@ -58,6 +58,8 @@ public class DriveSubsystem extends MSubsystem {
         CANTalon[] leftWheels = {leftTalonA, leftTalonB, leftTalonC};
         CANTalon[] rightWheels = {rightTalonA, rightTalonB, rightTalonC};
         
+        driveMode = DriveMode.TANK;
+        
         enc_l = new Encoder(0, 1);
         enc_r = new Encoder(7, 6);
         

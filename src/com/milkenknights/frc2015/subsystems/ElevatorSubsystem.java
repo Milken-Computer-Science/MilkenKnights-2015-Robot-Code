@@ -1,5 +1,6 @@
 package com.milkenknights.frc2015.subsystems;
 
+import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * The subsystem that controls the elevator.
  * @author Jake Reiner
  */
-public class ElevatorSubsystem {
+public class ElevatorSubsystem extends MSubsystem {
     boolean positionMode = true;
 
     double elevatorSpeed;
@@ -46,6 +47,8 @@ public class ElevatorSubsystem {
 
         elevatorTalonRight.changeControlMode(CANTalon.ControlMode.Position);
         elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.Position);
+        
+        resetPosition = false;
     }
 
     /**
@@ -59,8 +62,7 @@ public class ElevatorSubsystem {
         if (mode) {
             elevatorTalonRight.changeControlMode(CANTalon.ControlMode.Position);
             elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.Position);
-        }
-        else {
+        } else {
             elevatorTalonRight.changeControlMode(CANTalon.ControlMode.PercentVbus);
             elevatorTalonLeft.changeControlMode(CANTalon.ControlMode.PercentVbus);
         }
@@ -82,6 +84,14 @@ public class ElevatorSubsystem {
      */
     public void setSpeed(double speed) {
         elevatorSpeed = speed;
+    }
+    
+    /**
+     * Return the speed that we told to elevator to move at.
+     * @return The last set value from setSpeed.
+     */
+    public double getSpeed() {
+        return elevatorSpeed;
     }
 
     /**
@@ -147,7 +157,6 @@ public class ElevatorSubsystem {
             } else {
                 elevatorTalonRight.set(elevatorSpeed);
                 elevatorTalonLeft.set(-elevatorSpeed);
-
             }
         }
     }

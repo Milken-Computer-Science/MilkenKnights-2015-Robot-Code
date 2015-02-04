@@ -18,7 +18,6 @@ public class PIDTunerElevator extends ControlSystem {
     public PIDTunerElevator(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
         super(sDrive, sElevator);
         atka = new JStick(2);
-
     }
 
     public void teleopInit() {
@@ -30,24 +29,31 @@ public class PIDTunerElevator extends ControlSystem {
         atka.update();
 
         SmartDashboard.putBoolean("pid enabled", pidEnabled);
+        SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
+        SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
 
-        if (!pidEnabled) {
-            elevatorSub.changeMode(false);
-            elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y)/2);
-        }
         if (pidEnabled) {
             elevatorSub.changeMode(true);
+        } else {
+            elevatorSub.changeMode(false);
+            elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y)/2);
         }
 
         // aux ATK 1 enables PID
         if (atka.isReleased(1)) {
             pidEnabled = true;
         }
+        
+        // aux ATK 10 puts us in manual speed control mode
+        if (atka.isReleased(10)) {
+            pidEnabled = false;
+        }
 
         // aux ATK 6 sets position to third tote
         if (atka.isPressed(6)) {
             elevatorSub.setPosition(ElevatorSubsystem.Positions.THIRDTOTE);
         }
+
         // aux ATK 7 sets position to ground
         if (atka.isPressed(7)) {
             elevatorSub.setPosition(ElevatorSubsystem.Positions.GROUND);
@@ -73,7 +79,6 @@ public class PIDTunerElevator extends ControlSystem {
         }
     }
 
-
     private void updateConstants() {
         double kp_in = SmartDashboard.getNumber("kp",-1);
         double ki_in = SmartDashboard.getNumber("ki",-1);
@@ -88,7 +93,5 @@ public class PIDTunerElevator extends ControlSystem {
         SmartDashboard.putNumber("setpoint_cur", sp_in);
 
         elevatorSub.setPID(kp_in, ki_in, kd_in);
-
-        SmartDashboard.putNumber("Elevaator Hight", elevatorSub.getPosition());
     }
 }

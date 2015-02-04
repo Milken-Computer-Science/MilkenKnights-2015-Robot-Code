@@ -33,6 +33,7 @@ public class Robot extends IterativeRobot {
 
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
+        subsystems.add(elevatorSubsystem);
     }
     
     /** An iterator through all the sequence of autonomous actions. */
