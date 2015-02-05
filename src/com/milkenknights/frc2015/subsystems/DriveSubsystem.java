@@ -65,8 +65,8 @@ public class DriveSubsystem extends MSubsystem {
         enc_r = new Encoder(Constants.driveRightEncoderDeviceNumberA,
                 Constants.driveRightEncoderDeviceNumberB);
         
-        enc_l.setDistancePerPulse(Constants.inchesPerPulse);
-        enc_r.setDistancePerPulse(Constants.inchesPerPulse);
+        enc_l.setDistancePerPulse(Constants.driveInchesPerPulse);
+        enc_r.setDistancePerPulse(Constants.driveInchesPerPulse);
         
         drive = new Drive(leftWheels, rightWheels,
                 Constants.reversedLeftTalons, Constants.reversedRightTalons,

@@ -13,40 +13,32 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PIDTunerElevator extends ControlSystem {
     JStick atka;
 
-    public boolean pidEnabled;
-
     public PIDTunerElevator(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
         super(sDrive, sElevator);
         atka = new JStick(2);
     }
 
     public void teleopInit() {
-        pidEnabled = false;
         updateConstants();
     }
 
     public void teleopPeriodic() {
         atka.update();
 
-        SmartDashboard.putBoolean("pid enabled", pidEnabled);
+        SmartDashboard.putBoolean("pid enabled", elevatorSub.inPositionMode());
         SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
         SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
 
-        if (pidEnabled) {
-            elevatorSub.changeMode(true);
-        } else {
-            elevatorSub.changeMode(false);
-            elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y)/2);
-        }
+        elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y)/2);
 
         // aux ATK 1 enables PID
         if (atka.isReleased(1)) {
-            pidEnabled = true;
+            elevatorSub.changeMode(true);
         }
         
-        // aux ATK 10 puts us in manual speed control mode
-        if (atka.isReleased(10)) {
-            pidEnabled = false;
+        // aux ATK 2 puts us in manual speed control mode (disables pid)
+        if (atka.isReleased(2)) {
+            elevatorSub.changeMode(false);
         }
 
         // aux ATK 6 sets position to third tote
@@ -59,10 +51,9 @@ public class PIDTunerElevator extends ControlSystem {
             elevatorSub.setPosition(ElevatorSubsystem.Positions.GROUND);
         }
 
-        // if left or right joystick Y axis is more then 0.6
-        // or button 2 is pressed reset PID
-        if (atka.isPressed(2)) {
-            pidEnabled = false;
+        // button 10 does the reset PID thing
+        if (atka.isPressed(10)) {
+            elevatorSub.changeMode(false);
             elevatorSub.resetPosition();
         }
 

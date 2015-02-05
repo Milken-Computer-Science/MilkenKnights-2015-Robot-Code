@@ -38,10 +38,10 @@ public class Constants {
     
     // 4 inch wheel diameter. encoder does 360 pulses per revolution
     // This is equal to 4pi/360
-    public static final double inchesPerPulse = 0.03490658503;
+    public static final double driveInchesPerPulse = 0.03490658503;
     
     // INCORRECT VALUE. FIX THIS
-    public static final double elevatorInchesPerPulse = 0.1;
+    public static final double elevatorInchesPerPulse = 0.01114794;
     
     // PID constants for driving straight
     public static final double pidStraightP = 0.1;

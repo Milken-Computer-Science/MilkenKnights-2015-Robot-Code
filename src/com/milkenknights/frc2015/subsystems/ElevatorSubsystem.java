@@ -24,7 +24,7 @@ public class ElevatorSubsystem extends MSubsystem {
         STEP(2),
         FIRSTTOTE(3),
         SECONDTOTE(4),
-        THIRDTOTE(5);
+        THIRDTOTE(30);
 
         public final double position;
         private Positions(double p) {
@@ -65,8 +65,8 @@ public class ElevatorSubsystem extends MSubsystem {
         enc_r = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
                 Constants.elevatorRightEncoderDeviceNumberB);
         
-        enc_l.setDistancePerPulse(1);
-        enc_r.setDistancePerPulse(1);
+        enc_l.setDistancePerPulse(Constants.elevatorInchesPerPulse);
+        enc_r.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
         
         pid_l = new PIDController(0,0,0, enc_l, elevatorTalonLeft);
         pid_r = new PIDController(0,0,0, enc_r, elevatorTalonRight);
@@ -84,10 +84,19 @@ public class ElevatorSubsystem extends MSubsystem {
                 pid_l.enable();
                 pid_r.enable();
             } else {
-                pid_l.disable();
-                pid_r.disable();
+                if (pid_l.isEnable()) {
+                    pid_l.disable();
+                }
+                if (pid_r.isEnable()) {
+                    pid_r.disable();
+                }
             }
         }
+    }
+    
+    /** Returns true if we are in position mode. */
+    public boolean inPositionMode() {
+        return positionMode;
     }
     
     /**
@@ -102,6 +111,8 @@ public class ElevatorSubsystem extends MSubsystem {
     /**
      * Manually set the speed of the elevator. Only works when we are in manual
      * speed control mode (otherwise, does nothing).
+     * 
+     * A positive value will move the elevator up.
      * @param speed The desired speed.
      */
     public void setSpeed(double speed) {
@@ -135,11 +146,11 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     /**
-     * Get the encoder position of the right side of the elevator.
-     * @return the encoder position of the right side of the elevator.
+     * Get the average between the elevator encoder positions.
+     * @return the average between the elevator encoder positions.
      */
     public double getPosition() {
-        return enc_r.getDistance();
+        return (enc_l.getDistance() - enc_r.getDistance())/2;
     }
 
     /**
@@ -151,8 +162,6 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     public void update(){
-        //System.out.println(""+resetPosition+" "+positionMode+" "+pid_l.isEnable()+" "+pid_r.isEnable());
-        /*
         if (resetPosition) {
             boolean leftDone = hallEffectSensorLeft.get();
             boolean rightDone = hallEffectSensorRight.get();
@@ -176,15 +185,12 @@ public class ElevatorSubsystem extends MSubsystem {
             }
         } else {
             if (positionMode) {
-                pid_l.setSetpoint(-elevatorPosition.position);
-                pid_r.setSetpoint(elevatorPosition.position);
+                pid_l.setSetpoint(elevatorPosition.position);
+                pid_r.setSetpoint(-elevatorPosition.position);
             } else {
-            */
-                elevatorTalonLeft.set(-elevatorSpeed);
-                elevatorTalonRight.set(elevatorSpeed);
-            /*
+                elevatorTalonLeft.set(elevatorSpeed);
+                elevatorTalonRight.set(-elevatorSpeed);
             }
         }
-        */
     }
 }
