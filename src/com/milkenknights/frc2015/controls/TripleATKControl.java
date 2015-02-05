@@ -3,6 +3,8 @@ package com.milkenknights.frc2015.controls;
 import com.milkenknights.common.JStick;
 import com.milkenknights.frc2015.subsystems.*;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This control system uses three ATK3 controllers: two for driving and one for
  * AUX.
@@ -28,6 +30,11 @@ public class TripleATKControl extends ControlSystem {
         atkl.update();
         atkr.update();
         atka.update();
+        
+        SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
+        SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
+        
+        elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y)/2);
 
         if (isCheesy) {
             // CHEESY DRIVE
@@ -56,5 +63,7 @@ public class TripleATKControl extends ControlSystem {
         if (atkl.isReleased(9)) {
             isCheesy = true;
         }
+        
+        
     }
 }
