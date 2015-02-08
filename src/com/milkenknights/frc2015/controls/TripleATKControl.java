@@ -13,7 +13,8 @@ public class TripleATKControl extends ControlSystem {
 
     public boolean isCheesy;
 
-    public TripleATKControl(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
+    public TripleATKControl(DriveSubsystem sDrive,
+            ElevatorSubsystem sElevator) {
         super(sDrive, sElevator);
         atkl = new JStick(0);
         atkr = new JStick(1);
@@ -23,7 +24,7 @@ public class TripleATKControl extends ControlSystem {
     }
 
     public void teleopInit() {}
-    
+
     public void teleopPeriodic() {
         atkl.update();
         atkr.update();
@@ -48,13 +49,17 @@ public class TripleATKControl extends ControlSystem {
             isCheesy = !isCheesy;
         }
 
-        // left ATK 8 switches to tank drive. 9 switches to cheesy
+        // left ATK 8 switches to tank drive.
         if (atkl.isReleased(8)) {
             isCheesy = false;
         }
 
+        // left ATK 9 switches to cheesy drive.
         if (atkl.isReleased(9)) {
             isCheesy = true;
         }
+
+        // aux ATK y manually moves the elevator
+        elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y)/2);
     }
 }

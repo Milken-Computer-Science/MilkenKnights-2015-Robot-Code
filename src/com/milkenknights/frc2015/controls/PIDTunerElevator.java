@@ -20,9 +20,6 @@ public class PIDTunerElevator extends ControlSystem {
 
     public void teleopInit() {
         updateConstants();
-        
-        // start off in manual speed control mode
-        elevatorSub.changeMode(false);
     }
 
     public void teleopPeriodic() {

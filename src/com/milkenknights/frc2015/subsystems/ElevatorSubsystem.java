@@ -39,10 +39,10 @@ public class ElevatorSubsystem extends MSubsystem {
 
     DigitalInput hallEffectSensorLeft;
     DigitalInput hallEffectSensorRight;
-    
+
     Encoder enc_l;
     Encoder enc_r;
-    
+
     PIDController pid_l;
     PIDController pid_r;
 
@@ -51,23 +51,23 @@ public class ElevatorSubsystem extends MSubsystem {
                 Constants.hallEffectSensorLeftDeviceNumber);
         hallEffectSensorRight = new DigitalInput(
                 Constants.hallEffectSensorRightDeviceNumber);
-        
+
         elevatorTalonLeft = new CANTalon(
                 Constants.leftElevatorTalonDeviceNumber);
         elevatorTalonRight = new CANTalon(
                 Constants.rightElevatorTalonDeviceNumber);
-        
+
         resetPosition = false;
         positionMode = false;
-        
+
         enc_l = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
                 Constants.elevatorLeftEncoderDeviceNumberB);
         enc_r = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
                 Constants.elevatorRightEncoderDeviceNumberB);
-        
+
         enc_l.setDistancePerPulse(Constants.elevatorInchesPerPulse);
         enc_r.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
-        
+
         pid_l = new PIDController(0,0,0, enc_l, elevatorTalonLeft);
         pid_r = new PIDController(0,0,0, enc_r, elevatorTalonRight);
     }
@@ -94,12 +94,12 @@ public class ElevatorSubsystem extends MSubsystem {
         }
         positionMode = mode;
     }
-    
+
     /** Returns true if we are in position mode. */
     public boolean inPositionMode() {
         return positionMode;
     }
-    
+
     /**
      * Tell the elevator to move to a predetermined height. Only works when we
      * are in position mode (otherwise, does nothing).
@@ -121,7 +121,7 @@ public class ElevatorSubsystem extends MSubsystem {
     public void setSpeed(double speed) {
         elevatorSpeed = speed;
     }
-    
+
     /**
      * Return the speed that we told to elevator to move at.
      * @return The last set value from setSpeed.
@@ -140,7 +140,7 @@ public class ElevatorSubsystem extends MSubsystem {
     public void resetPosition() {
         resetPosition = true;
     }
-    
+
     /**
      * If the robot is in reset mode, this will prematurely end the reset.
      */
@@ -164,6 +164,10 @@ public class ElevatorSubsystem extends MSubsystem {
         pid_r.setPID(p, i, d);
     }
 
+    public void teleopInit() {
+        changeMode(false);
+    }
+
     public void update(){
         if (resetPosition) {
             boolean leftDone = hallEffectSensorLeft.get();
@@ -174,26 +178,21 @@ public class ElevatorSubsystem extends MSubsystem {
             } else {
                 elevatorTalonLeft.set(0.1);
             }
-            
+
             if (rightDone) {
                 elevatorTalonRight.set(0);
                 elevatorTalonRight.setPosition(0);
             } else {
                 elevatorTalonRight.set(-0.1);
             }
-            
+
             // once both sides have been reset, leave reset mode
             if (leftDone && rightDone) {
                 resetPosition = false;
             }
-        } else {
-            if (positionMode) {
-                //pid_l.setSetpoint(elevatorPosition.position);
-                //pid_r.setSetpoint(-elevatorPosition.position);
-            } else {
-                elevatorTalonLeft.set(elevatorSpeed);
-                elevatorTalonRight.set(-elevatorSpeed);
-            }
+        } else if (!positionMode) {
+            elevatorTalonLeft.set(elevatorSpeed);
+            elevatorTalonRight.set(-elevatorSpeed);
         }
     }
 }

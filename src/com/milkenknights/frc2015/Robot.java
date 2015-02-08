@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
         driveSubsystem = new DriveSubsystem();
         elevatorSubsystem = new ElevatorSubsystem();
 
-        controlSystem = new PIDTunerElevator(driveSubsystem, elevatorSubsystem);
+        controlSystem = new TripleATKControl(driveSubsystem, elevatorSubsystem);
 
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
