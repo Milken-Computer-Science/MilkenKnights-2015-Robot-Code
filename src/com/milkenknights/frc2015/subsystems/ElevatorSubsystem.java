@@ -52,20 +52,9 @@ public class ElevatorSubsystem extends MSubsystem {
         hallEffectSensorRight = new DigitalInput(
                 Constants.hallEffectSensorRightDeviceNumber);
         
-        class PrintableTalon extends CANTalon {
-            public PrintableTalon(int n) {
-                super(n);
-            }
-            
-            public void set(double s) {
-                super.set(s);
-                System.out.println("setting speed to "+s);
-            }
-        }
-        
         elevatorTalonLeft = new CANTalon(
                 Constants.leftElevatorTalonDeviceNumber);
-        elevatorTalonRight = new PrintableTalon(
+        elevatorTalonRight = new CANTalon(
                 Constants.rightElevatorTalonDeviceNumber);
         
         resetPosition = false;
@@ -94,7 +83,6 @@ public class ElevatorSubsystem extends MSubsystem {
             if (mode) {
                 pid_l.enable();
                 pid_r.enable();
-
             } else {
                 if (pid_l.isEnable()) {
                     pid_l.disable();
@@ -104,6 +92,7 @@ public class ElevatorSubsystem extends MSubsystem {
                 }
             }
         }
+        positionMode = mode;
     }
     
     /** Returns true if we are in position mode. */

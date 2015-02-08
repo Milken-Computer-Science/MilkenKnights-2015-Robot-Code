@@ -20,18 +20,19 @@ public class PIDTunerElevator extends ControlSystem {
 
     public void teleopInit() {
         updateConstants();
+        
+        // start off in manual speed control mode
+        elevatorSub.changeMode(false);
     }
 
     public void teleopPeriodic() {
         atka.update();
 
-        /*
         SmartDashboard.putBoolean("pid enabled", elevatorSub.inPositionMode());
         SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
         SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
-        */
 
-        //elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y)/2);
+        elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y)/2);
 
         // aux ATK 1 enables PID
         if (atka.isReleased(1)) {
