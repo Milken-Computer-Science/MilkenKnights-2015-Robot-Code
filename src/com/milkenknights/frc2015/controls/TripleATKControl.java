@@ -60,6 +60,6 @@ public class TripleATKControl extends ControlSystem {
         }
 
         // aux ATK y manually moves the elevator
-        elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y)/2);
+        elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y)/2);
     }
 }
