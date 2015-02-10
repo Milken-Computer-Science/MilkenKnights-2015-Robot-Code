@@ -46,12 +46,12 @@ public class PIDTunerElevator extends ControlSystem {
 
         // aux ATK 6 sets position to third tote
         if (atka.isPressed(6)) {
-            elevatorSub.setPosition(ElevatorSubsystem.Positions.THIRDTOTE);
+            elevatorSub.moveElevator(ElevatorSubsystem.Positions.THIRDTOTE);
         }
 
         // aux ATK 7 sets position to ground
         if (atka.isPressed(7)) {
-            elevatorSub.setPosition(ElevatorSubsystem.Positions.GROUND);
+            elevatorSub.moveElevator(ElevatorSubsystem.Positions.GROUND);
         }
 
         // button 10 does the reset PID thing

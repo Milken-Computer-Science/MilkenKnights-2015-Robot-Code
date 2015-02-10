@@ -32,8 +32,6 @@ public class ElevatorSubsystem extends MSubsystem {
         }
     }
 
-    public Positions elevatorPosition;
-
     CANTalon elevatorTalonRight;
     CANTalon elevatorTalonLeft;
 
@@ -99,20 +97,37 @@ public class ElevatorSubsystem extends MSubsystem {
     public boolean inPositionMode() {
         return positionMode;
     }
-
+    
     /**
-     * Tell the elevator to move to a predetermined height. Only works when we
-     * are in position mode (otherwise, does nothing).
-     * @param position The desired elevator position.
+     * Tell the elevator to move to a custom position.  Only works when we are
+     * in position mode (otherwise, does nothing).  This will always use the
+     * same PID constants regardless of robot state.
+     * @param position The desired elevator position, in inches.
      */
-    public void setPosition(Positions position) {
-        elevatorPosition = position;
-        pid_l.setSetpoint(elevatorPosition.position);
-        pid_r.setSetpoint(-elevatorPosition.position);
+    public void manualPIDPosition(double position) {
+        // UNIMPLEMENTED: set PID constants to the same thing every time
+        setSetpoint(position);
     }
 
     /**
-     * Manually set the speed of the elevator. Only works when we are in manual
+     * Tell the elevator to move to a predetermined height.  Only works when we
+     * are in position mode (otherwise, does nothing).  Also changes the PID
+     * constants depending on how many totes we are carrying, and the direction
+     * we are moving in.
+     * @param position The desired elevator position.
+     */
+    public void moveElevator(Positions position) {
+        // UNIMPLEMENTED: set PID constants depending on direction/tote count
+        setSetpoint(position.position);
+    }
+    
+    private void setSetpoint(double setpoint) {
+        pid_l.setSetpoint(setpoint);
+        pid_r.setSetpoint(-setpoint);
+    }
+
+    /**
+     * Manually set the speed of the elevator.  Only works when we are in manual
      * speed control mode (otherwise, does nothing).
      * 
      * A positive value will move the elevator up.
