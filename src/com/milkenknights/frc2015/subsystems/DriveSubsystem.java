@@ -128,6 +128,16 @@ public class DriveSubsystem extends MSubsystem {
     }
     
     /**
+     * Enable or disable the 550 motors.  If they are disabled, the motors in
+     * slot C (the 550s) will not move.
+     * @param s True if the 550s should be enabled
+     */
+    public void set550state(boolean s) {
+        drive.setLeftMotorState(2, !s);
+        drive.setRightMotorState(2, !s);
+    }
+    
+    /**
      * Set the PID constants for driving straight
      */
     public void setStraightPID(double p, double i, double d) {

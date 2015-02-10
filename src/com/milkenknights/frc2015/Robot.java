@@ -150,10 +150,12 @@ public class Robot extends IterativeRobot {
         if (highPressure && lowVoltage) {
             if (!inBrownoutMode) {
                 compressor.stop();
+                driveSubsystem.set550state(false);
             }
         } else {
             if (inBrownoutMode) {
                 compressor.start();
+                driveSubsystem.set550state(true);
             }
         }
 

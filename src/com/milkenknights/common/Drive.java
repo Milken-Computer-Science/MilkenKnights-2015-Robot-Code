@@ -18,6 +18,9 @@ public class Drive {
     List<Integer> flippedLeftMotors;
     List<Integer> flippedRightMotors;
     
+    boolean[] disabledLeftMotors;
+    boolean[] disabledRightMotors;
+    
     double deadband;
     
     // thanks to team 254 for CheesyDrive
@@ -108,19 +111,27 @@ public class Drive {
         
         int i = 0;
         for (SpeedController m : leftMotors) {
-            if (flippedLeftMotors.contains(i)) {
-                m.set(-lPower);
+            if (!disabledLeftMotors[i]) {
+                if (flippedLeftMotors.contains(i)) {
+                    m.set(-lPower);
+                } else {
+                    m.set(lPower);
+                }
             } else {
-                m.set(lPower);
+                m.set(0);
             }
             i++;
         }
         i = 0;
         for (SpeedController m : rightMotors) {
-            if (flippedRightMotors.contains(i)) {
-                m.set(-rPower);
+            if (!disabledRightMotors[i]) {
+                if (flippedRightMotors.contains(i)) {
+                    m.set(-rPower);
+                } else {
+                    m.set(rPower);
+                }
             } else {
-                m.set(rPower);
+                m.set(0);
             }
             i++;
         }
@@ -128,11 +139,21 @@ public class Drive {
     }
     
     /**
-     * Get the speed of the right side of the robot.
-     * @return The speed of the right side of the robot.
+     * Disable or enable a motor on the left side of the robot.
+     * @param m The index number of the motor to enable or disable
+     * @param disable True if the motor should be disabled.
      */
-    public double getRight() {
-        return rightMotors[0].get();
+    public void setLeftMotorState(int m, boolean disable) {
+        disabledLeftMotors[m] = disable;
+    }
+    
+    /**
+     * Disable or enable a motor on the right side of the robot.
+     * @param m The index number of the motor to enable or disable
+     * @param disable True if the motor should be disabled.
+     */
+    public void setRightMotorState(int m, boolean disable) {
+        disabledRightMotors[m] = disable;
     }
     
     /**
@@ -143,10 +164,18 @@ public class Drive {
         return leftMotors[0].get();
     }
     
+    /**
+     * Get the speed of the right side of the robot.
+     * @return The speed of the right side of the robot.
+     */
+    public double getRight() {
+        return rightMotors[0].get();
+    }
+
     public Drive(SpeedController[] left, SpeedController[] right) {
         this(left, right, new int[0], new int[0]);
     }
-    
+
     public Drive(SpeedController[] left, SpeedController[] right,
             double deadbandSpeed) {
         this(left, right, new int[0], new int[0], deadbandSpeed);
@@ -177,6 +206,9 @@ public class Drive {
                 .boxed().collect(Collectors.toList());
         flippedRightMotors = Arrays.stream(reversedRightMotors)
                 .boxed().collect(Collectors.toList());
+        
+        disabledLeftMotors = new boolean[left.length];
+        disabledRightMotors = new boolean[right.length];
         
         deadband = deadbandSpeed;
     }
