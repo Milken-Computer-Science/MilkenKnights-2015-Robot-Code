@@ -49,4 +49,14 @@ public class Constants {
     public static final double pidStraightD = 0.001;
     
     public static final double minimumWheelSpeed = 0.0069;
+    
+    //Elevator PID constants
+    //No totes up
+    public static final double ElevatorZeroToteUpP = 1;
+    public static final double ElevatorZeroToteUpI = 1;
+    public static final double ElevatorZeroToteUpD = 1;
+    //No totes down
+    public static final double ElevatorZeroToteDownP = 1;
+    public static final double ElevatorZeroToteDownI = 1;
+    public static final double ElevatorZeroToteDownD = 1;
 }
