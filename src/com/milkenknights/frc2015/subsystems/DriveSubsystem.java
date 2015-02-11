@@ -128,13 +128,18 @@ public class DriveSubsystem extends MSubsystem {
     }
     
     /**
-     * Enable or disable the 550 motors.  If they are disabled, the motors in
-     * slot C (the 550s) will not move.
+     * Enable or disable power saving mode.  If this is enabled, wheels in slot
+     * slot C (the 550s) and slot B will not move.
      * @param s True if the 550s should be enabled
      */
-    public void set550state(boolean s) {
+    public void setPowerSave(boolean s) {
+        // disable 550s
         drive.setLeftMotorState(2, !s);
         drive.setRightMotorState(2, !s);
+        
+        // disable another set of motors
+        drive.setLeftMotorState(1, !s);
+        drive.setRightMotorState(1, !s);
     }
     
     /**
