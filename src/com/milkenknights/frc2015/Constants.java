@@ -1,5 +1,7 @@
 package com.milkenknights.frc2015;
 
+import com.milkenknights.common.PIDGains;
+
 /** A listing of constants/settings used throughout the robot code. */
 public class Constants {
     // CAN Device Numbers
@@ -59,4 +61,18 @@ public class Constants {
     public static final double ElevatorZeroToteDownP = 1;
     public static final double ElevatorZeroToteDownI = 1;
     public static final double ElevatorZeroToteDownD = 1;
+    
+    public static final PIDGains[] ElevatorUpPID = {
+        new PIDGains(0.16, 0, 0.1),
+        new PIDGains(0.1, 0, 0.01),
+        new PIDGains(0.1, 0, 0.01),
+        new PIDGains(0.1, 0, 0.01)
+    };
+    
+    public static final PIDGains[] ElevatorDownPID = {
+        new PIDGains(0.08, 0, 0.01),
+        new PIDGains(0.01, 0, 0.01),
+        new PIDGains(0.01, 0, 0.01),
+        new PIDGains(0.01, 0, 0.01)
+    };
 }
