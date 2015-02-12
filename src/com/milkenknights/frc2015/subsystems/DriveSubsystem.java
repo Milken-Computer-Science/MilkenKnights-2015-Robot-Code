@@ -130,7 +130,7 @@ public class DriveSubsystem extends MSubsystem {
     /**
      * Enable or disable power saving mode.  If this is enabled, wheels in slot
      * slot C (the 550s) and slot B will not move.
-     * @param s True if the 550s should be enabled
+     * @param s True to enable power saving mode
      */
     public void setPowerSave(boolean s) {
         // disable 550s
