@@ -39,10 +39,12 @@ public class ElevatorSubsystem extends MSubsystem {
     DigitalInput hallEffectSensorRight;
 
     Encoder enc_l;
-    Encoder enc_r;
+    // right encoder stuff commented out because it should just follow the
+    // left talon
+    //Encoder enc_r;
 
     PIDController pid_l;
-    PIDController pid_r;
+    //PIDController pid_r;
 
     public ElevatorSubsystem() {
         hallEffectSensorLeft = new DigitalInput(
@@ -60,14 +62,14 @@ public class ElevatorSubsystem extends MSubsystem {
 
         enc_l = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
                 Constants.elevatorLeftEncoderDeviceNumberB);
-        enc_r = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
-                Constants.elevatorRightEncoderDeviceNumberB);
+        //enc_r = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
+        //        Constants.elevatorRightEncoderDeviceNumberB);
 
         enc_l.setDistancePerPulse(Constants.elevatorInchesPerPulse);
-        enc_r.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
+        //enc_r.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
 
         pid_l = new PIDController(0,0,0, enc_l, elevatorTalonLeft);
-        pid_r = new PIDController(0,0,0, enc_r, elevatorTalonRight);
+        //pid_r = new PIDController(0,0,0, enc_r, elevatorTalonRight);
     }
 
     /**
@@ -80,14 +82,16 @@ public class ElevatorSubsystem extends MSubsystem {
         if (mode != positionMode) {
             if (mode) {
                 pid_l.enable();
-                pid_r.enable();
+                //pid_r.enable();
             } else {
                 if (pid_l.isEnable()) {
                     pid_l.disable();
                 }
+                /*
                 if (pid_r.isEnable()) {
                     pid_r.disable();
                 }
+                */
             }
         }
         positionMode = mode;
@@ -123,7 +127,7 @@ public class ElevatorSubsystem extends MSubsystem {
     
     private void setSetpoint(double setpoint) {
         pid_l.setSetpoint(setpoint);
-        pid_r.setSetpoint(-setpoint);
+        //pid_r.setSetpoint(-setpoint);
     }
 
     /**
@@ -168,7 +172,8 @@ public class ElevatorSubsystem extends MSubsystem {
      * @return the average between the elevator encoder positions.
      */
     public double getPosition() {
-        return (enc_l.getDistance() - enc_r.getDistance())/2;
+        //return (enc_l.getDistance() - enc_r.getDistance())/2;
+        return enc_l.getDistance();
     }
 
     /**
@@ -176,7 +181,7 @@ public class ElevatorSubsystem extends MSubsystem {
      */
     public void setPID(double p, double i, double d) {
         pid_l.setPID(p, i, d);
-        pid_r.setPID(p, i, d);
+        //pid_r.setPID(p, i, d);
     }
     
     /**
@@ -185,7 +190,7 @@ public class ElevatorSubsystem extends MSubsystem {
      */
     public void resetEncoders() {
         enc_l.reset();
-        enc_r.reset();
+        //enc_r.reset();
     }
 
     public void teleopInit() {
@@ -204,6 +209,7 @@ public class ElevatorSubsystem extends MSubsystem {
                 elevatorTalonLeft.set(0.1);
             }
 
+            /*
             if (rightDone) {
                 elevatorTalonRight.set(0);
                 elevatorTalonRight.setPosition(0);
@@ -211,6 +217,7 @@ public class ElevatorSubsystem extends MSubsystem {
             } else {
                 elevatorTalonRight.set(-0.1);
             }
+            */
 
             // once both sides have been reset, leave reset mode
             if (leftDone && rightDone) {
@@ -218,7 +225,9 @@ public class ElevatorSubsystem extends MSubsystem {
             }
         } else if (!positionMode) {
             elevatorTalonLeft.set(elevatorSpeed);
-            elevatorTalonRight.set(-elevatorSpeed);
+            //elevatorTalonRight.set(-elevatorSpeed);
         }
+        // The right talon should just follow the left talon
+        elevatorTalonRight.set(elevatorTalonLeft.get());
     }
 }
