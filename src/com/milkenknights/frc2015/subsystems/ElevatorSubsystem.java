@@ -228,6 +228,6 @@ public class ElevatorSubsystem extends MSubsystem {
             //elevatorTalonRight.set(-elevatorSpeed);
         }
         // The right talon should just follow the left talon
-        elevatorTalonRight.set(elevatorTalonLeft.get());
+        elevatorTalonRight.set(-elevatorTalonLeft.get());
     }
 }
