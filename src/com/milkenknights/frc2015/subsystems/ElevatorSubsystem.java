@@ -178,6 +178,15 @@ public class ElevatorSubsystem extends MSubsystem {
         pid_l.setPID(p, i, d);
         pid_r.setPID(p, i, d);
     }
+    
+    /**
+     * Reset the encoders to zero. This should only be called if we know that
+     * the elevator is its lowest point.
+     */
+    public void resetEncoders() {
+        enc_l.reset();
+        enc_r.reset();
+    }
 
     public void teleopInit() {
         changeMode(false);
@@ -190,6 +199,7 @@ public class ElevatorSubsystem extends MSubsystem {
             if (leftDone) {
                 elevatorTalonLeft.set(0);
                 elevatorTalonLeft.setPosition(0);
+                enc_l.reset();
             } else {
                 elevatorTalonLeft.set(0.1);
             }
@@ -197,6 +207,7 @@ public class ElevatorSubsystem extends MSubsystem {
             if (rightDone) {
                 elevatorTalonRight.set(0);
                 elevatorTalonRight.setPosition(0);
+                enc_r.reset();
             } else {
                 elevatorTalonRight.set(-0.1);
             }
