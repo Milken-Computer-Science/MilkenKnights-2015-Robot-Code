@@ -198,35 +198,19 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     public void update(){
+        if (hallEffectSensorLeft.get() && hallEffectSensorRight.get()) {
+            elevatorTalonLeft.setPosition(0);
+            enc_l.reset();
+            resetPosition = false;
+        }
+
         if (resetPosition) {
-            boolean leftDone = hallEffectSensorLeft.get();
-            boolean rightDone = hallEffectSensorRight.get();
-            if (leftDone) {
-                elevatorTalonLeft.set(0);
-                elevatorTalonLeft.setPosition(0);
-                enc_l.reset();
-            } else {
-                elevatorTalonLeft.set(0.1);
-            }
-
-            /*
-            if (rightDone) {
-                elevatorTalonRight.set(0);
-                elevatorTalonRight.setPosition(0);
-                enc_r.reset();
-            } else {
-                elevatorTalonRight.set(-0.1);
-            }
-            */
-
-            // once both sides have been reset, leave reset mode
-            if (leftDone && rightDone) {
-                resetPosition = false;
-            }
+            elevatorTalonLeft.set(0.1);
         } else if (!positionMode) {
             elevatorTalonLeft.set(elevatorSpeed);
             //elevatorTalonRight.set(-elevatorSpeed);
         }
+
         // The right talon should just follow the left talon
         elevatorTalonRight.set(-elevatorTalonLeft.get());
     }
