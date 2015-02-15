@@ -35,8 +35,8 @@ public class ElevatorSubsystem extends MSubsystem {
     CANTalon elevatorTalonRight;
     CANTalon elevatorTalonLeft;
 
-    DigitalInput hallEffectSensorLeft;
-    DigitalInput hallEffectSensorRight;
+    /** false means the elevator is at its lowest point */
+    DigitalInput hallEffectSensor;
 
     Encoder enc_l;
     // right encoder stuff commented out because it should just follow the
@@ -47,10 +47,8 @@ public class ElevatorSubsystem extends MSubsystem {
     //PIDController pid_r;
 
     public ElevatorSubsystem() {
-        hallEffectSensorLeft = new DigitalInput(
-                Constants.hallEffectSensorLeftDeviceNumber);
-        hallEffectSensorRight = new DigitalInput(
-                Constants.hallEffectSensorRightDeviceNumber);
+        hallEffectSensor = new DigitalInput(
+                Constants.hallEffectSensorDeviceNumber);
 
         elevatorTalonLeft = new CANTalon(
                 Constants.leftElevatorTalonDeviceNumber);
@@ -198,7 +196,7 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     public void update(){
-        if (hallEffectSensorLeft.get() && hallEffectSensorRight.get()) {
+        if (!hallEffectSensor.get()) {
             elevatorTalonLeft.setPosition(0);
             enc_l.reset();
             resetPosition = false;
