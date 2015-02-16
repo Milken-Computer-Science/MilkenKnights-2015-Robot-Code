@@ -17,6 +17,11 @@ public class ElevatorSubsystem extends MSubsystem {
 
     double elevatorSpeed;
     boolean resetPosition;
+    
+    int toteCount = 0;
+    boolean goingUp;
+    
+    boolean manualPIDConstants;
 
     public enum Positions {
         GROUND(0),
@@ -192,8 +197,32 @@ public class ElevatorSubsystem extends MSubsystem {
         //enc_r.reset();
     }
 
+    /**
+     * 
+     * @param toteNumber Number of totes on the elevator
+     */
+    public void setToteNumber(int toteNumber) {
+        toteCount = toteNumber;
+    }
+    
+    public int getToteNumber() {
+        return toteCount;
+    }
+    
     public void teleopInit() {
         changeMode(false);
+    }
+    
+    /**
+     * Use manual PID constants instead of different PID constants for up, down
+     * and different totes.
+     * @param enable If set to true use manual PID constants.
+     */
+    public void manualPIDPosition(boolean enable) {
+        manualPIDConstants = enable;
+        setPID(Constants.manualElevatorPID.kp,
+                Constants.manualElevatorPID.ki, 
+                Constants.manualElevatorPID.kd);
     }
 
     public void update(){
@@ -211,7 +240,19 @@ public class ElevatorSubsystem extends MSubsystem {
                 //elevatorTalonRight.set(-elevatorSpeed);
             }
         }
-
+        
+        if (!manualPIDConstants) {
+            if (elevatorTalonRight.getSetpoint() > elevatorTalonRight.getPosition()) {
+                setPID(Constants.elevatorUpPID[toteCount].kp, 
+                        Constants.elevatorUpPID[toteCount].ki, 
+                        Constants.elevatorUpPID[toteCount].kd);
+            } else {
+                setPID(Constants.elevatorDownPID[toteCount].kp, 
+                        Constants.elevatorDownPID[toteCount].ki, 
+                        Constants.elevatorDownPID[toteCount].kd);
+            }
+        }
+        
         // The right talon should just follow the left talon
         elevatorTalonRight.set(-elevatorTalonLeft.get());
     }

@@ -1,5 +1,7 @@
 package com.milkenknights.frc2015;
 
+import com.milkenknights.common.PIDGains;
+
 /** A listing of constants/settings used throughout the robot code. */
 public class Constants {
     // CAN Device Numbers
@@ -34,6 +36,10 @@ public class Constants {
     public static final int driveRightEncoderDeviceNumberA = 2;
     public static final int driveRightEncoderDeviceNumberB = 3;
     
+    // solenoid ports
+    public static final int groundIntakeFirstActuatorDeviceNumber = 1;
+    public static final int groundIntakeSecondActuatorDeviceNumber = 2;
+
     // Pressure Transducer
     public static final double transducerScaleFactor = 50;
     public static final double transducerOffset = -25;
@@ -51,13 +57,26 @@ public class Constants {
     public static final double pidStraightD = 0.001;
     
     public static final double minimumWheelSpeed = 0.0069;
-    
-    //GroundIntake device numbers
-    public static final int groundIntakeFirstActuatorDeviceNumber = 1;
-    public static final int groundIntakeSecondActuatorDeviceNumber = 2;
-    
+
     //GroundIntake talon speed
     public static final int groundIntakeTalonSpeed = 1;
     
     public static final double resetElevatorSpeed = -0.25;
+
+    //Elevator PID constants
+    public static final PIDGains[] elevatorUpPID = {
+        new PIDGains(0.16, 0, 0.1),
+        new PIDGains(0.1, 0, 0.01),
+        new PIDGains(0.1, 0, 0.01),
+        new PIDGains(0.1, 0, 0.01)
+    };
+    
+    public static final PIDGains[] elevatorDownPID = {
+        new PIDGains(0.08, 0, 0.01),
+        new PIDGains(0.01, 0, 0.01),
+        new PIDGains(0.01, 0, 0.01),
+        new PIDGains(0.01, 0, 0.01)
+    };
+    
+    public static final PIDGains manualElevatorPID = new PIDGains(1,1,1);
 }
