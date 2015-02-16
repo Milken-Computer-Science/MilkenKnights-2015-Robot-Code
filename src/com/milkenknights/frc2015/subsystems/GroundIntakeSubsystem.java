@@ -24,25 +24,26 @@ public class GroundIntakeSubsystem extends MSubsystem {
     }
     
     /**
-     * Spins the wheels.
+     * Start spinning the wheels.
      */
     public void spinWheels() {
         wheelsSpinning = true;
     }
     
     /**
-     * Opens the actuators.
+     * Opens the actuators and stops the wheels.
      */
-    public void actuatorOpen() {
-        actuators.set(true);
+    public void open() {
+        wheelsSpinning = false;
+        actuators.set(false);
     }
     
     /**
-     * Closes the ground intake and stops the wheels.
+     * Closes the ground intake and starts spinning the wheels.
      */
     public void close() {
-        wheelsSpinning = false;
-        actuators.set(false);
+        wheelsSpinning = true;
+        actuators.set(true);
     }
     
     public void update() {
