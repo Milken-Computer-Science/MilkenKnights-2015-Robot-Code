@@ -3,6 +3,7 @@ package com.milkenknights.frc2015;
 /** A listing of constants/settings used throughout the robot code. */
 public class Constants {
     // CAN Device Numbers
+    public static final int groundIntakeLeftTalonDeviceNumber = 1;
     public static final int leftElevatorTalonDeviceNumber = 2;
     public static final int leftTalonDeviceNumberA = 3; // CIM
     public static final int leftTalonDeviceNumberB = 4; // CIM
@@ -11,6 +12,8 @@ public class Constants {
     public static final int rightTalonDeviceNumberB = 7; // CIM
     public static final int rightTalonDeviceNumberA = 8; // CIM
     public static final int rightElevatorTalonDeviceNumber = 9;
+    public static final int groundIntakeRightTalonDeviceNumber = 10;
+
     
     // these correspond to index numbers, so A->0, B->1, and C->2
     // these are the wheels that should be reversed
@@ -48,4 +51,11 @@ public class Constants {
     public static final double pidStraightD = 0.001;
     
     public static final double minimumWheelSpeed = 0.0069;
+    
+    //GroundIntake device numbers
+    public static final int groundIntakeFirstActuatorDeviceNumber = 1;
+    public static final int groundIntakeSecondActuatorDeviceNumber = 2;
+    
+    //GroundIntake talon speed
+    public static final int groundIntakeTalonSpeed = 1;
 }
