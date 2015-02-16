@@ -4,6 +4,8 @@ import com.milkenknights.common.JStick;
 import com.milkenknights.frc2015.Constants;
 import com.milkenknights.frc2015.subsystems.*;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This control system uses three ATK3 controllers: two for driving and one for
  * AUX.
@@ -35,6 +37,10 @@ public class TripleATKControl extends ControlSystem {
         atkl.update();
         atkr.update();
         atka.update();
+
+        SmartDashboard.putBoolean("pid enabled", elevatorSub.inPositionMode());
+        SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
+        SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
 
         if (isCheesy) {
             // CHEESY DRIVE
