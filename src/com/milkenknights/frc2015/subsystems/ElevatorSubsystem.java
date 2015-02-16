@@ -23,20 +23,6 @@ public class ElevatorSubsystem extends MSubsystem {
     
     boolean manualPIDConstants;
 
-    public enum Positions {
-        GROUND(0),
-        SCORINGPLATFORM(1),
-        STEP(2),
-        FIRSTTOTE(3),
-        SECONDTOTE(4),
-        THIRDTOTE(30);
-
-        public final double position;
-        private Positions(double p) {
-            position = p;
-        }
-    }
-
     CANTalon elevatorTalonRight;
     CANTalon elevatorTalonLeft;
 
@@ -107,29 +93,11 @@ public class ElevatorSubsystem extends MSubsystem {
     }
     
     /**
-     * Tell the elevator to move to a custom position.  Only works when we are
-     * in position mode (otherwise, does nothing).  This will always use the
-     * same PID constants regardless of robot state.
-     * @param position The desired elevator position, in inches.
+     * Move the elevator position. Only does something if we are in position
+     * mode.
+     * @param setpoint The desired setpoint of the elevator.
      */
-    public void manualPIDPosition(double position) {
-        // UNIMPLEMENTED: set PID constants to the same thing every time
-        setSetpoint(position);
-    }
-
-    /**
-     * Tell the elevator to move to a predetermined height.  Only works when we
-     * are in position mode (otherwise, does nothing).  Also changes the PID
-     * constants depending on how many totes we are carrying, and the direction
-     * we are moving in.
-     * @param position The desired elevator position.
-     */
-    public void moveElevator(Positions position) {
-        // UNIMPLEMENTED: set PID constants depending on direction/tote count
-        setSetpoint(position.position);
-    }
-    
-    private void setSetpoint(double setpoint) {
+    public void setSetpoint(double setpoint) {
         pid_l.setSetpoint(setpoint);
         //pid_r.setSetpoint(-setpoint);
     }
@@ -220,9 +188,11 @@ public class ElevatorSubsystem extends MSubsystem {
      */
     public void manualPIDPosition(boolean enable) {
         manualPIDConstants = enable;
-        setPID(Constants.manualElevatorPID.kp,
-                Constants.manualElevatorPID.ki, 
-                Constants.manualElevatorPID.kd);
+        if (manualPIDConstants) {
+            setPID(Constants.manualElevatorPID.kp,
+                    Constants.manualElevatorPID.ki, 
+                    Constants.manualElevatorPID.kd);
+        }
     }
 
     public void update(){
@@ -240,17 +210,17 @@ public class ElevatorSubsystem extends MSubsystem {
                 //elevatorTalonRight.set(-elevatorSpeed);
             }
         } else if (!manualPIDConstants) {
-                if (elevatorTalonRight.getSetpoint() > elevatorTalonRight.getPosition()) {
-                    setPID(Constants.elevatorUpPID[toteCount].kp, 
-                            Constants.elevatorUpPID[toteCount].ki, 
-                            Constants.elevatorUpPID[toteCount].kd);
-                } else {
-                    setPID(Constants.elevatorDownPID[toteCount].kp, 
-                            Constants.elevatorDownPID[toteCount].ki, 
-                            Constants.elevatorDownPID[toteCount].kd);
-                }
+            if (elevatorTalonRight.getSetpoint() > elevatorTalonRight.getPosition()) {
+                setPID(Constants.elevatorUpPID[toteCount].kp, 
+                        Constants.elevatorUpPID[toteCount].ki, 
+                        Constants.elevatorUpPID[toteCount].kd);
+            } else {
+                setPID(Constants.elevatorDownPID[toteCount].kp, 
+                        Constants.elevatorDownPID[toteCount].ki, 
+                        Constants.elevatorDownPID[toteCount].kd);
             }
         }
+        
         // The right talon should just follow the left talon
         elevatorTalonRight.set(-elevatorTalonLeft.get());
     }

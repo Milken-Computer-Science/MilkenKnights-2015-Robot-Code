@@ -79,4 +79,9 @@ public class Constants {
     };
     
     public static final PIDGains manualElevatorPID = new PIDGains(1,1,1);
+    
+    public static final double scoringPlatformHeight = 3;
+    public static final double readyToIntakeHeight = 24;
+    public static final double stepHeight = 12;
+    public static final double tote1Height = 13;
 }

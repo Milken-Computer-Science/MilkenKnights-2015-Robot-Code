@@ -40,19 +40,6 @@ public class PIDTunerElevator extends ControlSystem {
         if (atka.isReleased(2)) {
             elevatorSub.changeMode(false);
         }
-        
-        // if aux ATK 5 is held, go in manual speed mode
-        //elevatorSub.changeMode(!atka.isPressed(5));
-
-        // aux ATK 6 sets position to third tote
-        if (atka.isPressed(6)) {
-            elevatorSub.moveElevator(ElevatorSubsystem.Positions.THIRDTOTE);
-        }
-
-        // aux ATK 7 sets position to ground
-        if (atka.isPressed(7)) {
-            elevatorSub.moveElevator(ElevatorSubsystem.Positions.GROUND);
-        }
 
         // button 10 does the reset PID thing
         if (atka.isPressed(10)) {
