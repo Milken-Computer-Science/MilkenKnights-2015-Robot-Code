@@ -210,7 +210,7 @@ public class ElevatorSubsystem extends MSubsystem {
                 //elevatorTalonRight.set(-elevatorSpeed);
             }
         } else if (!manualPIDConstants) {
-            if (elevatorTalonRight.getSetpoint() > elevatorTalonRight.getPosition()) {
+            if (pid_l.getSetpoint() > enc_l.pidGet()) {
                 setPID(Constants.elevatorUpPID[toteCount].kp, 
                         Constants.elevatorUpPID[toteCount].ki, 
                         Constants.elevatorUpPID[toteCount].kd);
