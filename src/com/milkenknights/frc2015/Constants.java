@@ -53,26 +53,18 @@ public class Constants {
     public static final double minimumWheelSpeed = 0.0069;
     
     //Elevator PID constants
-    //No totes up
-    public static final double ElevatorZeroToteUpP = 1;
-    public static final double ElevatorZeroToteUpI = 1;
-    public static final double ElevatorZeroToteUpD = 1;
-    //No totes down
-    public static final double ElevatorZeroToteDownP = 1;
-    public static final double ElevatorZeroToteDownI = 1;
-    public static final double ElevatorZeroToteDownD = 1;
-    
-    public static final PIDGains[] ElevatorUpPID = {
+    public static final PIDGains[] elevatorUpPID = {
         new PIDGains(0.16, 0, 0.1),
         new PIDGains(0.1, 0, 0.01),
         new PIDGains(0.1, 0, 0.01),
         new PIDGains(0.1, 0, 0.01)
     };
     
-    public static final PIDGains[] ElevatorDownPID = {
+    public static final PIDGains[] elevatorDownPID = {
         new PIDGains(0.08, 0, 0.01),
         new PIDGains(0.01, 0, 0.01),
         new PIDGains(0.01, 0, 0.01),
         new PIDGains(0.01, 0, 0.01)
     };
+    public static final PIDGains manualElevatorPID = new PIDGains(1,1,1);
 }
