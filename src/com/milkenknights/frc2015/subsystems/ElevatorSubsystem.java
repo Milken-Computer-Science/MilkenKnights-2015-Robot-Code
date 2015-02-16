@@ -203,7 +203,7 @@ public class ElevatorSubsystem extends MSubsystem {
         }
 
         if (resetPosition) {
-            elevatorTalonLeft.set(0.1);
+            elevatorTalonLeft.set(Constants.resetElevatorSpeed);
         } else if (!positionMode) {
             elevatorTalonLeft.set(elevatorSpeed);
             //elevatorTalonRight.set(-elevatorSpeed);

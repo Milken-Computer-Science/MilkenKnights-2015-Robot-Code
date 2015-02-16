@@ -58,4 +58,6 @@ public class Constants {
     
     //GroundIntake talon speed
     public static final int groundIntakeTalonSpeed = 1;
+    
+    public static final double resetElevatorSpeed = -0.1;
 }
