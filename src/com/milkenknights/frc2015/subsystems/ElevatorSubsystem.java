@@ -177,9 +177,7 @@ public class ElevatorSubsystem extends MSubsystem {
         return toteCount;
     }
     
-    public void teleopInit() {
-        changeMode(false);
-    }
+    public void teleopInit() {}
     
     /**
      * Use manual PID constants instead of different PID constants for up, down

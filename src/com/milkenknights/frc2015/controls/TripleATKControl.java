@@ -25,6 +25,7 @@ public class TripleATKControl extends ControlSystem {
     }
 
     public void teleopInit() {
+        elevatorSub.changeMode(true);
         // because we will start off in PID mode, we should make sure that
         // we don't start moving the elevator immediately
         elevatorSub.setSetpoint(elevatorSub.getPosition());
@@ -68,6 +69,7 @@ public class TripleATKControl extends ControlSystem {
         if (atka.justPressed(1)) {
             elevatorSub.changeMode(false);
         } else if (atka.isReleased(1)) {
+            elevatorSub.setSetpoint(elevatorSub.getPosition());
             elevatorSub.changeMode(true);
         }
         
