@@ -29,7 +29,7 @@ public class PIDTunerElevator extends ControlSystem {
         SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
         SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
 
-        elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y)/2);
+        elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y));
 
         // aux ATK 1 enables PID
         if (atka.isReleased(1)) {
