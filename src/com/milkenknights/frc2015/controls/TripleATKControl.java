@@ -1,6 +1,7 @@
 package com.milkenknights.frc2015.controls;
 
 import com.milkenknights.common.JStick;
+import com.milkenknights.frc2015.Constants;
 import com.milkenknights.frc2015.subsystems.*;
 
 /**
@@ -23,7 +24,11 @@ public class TripleATKControl extends ControlSystem {
         isCheesy = false;
     }
 
-    public void teleopInit() {}
+    public void teleopInit() {
+        // because we will start off in PID mode, we should make sure that
+        // we don't start moving the elevator immediately
+        elevatorSub.setSetpoint(elevatorSub.getPosition());
+    }
 
     public void teleopPeriodic() {
         atkl.update();
@@ -59,7 +64,30 @@ public class TripleATKControl extends ControlSystem {
             isCheesy = true;
         }
 
-        // aux ATK y manually moves the elevator
+        // holding down aux ATK trigger puts us in manual speed control mode
+        elevatorSub.changeMode(!atka.isPressed(1));
+        
+        // aux ATK y manually moves the elevator (while the trigger is pressed)
         elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y));
+        
+        // aux ATK 2 moves elevator to ground level
+        if (atka.isReleased(2)) {
+            elevatorSub.setSetpoint(0);
+        }
+        
+        // aux ATK 3 moves elevator to scoring platform
+        if (atka.isReleased(3)) {
+            elevatorSub.setSetpoint(Constants.scoringPlatformHeight);
+        }
+        
+        // aux ATK 4 moves elevator to first tote height
+        if (atka.isReleased(4)) {
+            elevatorSub.setSetpoint(Constants.tote1Height);
+        }
+        
+        // aux ATK 5 moves elevator to second tote height
+        if (atka.isReleased(5)) {
+            elevatorSub.setSetpoint(Constants.tote2Height);
+        }
     }
 }

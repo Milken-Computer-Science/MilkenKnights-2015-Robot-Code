@@ -65,23 +65,25 @@ public class Constants {
 
     //Elevator PID constants
     public static final PIDGains[] elevatorUpPID = {
-        new PIDGains(0.16, 0, 0.1),
-        new PIDGains(0.1, 0, 0.01),
-        new PIDGains(0.1, 0, 0.01),
-        new PIDGains(0.1, 0, 0.01)
+        new PIDGains(0.19, 0, 0),
+        new PIDGains(0.19, 0, 0),
+        new PIDGains(0.19, 0, 0),
+        new PIDGains(0.19, 0, 0)
     };
     
     public static final PIDGains[] elevatorDownPID = {
-        new PIDGains(0.08, 0, 0.01),
-        new PIDGains(0.01, 0, 0.01),
+        new PIDGains(0.155, 0, 0.13),
+        new PIDGains(0.18, 0, 1),
         new PIDGains(0.01, 0, 0.01),
         new PIDGains(0.01, 0, 0.01)
     };
     
-    public static final PIDGains manualElevatorPID = new PIDGains(1,1,1);
+    public static final PIDGains manualElevatorPID =
+            new PIDGains(0.19, 0.19, 0.19);
     
     public static final double scoringPlatformHeight = 3;
     public static final double readyToIntakeHeight = 24;
     public static final double stepHeight = 12;
     public static final double tote1Height = 13;
+    public static final double tote2Height = 18;
 }
