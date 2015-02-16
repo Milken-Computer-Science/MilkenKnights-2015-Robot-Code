@@ -65,7 +65,11 @@ public class TripleATKControl extends ControlSystem {
         }
 
         // holding down aux ATK trigger puts us in manual speed control mode
-        elevatorSub.changeMode(!atka.isPressed(1));
+        if (atka.justPressed(1)) {
+            elevatorSub.changeMode(false);
+        } else if (atka.isReleased(1)) {
+            elevatorSub.changeMode(true);
+        }
         
         // aux ATK y manually moves the elevator (while the trigger is pressed)
         elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y));
