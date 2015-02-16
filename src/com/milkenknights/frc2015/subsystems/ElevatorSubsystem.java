@@ -81,6 +81,7 @@ public class ElevatorSubsystem extends MSubsystem {
             if (mode) {
                 pid_l.enable();
                 //pid_r.enable();
+                resetPosition = false;
             } else {
                 if (pid_l.isEnable()) {
                     pid_l.disable();
@@ -202,11 +203,13 @@ public class ElevatorSubsystem extends MSubsystem {
             resetPosition = false;
         }
 
-        if (resetPosition) {
-            elevatorTalonLeft.set(Constants.resetElevatorSpeed);
-        } else if (!positionMode) {
-            elevatorTalonLeft.set(elevatorSpeed);
-            //elevatorTalonRight.set(-elevatorSpeed);
+        if (!positionMode) {
+            if (resetPosition) {
+                elevatorTalonLeft.set(Constants.resetElevatorSpeed);
+            } else {
+                elevatorTalonLeft.set(elevatorSpeed);
+                //elevatorTalonRight.set(-elevatorSpeed);
+            }
         }
 
         // The right talon should just follow the left talon
