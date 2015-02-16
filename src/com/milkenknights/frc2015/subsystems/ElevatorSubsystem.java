@@ -239,20 +239,18 @@ public class ElevatorSubsystem extends MSubsystem {
                 elevatorTalonLeft.set(elevatorSpeed);
                 //elevatorTalonRight.set(-elevatorSpeed);
             }
-        }
-        
-        if (!manualPIDConstants) {
-            if (elevatorTalonRight.getSetpoint() > elevatorTalonRight.getPosition()) {
-                setPID(Constants.elevatorUpPID[toteCount].kp, 
-                        Constants.elevatorUpPID[toteCount].ki, 
-                        Constants.elevatorUpPID[toteCount].kd);
-            } else {
-                setPID(Constants.elevatorDownPID[toteCount].kp, 
-                        Constants.elevatorDownPID[toteCount].ki, 
-                        Constants.elevatorDownPID[toteCount].kd);
+        } else if (!manualPIDConstants) {
+                if (elevatorTalonRight.getSetpoint() > elevatorTalonRight.getPosition()) {
+                    setPID(Constants.elevatorUpPID[toteCount].kp, 
+                            Constants.elevatorUpPID[toteCount].ki, 
+                            Constants.elevatorUpPID[toteCount].kd);
+                } else {
+                    setPID(Constants.elevatorDownPID[toteCount].kp, 
+                            Constants.elevatorDownPID[toteCount].ki, 
+                            Constants.elevatorDownPID[toteCount].kd);
+                }
             }
         }
-        
         // The right talon should just follow the left talon
         elevatorTalonRight.set(-elevatorTalonLeft.get());
     }
