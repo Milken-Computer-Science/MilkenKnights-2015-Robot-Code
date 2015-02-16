@@ -40,8 +40,7 @@ public class ElevatorSubsystem extends MSubsystem {
     CANTalon elevatorTalonRight;
     CANTalon elevatorTalonLeft;
 
-    DigitalInput hallEffectSensorLeft;
-    DigitalInput hallEffectSensorRight;
+    DigitalInput hallEffectSensor;
 
     Encoder enc_l;
     Encoder enc_r;
@@ -50,10 +49,8 @@ public class ElevatorSubsystem extends MSubsystem {
     PIDController pid_r;
 
     public ElevatorSubsystem() {
-        hallEffectSensorLeft = new DigitalInput(
-                Constants.hallEffectSensorLeftDeviceNumber);
-        hallEffectSensorRight = new DigitalInput(
-                Constants.hallEffectSensorRightDeviceNumber);
+        hallEffectSensor = new DigitalInput(
+                Constants.elevatorHallEffectSensorDeviceNumber);
 
         elevatorTalonLeft = new CANTalon(
                 Constants.leftElevatorTalonDeviceNumber);
@@ -214,26 +211,19 @@ public class ElevatorSubsystem extends MSubsystem {
 
     public void update(){
         if (resetPosition) {
-            boolean leftDone = hallEffectSensorLeft.get();
-            boolean rightDone = hallEffectSensorRight.get();
-            if (leftDone) {
+            boolean done = hallEffectSensor.get();
+            if (done) {
                 elevatorTalonLeft.set(0);
                 elevatorTalonLeft.setPosition(0);
-            } else {
-                elevatorTalonLeft.set(0.1);
-            }
-
-            if (rightDone) {
                 elevatorTalonRight.set(0);
                 elevatorTalonRight.setPosition(0);
+                
+                resetPosition = false;
             } else {
+                elevatorTalonLeft.set(0.1);
                 elevatorTalonRight.set(-0.1);
             }
 
-            // once both sides have been reset, leave reset mode
-            if (leftDone && rightDone) {
-                resetPosition = false;
-            }
         } else if (!positionMode) {
             elevatorTalonLeft.set(elevatorSpeed);
             elevatorTalonRight.set(-elevatorSpeed);

@@ -23,16 +23,15 @@ public class Constants {
     public static final int pressureTransducerChannel = 0;
     
     // DIO Ports
-    public static final int hallEffectSensorLeftDeviceNumber = 8;
-    public static final int hallEffectSensorRightDeviceNumber = 9;
-    public static final int elevatorLeftEncoderDeviceNumberA = 6;
-    public static final int elevatorLeftEncoderDeviceNumberB = 7;
-    public static final int elevatorRightEncoderDeviceNumberA = 4;
-    public static final int elevatorRightEncoderDeviceNumberB = 5;
     public static final int driveLeftEncoderDeviceNumberA = 0;
     public static final int driveLeftEncoderDeviceNumberB = 1;
     public static final int driveRightEncoderDeviceNumberA = 2;
     public static final int driveRightEncoderDeviceNumberB = 3;
+    public static final int elevatorRightEncoderDeviceNumberA = 4;
+    public static final int elevatorRightEncoderDeviceNumberB = 5;
+    public static final int elevatorLeftEncoderDeviceNumberA = 6;
+    public static final int elevatorLeftEncoderDeviceNumberB = 7;
+    public static final int elevatorHallEffectSensorDeviceNumber = 8;
     
     // Pressure Transducer
     public static final double transducerScaleFactor = 50;
