@@ -34,6 +34,8 @@ public class TripleATKControl extends ControlSystem {
         // because we will start off in PID mode, we should make sure that
         // we don't start moving the elevator immediately
         elevatorSub.setSetpoint(elevatorSub.getPosition());
+        toteGrabbed = false;
+        currentlyGrabbingTote = false;
     }
 
     public void teleopPeriodic() {
@@ -83,9 +85,11 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.setSetpoint(elevatorSub.getPosition());
             elevatorSub.changeMode(true);
         }
-        
-        // aux ATK y manually moves the elevator (while the trigger is pressed)
-        elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y));
+
+        if (!currentlyGrabbingTote) {
+            // aux ATK y manually moves the elevator (while the trigger is pressed)
+            elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y));
+        }
         
         // aux ATK 2 moves elevator to ground level
         if (atka.isReleased(2)) {
@@ -126,15 +130,22 @@ public class TripleATKControl extends ControlSystem {
                     elevatorSub.setSetpoint(0);
                     currentlyGrabbingTote = true;
                 }
-            } else if (elevatorSub.getPosition() < 0.28) {
-                if (!toteGrabbed) {
-                    // increment the number of totes
-                    elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
-                }
-                toteGrabbed = true;
+            } else if (elevatorSub.getPosition() < 3) {
                 if (currentlyGrabbingTote) {
-                    elevatorSub.setSetpoint(Constants.tote1Height);
-                    currentlyGrabbingTote = false;
+                    elevatorSub.changeMode(false);
+                    elevatorSub.setSpeed(Constants.resetElevatorSpeed);
+                }
+                if (elevatorSub.getPosition() < 0.28) {
+                    if (!toteGrabbed) {
+                        // increment the number of totes
+                        elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
+                    }
+                    toteGrabbed = true;
+                    if (currentlyGrabbingTote) {
+                        elevatorSub.changeMode(true);
+                        elevatorSub.setSetpoint(Constants.tote1Height);
+                        currentlyGrabbingTote = false;
+                    }
                 }
             }
         } else {
