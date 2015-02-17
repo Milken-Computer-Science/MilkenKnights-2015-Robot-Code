@@ -15,6 +15,8 @@ public class TripleATKControl extends ControlSystem {
     JStick atkr, atkl, atka;
 
     public boolean isCheesy;
+    
+    boolean toteGrabbed;
 
     public TripleATKControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator) {
@@ -41,6 +43,7 @@ public class TripleATKControl extends ControlSystem {
         SmartDashboard.putBoolean("pid enabled", elevatorSub.inPositionMode());
         SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
         SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
+        SmartDashboard.putNumber("totes", elevatorSub.getToteNumber());
 
         if (isCheesy) {
             // CHEESY DRIVE
@@ -100,6 +103,33 @@ public class TripleATKControl extends ControlSystem {
         // aux ATK 5 moves elevator to second tote height
         if (atka.isReleased(5)) {
             elevatorSub.setSetpoint(Constants.tote2Height);
+        }
+        
+        // aux ATK 6 resets tote count
+        if (atka.isReleased(6)) {
+            elevatorSub.setToteNumber(0);
+        }
+        
+        // aux ATK 7 manually adds a tote
+        if (atka.isReleased(7)) {
+            elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
+        }
+        
+        if (elevatorSub.toteLoaded()) {
+            if (elevatorSub.getPosition() > 0.28) {
+                if (!toteGrabbed) {
+                    elevatorSub.setSetpoint(0);
+                }
+            } else {
+                if (!toteGrabbed) {
+                    // increment the number of totes
+                    elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
+                }
+                toteGrabbed = true;
+                elevatorSub.setSetpoint(Constants.tote1Height);
+            }
+        } else {
+            toteGrabbed = false;
         }
     }
 }

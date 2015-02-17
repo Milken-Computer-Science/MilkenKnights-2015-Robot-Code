@@ -36,6 +36,9 @@ public class ElevatorSubsystem extends MSubsystem {
 
     PIDController pid_l;
     //PIDController pid_r;
+    
+    /** when this returns true, a tote has been loaded */
+    DigitalInput bannerSensor;
 
     public ElevatorSubsystem() {
         hallEffectSensor = new DigitalInput(
@@ -59,6 +62,8 @@ public class ElevatorSubsystem extends MSubsystem {
 
         pid_l = new PIDController(0,0,0, enc_l, elevatorTalonLeft);
         //pid_r = new PIDController(0,0,0, enc_r, elevatorTalonRight);
+
+        bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
     }
 
     /**
@@ -177,6 +182,14 @@ public class ElevatorSubsystem extends MSubsystem {
         return toteCount;
     }
     
+    /**
+     * Tells us if a tote is ready to be picked up by the elevator
+     * @return true if the tote is loaded
+     */
+    public boolean toteLoaded() {
+        return bannerSensor.get();
+    }
+    
     public void teleopInit() {}
     
     /**
@@ -208,14 +221,22 @@ public class ElevatorSubsystem extends MSubsystem {
                 //elevatorTalonRight.set(-elevatorSpeed);
             }
         } else if (!manualPIDConstants) {
+            // protect from array out of bounds exception
+            int ind = toteCount;
             if (pid_l.getSetpoint() > enc_l.pidGet()) {
-                setPID(Constants.elevatorUpPID[toteCount].kp, 
-                        Constants.elevatorUpPID[toteCount].ki, 
-                        Constants.elevatorUpPID[toteCount].kd);
+                if (ind >= Constants.elevatorUpPID.length) {
+                    ind = Constants.elevatorUpPID.length - 1;
+                }
+                setPID(Constants.elevatorUpPID[ind].kp, 
+                        Constants.elevatorUpPID[ind].ki, 
+                        Constants.elevatorUpPID[ind].kd);
             } else {
-                setPID(Constants.elevatorDownPID[toteCount].kp, 
-                        Constants.elevatorDownPID[toteCount].ki, 
-                        Constants.elevatorDownPID[toteCount].kd);
+                if (ind >= Constants.elevatorDownPID.length) {
+                    ind = Constants.elevatorDownPID.length - 1;
+                }
+                setPID(Constants.elevatorDownPID[ind].kp, 
+                        Constants.elevatorDownPID[ind].ki, 
+                        Constants.elevatorDownPID[ind].kd);
             }
         }
         
