@@ -86,6 +86,6 @@ public class Constants {
     public static final double scoringPlatformHeight = 3;
     public static final double readyToIntakeHeight = 24;
     public static final double stepHeight = 12;
-    public static final double tote1Height = 13;
+    public static final double tote1Height = 14;
     public static final double tote2Height = 18;
 }
