@@ -44,6 +44,8 @@ public class Constants {
     public static final double transducerScaleFactor = 50;
     public static final double transducerOffset = -25;
     
+    public static final int imuBaudRate = 57600;
+    
     // 4 inch wheel diameter. encoder does 360 pulses per revolution
     // This is equal to 4pi/360
     public static final double driveInchesPerPulse = 0.03490658503;

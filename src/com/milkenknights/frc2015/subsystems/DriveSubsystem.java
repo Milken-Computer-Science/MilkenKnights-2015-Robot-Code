@@ -1,5 +1,6 @@
 package com.milkenknights.frc2015.subsystems;
 
+import com.kauailabs.nav6.frc.IMU;
 import com.milkenknights.common.Drive;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
@@ -8,6 +9,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -34,14 +36,18 @@ public class DriveSubsystem extends MSubsystem {
     PIDController pid_l;
     PIDController pid_r;
     
+    PIDController pid_pivot;
+    
     Encoder enc_l;
     Encoder enc_r;
+    
+    IMU gyro;
     
     double leftSpeedPID;
     double rightSpeedPID;
     
     private enum DriveMode {
-        TANK, CHEESY, PIDSTRAIGHT
+        TANK, CHEESY, PIDSTRAIGHT, PIDPIVOT
     }
     
     DriveMode driveMode;
@@ -67,6 +73,9 @@ public class DriveSubsystem extends MSubsystem {
         
         enc_l.setDistancePerPulse(-Constants.driveInchesPerPulse);
         enc_r.setDistancePerPulse(Constants.driveInchesPerPulse);
+        
+        gyro = new IMU(
+                new SerialPort(Constants.imuBaudRate, SerialPort.Port.kMXP));
         
         drive = new Drive(leftWheels, rightWheels,
                 Constants.reversedLeftTalons, Constants.reversedRightTalons,
@@ -95,6 +104,18 @@ public class DriveSubsystem extends MSubsystem {
                 Constants.pidStraightD,
                 enc_r,
                 new RPIDOut());
+        
+        class PivotController implements PIDOutput {
+            @Override
+            public void pidWrite(double output) {
+                leftSpeedPID = -output;
+                rightSpeedPID = output;
+            }
+        }
+        
+        pid_pivot = new PIDController(0, 0, 0, gyro, new PivotController());
+        pid_pivot.setInputRange(-180, 180);
+        pid_pivot.setContinuous(true);
     }
     
     public void teleopInit() {
@@ -167,30 +188,29 @@ public class DriveSubsystem extends MSubsystem {
     /**
      * Set the setpoint for PID pivot mode.
      * This should be the angle you want the robot to be facing.
-     * NOT IMPLEMENTED
      *
-     * @param setpoint The desired PID angle setpoint.
+     * @param setpoint The desired PID angle setpoint, between -180 and 180.
      */
     public void setPivotPIDSetpoint(double setpoint) {
-
+        pid_pivot.setSetpoint(setpoint);
     }
 
     /**
      * Get whatever we set the pivot setpoint to be.
-     * NOT IMPLEMENTED
      *
      * @return The last set PID pivot setpoint.
      */
     public double getPivotPIDSetpoint() {
-        return 0;
+        return pid_pivot.getSetpoint();
     }
 
     /**
      * Go to the setpoint that we have set for pivoting.
-     * NOT IMPLEMENTED
      */
     public void startPivotPID() {
-
+        setDriveMode(DriveMode.PIDPIVOT);
+        pid_pivot.enable();
+        pid_pivot.enable();
     }
 
     /**
@@ -200,6 +220,7 @@ public class DriveSubsystem extends MSubsystem {
     public void resetPIDPosition() {
         enc_l.reset();
         enc_r.reset();
+        pid_pivot.reset();
     }
 
     /**
@@ -237,6 +258,7 @@ public class DriveSubsystem extends MSubsystem {
             break;
 
         case PIDSTRAIGHT:
+        case PIDPIVOT:
             drive.tankDrive(leftSpeedPID, rightSpeedPID);
             break;
         }
