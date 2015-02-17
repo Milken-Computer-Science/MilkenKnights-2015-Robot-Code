@@ -143,7 +143,7 @@ public class ElevatorSubsystem extends MSubsystem {
     public void abortReset() {
         resetPosition = false;
     }
-
+    
     /**
      * Get the average between the elevator encoder positions.
      * @return the average between the elevator encoder positions.

@@ -16,6 +16,7 @@ public class TripleATKControl extends ControlSystem {
 
     public boolean isCheesy;
     
+    boolean currentlyGrabbingTote;
     boolean toteGrabbed;
 
     public TripleATKControl(DriveSubsystem sDrive,
@@ -43,6 +44,7 @@ public class TripleATKControl extends ControlSystem {
         SmartDashboard.putBoolean("pid enabled", elevatorSub.inPositionMode());
         SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
         SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
+        SmartDashboard.putBoolean("banner sensor", elevatorSub.toteLoaded());
         SmartDashboard.putNumber("totes", elevatorSub.getToteNumber());
 
         if (isCheesy) {
@@ -115,18 +117,25 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
         }
         
+        // if a tote has been loaded, drop the elevator down and pick it up
+        // this action should only be taken if the tote was loaded while the
+        // elevator was up
         if (elevatorSub.toteLoaded()) {
-            if (elevatorSub.getPosition() > 0.28) {
+            if (elevatorSub.getPosition() > 10) {
                 if (!toteGrabbed) {
                     elevatorSub.setSetpoint(0);
+                    currentlyGrabbingTote = true;
                 }
-            } else {
+            } else if (elevatorSub.getPosition() < 0.28) {
                 if (!toteGrabbed) {
                     // increment the number of totes
                     elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
                 }
                 toteGrabbed = true;
-                elevatorSub.setSetpoint(Constants.tote1Height);
+                if (currentlyGrabbingTote) {
+                    elevatorSub.setSetpoint(Constants.tote1Height);
+                    currentlyGrabbingTote = false;
+                }
             }
         } else {
             toteGrabbed = false;
