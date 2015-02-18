@@ -15,7 +15,7 @@ public class GroundIntakeSubsystem extends MSubsystem {
     /** when this is false, the actuators are opened */
     RestrictedSolenoidPair actuators;
     
-    enum WheelsState {
+    public enum WheelsState {
         FORWARD, BACKWARD, STOPPED
     }
     
