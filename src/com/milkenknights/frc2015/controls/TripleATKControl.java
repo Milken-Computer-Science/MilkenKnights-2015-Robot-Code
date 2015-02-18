@@ -121,6 +121,12 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
         }
         
+        // aux ATK 10 puts the elevator in reset mode
+        if (atka.isReleased(10)) {
+            elevatorSub.changeMode(false);
+            elevatorSub.resetPosition();
+        }
+        
         // if a tote has been loaded, drop the elevator down and pick it up
         // this action should only be taken if the tote was loaded while the
         // elevator was up
