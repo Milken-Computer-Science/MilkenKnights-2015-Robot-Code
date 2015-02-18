@@ -10,6 +10,8 @@ public class GroundIntakeSubsystem extends MSubsystem {
 
     CANTalon rightTalon;
     CANTalon leftTalon;
+    
+    /** when this is false, the actuators are opened */
     RestrictedSolenoidPair actuators;
     
     boolean wheelsSpinning;
