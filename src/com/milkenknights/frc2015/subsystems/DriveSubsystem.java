@@ -94,14 +94,14 @@ public class DriveSubsystem extends MSubsystem {
             }
         }
         
-        pid_l = new PIDController(Constants.pidStraightP,
-                Constants.pidStraightI,
-                Constants.pidStraightD,
+        pid_l = new PIDController(Constants.driveStraightPID.kp,
+                Constants.driveStraightPID.ki,
+                Constants.driveStraightPID.kd,
                 enc_l,
                 new LPIDOut());
-        pid_r = new PIDController(Constants.pidStraightP,
-                Constants.pidStraightI,
-                Constants.pidStraightD,
+        pid_r = new PIDController(Constants.driveStraightPID.kp,
+                Constants.driveStraightPID.ki,
+                Constants.driveStraightPID.kd,
                 enc_r,
                 new RPIDOut());
         
@@ -113,7 +113,11 @@ public class DriveSubsystem extends MSubsystem {
             }
         }
         
-        pid_pivot = new PIDController(0, 0, 0, gyro, new PivotController());
+        pid_pivot = new PIDController(Constants.drivePivotPID.kp,
+                Constants.drivePivotPID.ki,
+                Constants.drivePivotPID.kd,
+                gyro,
+                new PivotController());
         pid_pivot.setInputRange(-180, 180);
         pid_pivot.setContinuous(true);
     }
