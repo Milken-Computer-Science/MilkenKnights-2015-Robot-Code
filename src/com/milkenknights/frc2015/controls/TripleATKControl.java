@@ -15,6 +15,9 @@ public class TripleATKControl extends ControlSystem {
     JStick atkr, atkl, atka;
 
     public boolean isCheesy;
+    
+    boolean currentlyGrabbingTote;
+    boolean toteGrabbed;
 
     public TripleATKControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator) {
@@ -31,6 +34,8 @@ public class TripleATKControl extends ControlSystem {
         // because we will start off in PID mode, we should make sure that
         // we don't start moving the elevator immediately
         elevatorSub.setSetpoint(elevatorSub.getPosition());
+        toteGrabbed = false;
+        currentlyGrabbingTote = false;
     }
 
     public void teleopPeriodic() {
@@ -41,6 +46,8 @@ public class TripleATKControl extends ControlSystem {
         SmartDashboard.putBoolean("pid enabled", elevatorSub.inPositionMode());
         SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
         SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
+        SmartDashboard.putBoolean("banner sensor", elevatorSub.toteLoaded());
+        SmartDashboard.putNumber("totes", elevatorSub.getToteNumber());
 
         if (isCheesy) {
             // CHEESY DRIVE
@@ -78,9 +85,11 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.setSetpoint(elevatorSub.getPosition());
             elevatorSub.changeMode(true);
         }
-        
-        // aux ATK y manually moves the elevator (while the trigger is pressed)
-        elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y));
+
+        if (!currentlyGrabbingTote) {
+            // aux ATK y manually moves the elevator (while the trigger is pressed)
+            elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y));
+        }
         
         // aux ATK 2 moves elevator to ground level
         if (atka.isReleased(2)) {
@@ -100,6 +109,47 @@ public class TripleATKControl extends ControlSystem {
         // aux ATK 5 moves elevator to second tote height
         if (atka.isReleased(5)) {
             elevatorSub.setSetpoint(Constants.tote2Height);
+        }
+        
+        // aux ATK 6 resets tote count
+        if (atka.isReleased(6)) {
+            elevatorSub.setToteNumber(0);
+        }
+        
+        // aux ATK 7 manually adds a tote
+        if (atka.isReleased(7)) {
+            elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
+        }
+        
+        // if a tote has been loaded, drop the elevator down and pick it up
+        // this action should only be taken if the tote was loaded while the
+        // elevator was up
+        if (elevatorSub.toteLoaded()) {
+            if (elevatorSub.getPosition() > 10) {
+                if (!toteGrabbed) {
+                    elevatorSub.setSetpoint(0);
+                    currentlyGrabbingTote = true;
+                }
+            } else if (elevatorSub.getPosition() < 3) {
+                if (currentlyGrabbingTote) {
+                    elevatorSub.changeMode(false);
+                    elevatorSub.setSpeed(Constants.resetElevatorSpeed);
+                }
+                if (elevatorSub.getPosition() < 0.28) {
+                    if (!toteGrabbed) {
+                        // increment the number of totes
+                        elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
+                    }
+                    toteGrabbed = true;
+                    if (currentlyGrabbingTote) {
+                        elevatorSub.changeMode(true);
+                        elevatorSub.setSetpoint(Constants.tote1Height);
+                        currentlyGrabbingTote = false;
+                    }
+                }
+            }
+        } else {
+            toteGrabbed = false;
         }
     }
 }

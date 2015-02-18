@@ -35,6 +35,8 @@ public class Constants {
     public static final int driveLeftEncoderDeviceNumberB = 1;
     public static final int driveRightEncoderDeviceNumberA = 2;
     public static final int driveRightEncoderDeviceNumberB = 3;
+    public static final int bannerSensorWhiteDeviceNumber = 10;
+    public static final int bannerSensorBlackDeviceNumber = 11;
     
     // solenoid ports
     public static final int groundIntakeFirstActuatorDeviceNumber = 1;
@@ -86,6 +88,6 @@ public class Constants {
     public static final double scoringPlatformHeight = 3;
     public static final double readyToIntakeHeight = 24;
     public static final double stepHeight = 12;
-    public static final double tote1Height = 13;
+    public static final double tote1Height = 14;
     public static final double tote2Height = 18;
 }
