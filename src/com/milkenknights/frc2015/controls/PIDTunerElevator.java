@@ -29,7 +29,7 @@ public class PIDTunerElevator extends ControlSystem {
         SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
         SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
 
-        elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y)/2);
+        elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y));
 
         // aux ATK 1 enables PID
         if (atka.isReleased(1)) {
@@ -39,19 +39,6 @@ public class PIDTunerElevator extends ControlSystem {
         // aux ATK 2 puts us in manual speed control mode (disables pid)
         if (atka.isReleased(2)) {
             elevatorSub.changeMode(false);
-        }
-        
-        // if aux ATK 5 is held, go in manual speed mode
-        //elevatorSub.changeMode(!atka.isPressed(5));
-
-        // aux ATK 6 sets position to third tote
-        if (atka.isPressed(6)) {
-            elevatorSub.moveElevator(ElevatorSubsystem.Positions.THIRDTOTE);
-        }
-
-        // aux ATK 7 sets position to ground
-        if (atka.isPressed(7)) {
-            elevatorSub.moveElevator(ElevatorSubsystem.Positions.GROUND);
         }
 
         // button 10 does the reset PID thing
