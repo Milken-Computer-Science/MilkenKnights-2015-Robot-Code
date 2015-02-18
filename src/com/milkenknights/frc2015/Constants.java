@@ -25,6 +25,10 @@ public class Constants {
     // Analog Ports
     public static final int pressureTransducerChannel = 0;
     
+    public static final int chuteIntakeTalonDeviceNumber = 1;
+    
+    public static final int clawSolenoidDeviceNumber = 1;
+    
     // DIO Ports
     public static final int hallEffectSensorDeviceNumber = 9;
     public static final int elevatorLeftEncoderDeviceNumberA = 6;
