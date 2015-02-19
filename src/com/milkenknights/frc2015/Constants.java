@@ -46,6 +46,12 @@ public class Constants {
     public static final double transducerScaleFactor = 50;
     public static final double transducerOffset = -25;
     
+    // How high the compressor can go before we enter brownout mode, in PSI
+    public static final double maxCompressorPressure = 60;
+    
+    // How low our voltage can go before we enter brownout mode, in volts
+    public static final double minVoltage = 8;
+
     public static final int imuBaudRate = 57600;
     
     // 4 inch wheel diameter. encoder does 360 pulses per revolution

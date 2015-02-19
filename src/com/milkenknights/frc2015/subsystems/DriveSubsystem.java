@@ -153,6 +153,21 @@ public class DriveSubsystem extends MSubsystem {
     }
     
     /**
+     * Enable or disable power saving mode.  If this is enabled, wheels in slot
+     * slot C (the 550s) and slot B will not move.
+     * @param s True to enable power saving mode
+     */
+    public void setPowerSave(boolean s) {
+        // disable 550s
+        drive.setLeftMotorState(2, !s);
+        drive.setRightMotorState(2, !s);
+        
+        // disable another set of motors
+        drive.setLeftMotorState(1, !s);
+        drive.setRightMotorState(1, !s);
+    }
+    
+    /**
      * Set the PID constants for driving straight
      */
     public void setStraightPID(double p, double i, double d) {

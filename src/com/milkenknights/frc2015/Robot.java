@@ -12,7 +12,9 @@ import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
 import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Robot extends IterativeRobot {
     LinkedList<MSubsystem> subsystems;
@@ -21,6 +23,9 @@ public class Robot extends IterativeRobot {
     ElevatorSubsystem elevatorSubsystem;
 
     ControlSystem controlSystem;
+    
+    PowerDistributionPanel powerDistributionPanel;
+    Compressor compressor;
 
     public void robotInit() {
         RestrictedSolenoid.initPressureSensor(Constants.pressureTransducerChannel, 
@@ -34,6 +39,11 @@ public class Robot extends IterativeRobot {
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
         subsystems.add(elevatorSubsystem);
+        
+        powerDistributionPanel = new PowerDistributionPanel();
+        compressor = new Compressor();
+        
+        compressor.start();
     }
     
     /** An iterator through all the sequence of autonomous actions. */
@@ -88,6 +98,8 @@ public class Robot extends IterativeRobot {
                 startNextAction = true;
                 break;
             }
+            
+            brownoutProtect();
         }
         
         if (startNextAction && autonomousSequence.hasNext()) {
@@ -114,9 +126,39 @@ public class Robot extends IterativeRobot {
         for (MSubsystem s : subsystems) {
             s.update();
         }
+        
+        brownoutProtect();
     }
 
     public void testPeriodic() {
 
+    }
+    
+    private boolean inBrownoutMode = false;
+    
+    /**
+     * This method should be run periodically during both modes, to protect
+     * against brownout.
+     */
+    private void brownoutProtect() {
+        boolean highPressure = RestrictedSolenoid.getPressure() >
+        Constants.maxCompressorPressure;
+
+        boolean lowVoltage = powerDistributionPanel.getVoltage() <
+                Constants.minVoltage;
+
+        if (highPressure && lowVoltage) {
+            if (!inBrownoutMode) {
+                compressor.stop();
+                driveSubsystem.setPowerSave(false);
+            }
+        } else {
+            if (inBrownoutMode) {
+                compressor.start();
+                driveSubsystem.setPowerSave(true);
+            }
+        }
+
+        inBrownoutMode = highPressure && lowVoltage;
     }
 }
