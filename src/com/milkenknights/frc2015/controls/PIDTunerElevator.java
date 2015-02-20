@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PIDTunerElevator extends ControlSystem {
     JStick atka;
 
-    public PIDTunerElevator(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
-        super(sDrive, sElevator);
+    public PIDTunerElevator(DriveSubsystem sDrive,
+            ElevatorSubsystem sElevator,
+            GroundIntakeSubsystem sGroundIntake) {
+        super(sDrive, sElevator, sGroundIntake);
         atka = new JStick(2);
     }
 

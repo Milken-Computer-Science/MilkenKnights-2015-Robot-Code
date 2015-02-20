@@ -20,8 +20,9 @@ public class TripleATKControl extends ControlSystem {
     boolean toteGrabbed;
 
     public TripleATKControl(DriveSubsystem sDrive,
-            ElevatorSubsystem sElevator) {
-        super(sDrive, sElevator);
+            ElevatorSubsystem sElevator,
+            GroundIntakeSubsystem sGroundIntake) {
+        super(sDrive, sElevator, sGroundIntake);
         atkl = new JStick(0);
         atkr = new JStick(1);
         atka = new JStick(2);

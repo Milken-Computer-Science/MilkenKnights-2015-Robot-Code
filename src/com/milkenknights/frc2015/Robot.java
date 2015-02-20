@@ -9,6 +9,7 @@ import com.milkenknights.common.RestrictedSolenoid;
 import com.milkenknights.frc2015.controls.*;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
+import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
 import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
 
@@ -19,6 +20,7 @@ public class Robot extends IterativeRobot {
     
     DriveSubsystem driveSubsystem;
     ElevatorSubsystem elevatorSubsystem;
+    GroundIntakeSubsystem groundIntakeSubsystem;
 
     ControlSystem controlSystem;
 
@@ -28,12 +30,16 @@ public class Robot extends IterativeRobot {
         
         driveSubsystem = new DriveSubsystem();
         elevatorSubsystem = new ElevatorSubsystem();
+        groundIntakeSubsystem = new GroundIntakeSubsystem();
 
-        controlSystem = new TripleATKControl(driveSubsystem, elevatorSubsystem);
+        controlSystem = new TripleATKControl(driveSubsystem,
+                elevatorSubsystem,
+                groundIntakeSubsystem);
 
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
         subsystems.add(elevatorSubsystem);
+        subsystems.add(groundIntakeSubsystem);
     }
     
     /** An iterator through all the sequence of autonomous actions. */
