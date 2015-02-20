@@ -122,6 +122,11 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
         }
         
+        // aux ATK 8 toggles intake actuators
+        if (atka.isReleased(8)) {
+            groundIntakeSub.setActuators(!groundIntakeSub.getActuatorsState());
+        }
+        
         // aux ATK 10 puts the elevator in reset mode
         if (atka.isReleased(10)) {
             elevatorSub.changeMode(false);

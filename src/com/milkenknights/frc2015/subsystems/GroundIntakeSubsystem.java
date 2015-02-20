@@ -39,11 +39,27 @@ public class GroundIntakeSubsystem extends MSubsystem {
     }
     
     /**
+     * Get the most recently set state of the intake wheels
+     * @return The most recently set state of the intake wheels
+     */
+    public WheelsState getWheelsState() {
+        return wheelsState;
+    }
+    
+    /**
      * Change the state of the actuators
      * @param s If this is true, close the actuators
      */
     public void setActuators(boolean s) {
         actuatorsState = s;
+    }
+    
+    /**
+     * Get the most recently set state of the actuators
+     * @return The most recently set state of the actuators
+     */
+    public boolean getActuatorsState() {
+        return actuatorsState;
     }
     
     public void update() {
