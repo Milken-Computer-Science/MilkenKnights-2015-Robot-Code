@@ -29,6 +29,12 @@ public class JStick {
     public static final int ATK3_X = 0; // ATK3 stick x
     public static final int ATK3_Y = 1; // ATK3 stick y
     public static final int ATK3_KNOB = 2; // + side is negative
+    
+    public static final int GUIRAR_GREEN = 0;
+    public static final int GUIRAR_RED = 1;
+    public static final int GUIRAR_YELLOW = 3;
+    public static final int GUIRAR_BLUE = 2;
+    public static final int GUIRAR_ORANGE = 4;
 
     private Joystick jstick;
     private boolean[] buttonPressed;
