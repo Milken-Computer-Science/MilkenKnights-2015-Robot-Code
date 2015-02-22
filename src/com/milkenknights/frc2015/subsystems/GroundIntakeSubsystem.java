@@ -11,16 +11,18 @@ public class GroundIntakeSubsystem extends MSubsystem {
     CANTalon rightTalon;
     CANTalon leftTalon;
     
-    boolean actuatorsState;
-    
-    /** when this is false, the actuators are opened */
     SolenoidPair actuators;
     
     public enum WheelsState {
-        FORWARD, BACKWARD, SLOW_FORWARD, STOPPED
+        INTAKE, OUTPUT, SLOW_INTAKE, STOPPED
+    }
+    
+    public enum ActuatorsState {
+        CLOSED, OPEN
     }
     
     WheelsState wheelsState;
+    ActuatorsState actuatorsState;
     
     public GroundIntakeSubsystem() {
         leftTalon = new CANTalon(Constants.groundIntakeLeftTalonDeviceNumber);
@@ -36,8 +38,8 @@ public class GroundIntakeSubsystem extends MSubsystem {
     }
     
     public void open() {
-        setWheelsState(WheelsState.FORWARD);
-        setActuators(true);
+        setWheelsState(WheelsState.INTAKE);
+        setActuators(ActuatorsState.OPEN);
     }
     
     /**
@@ -60,7 +62,7 @@ public class GroundIntakeSubsystem extends MSubsystem {
      * Change the state of the actuators
      * @param s If this is true, close the actuators
      */
-    public void setActuators(boolean s) {
+    public void setActuators(ActuatorsState s) {
         actuatorsState = s;
     }
     
@@ -68,20 +70,20 @@ public class GroundIntakeSubsystem extends MSubsystem {
      * Get the most recently set state of the actuators
      * @return The most recently set state of the actuators
      */
-    public boolean getActuatorsState() {
+    public ActuatorsState getActuatorsState() {
         return actuatorsState;
     }
     
     public void update() {
-        if (wheelsState == WheelsState.FORWARD) {
+        if (wheelsState == WheelsState.INTAKE) {
             leftTalon.set(-Constants.groundIntakeTalonSpeed);
-        } else if (wheelsState == WheelsState.BACKWARD) {
+        } else if (wheelsState == WheelsState.OUTPUT) {
             leftTalon.set(Constants.groundIntakeTalonSpeed);
-        } else if (wheelsState == WheelsState.SLOW_FORWARD) {
+        } else if (wheelsState == WheelsState.SLOW_INTAKE) {
             leftTalon.set(Constants.groundIntakeTalonSlowSpeed);
         } else {
             leftTalon.set(0);
         }
-        actuators.set(actuatorsState);
+        actuators.set(actuatorsState == ActuatorsState.OPEN ? true : false);
     }
 }

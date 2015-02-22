@@ -72,27 +72,22 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.abortReset();
         }
         
-        // aux ATK 2 moves elevator to the lowest level
         if (atka.isReleased(2)) {
             elevatorSub.setSetpoint(Constants.elevatorScoringPlatformHeight);
         }
         
-        // aux ATK 3 moves elevator to scoring platform
         if (atka.isReleased(3)) {
             elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
         }
         
-        // aux ATK 4 moves elevator to first tote height
         if (atka.isReleased(4)) {
             groundIntakeSub.open();
         }
         
-        // aux ATK 5 moves elevator to second tote height
         if (atka.isReleased(5)) {
-            groundIntakeSub.setActuators(false);
+            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
         }
         
-        // aux ATK 6 resets tote count
         if (atka.isReleased(6)) {
 
         }
@@ -107,7 +102,7 @@ public class TripleATKControl extends ControlSystem {
         
         if (atka.isReleased(9)) {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
-            groundIntakeSub.setActuators(false);
+            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
         }
         
         // aux ATK 10 puts the elevator in reset mode
@@ -122,15 +117,16 @@ public class TripleATKControl extends ControlSystem {
         if (elevatorSub.toteLoaded() && !toteGrabbed) {
             if (elevatorSub.getPosition() <= Constants.elevatorMinDistance + .2) {
                 toteGrabbed = true;
-                groundIntakeSub.setActuators(true);
+                groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
                 elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
             } else {
                 elevatorSub.setSetpoint(Constants.elevatorMinDistance);
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
             }
         }
         if (toteGrabbed && elevatorSub.getPosition() >= Constants.elevatorTote1Height) {
             toteGrabbed = false;
-            groundIntakeSub.setActuators(false);
+            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
         }
     }
