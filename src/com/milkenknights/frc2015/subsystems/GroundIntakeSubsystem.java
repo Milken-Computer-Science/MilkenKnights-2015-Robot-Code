@@ -17,7 +17,7 @@ public class GroundIntakeSubsystem extends MSubsystem {
     SolenoidPair actuators;
     
     public enum WheelsState {
-        FORWARD, BACKWARD, STOPPED
+        FORWARD, BACKWARD, SLOW_FORWARD, STOPPED
     }
     
     WheelsState wheelsState;
@@ -77,6 +77,8 @@ public class GroundIntakeSubsystem extends MSubsystem {
             leftTalon.set(-Constants.groundIntakeTalonSpeed);
         } else if (wheelsState == WheelsState.BACKWARD) {
             leftTalon.set(Constants.groundIntakeTalonSpeed);
+        } else if (wheelsState == WheelsState.SLOW_FORWARD) {
+            leftTalon.set(Constants.groundIntakeTalonSlowSpeed);
         } else {
             leftTalon.set(0);
         }

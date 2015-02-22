@@ -65,7 +65,7 @@ public class Constants {
 
     //GroundIntake talon speed
     public static final double groundIntakeTalonSpeed = 1;
-    public static final double groundIntakeTalonSlowdownSpeed = .01;
+    public static final double groundIntakeTalonSlowSpeed = .5;
     
     public static final double elevatorResetDistance = 0.25;
     public static final double elevatorMaxDistance = 34;
