@@ -13,16 +13,9 @@ import edu.wpi.first.wpilibj.PIDController;
  * @author Jake Reiner
  */
 public class ElevatorSubsystem extends MSubsystem {
-    boolean positionMode;
-
-    double elevatorSpeed;
-    boolean resetPosition;
-    
+    boolean resetPosition = false;
     int toteCount = 0;
-    boolean goingUp;
     
-    boolean manualPIDConstants;
-
     CANTalon elevatorTalonRight;
     CANTalon elevatorTalonLeft;
 
@@ -30,11 +23,9 @@ public class ElevatorSubsystem extends MSubsystem {
     DigitalInput hallEffectSensor;
 
     Encoder enc_l;
-    // right encoder stuff commented out because it should just follow the
-    // left talon
     //Encoder enc_r;
 
-    PIDController pid_l;
+    PIDController pid;
     //PIDController pid_r;
     
     /** when this returns true, a tote has been loaded */
@@ -53,19 +44,14 @@ public class ElevatorSubsystem extends MSubsystem {
         elevatorTalonRight.set(elevatorTalonLeft.getDeviceID());
         elevatorTalonRight.reverseOutput(true);
 
-        resetPosition = false;
-        positionMode = false;
-
         enc_l = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
                 Constants.elevatorLeftEncoderDeviceNumberB);
         //enc_r = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
         //        Constants.elevatorRightEncoderDeviceNumberB);
 
         enc_l.setDistancePerPulse(Constants.elevatorInchesPerPulse);
-        //enc_r.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
 
-        pid_l = new PIDController(0,0,0, enc_l, elevatorTalonLeft);
-        //pid_r = new PIDController(0,0,0, enc_r, elevatorTalonRight);
+        pid = new PIDController(0,0,0, enc_l, elevatorTalonLeft);
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
     }
@@ -76,29 +62,12 @@ public class ElevatorSubsystem extends MSubsystem {
      * @param mode True changes mode to position mode. False changes mode to
      * manual speed control mode.
      */
-    public void changeMode(boolean mode) {
-        if (mode != positionMode) {
-            if (mode) {
-                pid_l.enable();
-                //pid_r.enable();
-                resetPosition = false;
-            } else {
-                if (pid_l.isEnable()) {
-                    pid_l.disable();
-                }
-                /*
-                if (pid_r.isEnable()) {
-                    pid_r.disable();
-                }
-                */
-            }
+    public void enablePID(boolean b) {
+        if (b) {
+            pid.enable();
+        } else {
+            pid.disable();
         }
-        positionMode = mode;
-    }
-
-    /** Returns true if we are in position mode. */
-    public boolean inPositionMode() {
-        return positionMode;
     }
     
     /**
@@ -107,27 +76,11 @@ public class ElevatorSubsystem extends MSubsystem {
      * @param setpoint The desired setpoint of the elevator.
      */
     public void setSetpoint(double setpoint) {
-        pid_l.setSetpoint(setpoint);
-        //pid_r.setSetpoint(-setpoint);
+        pid.setSetpoint(setpoint);
     }
-
-    /**
-     * Manually set the speed of the elevator.  Only works when we are in manual
-     * speed control mode (otherwise, does nothing).
-     * 
-     * A positive value will move the elevator up.
-     * @param speed The desired speed.
-     */
-    public void setSpeed(double speed) {
-        elevatorSpeed = speed;
-    }
-
-    /**
-     * Return the speed that we told to elevator to move at.
-     * @return The last set value from setSpeed.
-     */
-    public double getSpeed() {
-        return elevatorSpeed;
+    
+    public double getSetpoint() {
+        return pid.getSetpoint();
     }
 
     /**
@@ -138,14 +91,14 @@ public class ElevatorSubsystem extends MSubsystem {
      * calling abortReset().
      */
     public void resetPosition() {
-        resetPosition = true;
+        
     }
 
     /**
      * If the robot is in reset mode, this will prematurely end the reset.
      */
     public void abortReset() {
-        resetPosition = false;
+        
     }
     
     /**
@@ -153,16 +106,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * @return the average between the elevator encoder positions.
      */
     public double getPosition() {
-        //return (enc_l.getDistance() - enc_r.getDistance())/2;
         return enc_l.getDistance();
-    }
-
-    /**
-     * Set PID gains for both sides of the elevator.
-     */
-    public void setPID(double p, double i, double d) {
-        pid_l.setPID(p, i, d);
-        //pid_r.setPID(p, i, d);
     }
     
     /**
@@ -171,7 +115,6 @@ public class ElevatorSubsystem extends MSubsystem {
      */
     public void resetEncoders() {
         enc_l.reset();
-        //enc_r.reset();
     }
 
     /**
@@ -195,20 +138,6 @@ public class ElevatorSubsystem extends MSubsystem {
     }
     
     public void teleopInit() {}
-    
-    /**
-     * Use manual PID constants instead of different PID constants for up, down
-     * and different totes.
-     * @param enable If set to true use manual PID constants.
-     */
-    public void manualPIDPosition(boolean enable) {
-        manualPIDConstants = enable;
-        if (manualPIDConstants) {
-            setPID(Constants.manualElevatorPID.kp,
-                    Constants.manualElevatorPID.ki, 
-                    Constants.manualElevatorPID.kd);
-        }
-    }
 
     public void update(){
         if (!hallEffectSensor.get()) {
@@ -216,35 +145,6 @@ public class ElevatorSubsystem extends MSubsystem {
             enc_l.reset();
             resetPosition = false;
         }
-
-        if (!positionMode) {
-            if (resetPosition) {
-                elevatorTalonLeft.set(Constants.resetElevatorSpeed);
-            } else {
-                elevatorTalonLeft.set(elevatorSpeed);
-                //elevatorTalonRight.set(-elevatorSpeed);
-            }
-        } else if (!manualPIDConstants) {
-            // protect from array out of bounds exception
-            int ind = toteCount;
-            if (pid_l.getSetpoint() > enc_l.pidGet()) {
-                if (ind >= Constants.elevatorUpPID.length) {
-                    ind = Constants.elevatorUpPID.length - 1;
-                }
-                setPID(Constants.elevatorUpPID[ind].kp, 
-                        Constants.elevatorUpPID[ind].ki, 
-                        Constants.elevatorUpPID[ind].kd);
-            } else {
-                if (ind >= Constants.elevatorDownPID.length) {
-                    ind = Constants.elevatorDownPID.length - 1;
-                }
-                setPID(Constants.elevatorDownPID[ind].kp, 
-                        Constants.elevatorDownPID[ind].ki, 
-                        Constants.elevatorDownPID[ind].kd);
-            }
-        }
-        
-        // The right talon should just follow the left talon
-        //elevatorTalonRight.set(-elevatorTalonLeft.get());
+        System.out.println(pid.getSetpoint());
     }
 }

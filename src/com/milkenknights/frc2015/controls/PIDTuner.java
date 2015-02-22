@@ -99,12 +99,12 @@ public class PIDTuner extends ControlSystem {
         }
         
         // aux ATK 6 sets PID setpoint to 12 inches
-        if (atka.isPressed(6)) {
+        if (atka.isJustPressed(6)) {
             driveSub.setStraightPIDSetpoint(12);
         }
         
         // aux ATK 7 sets PID setpoint to 72 inches
-        if (atka.isPressed(7)) {
+        if (atka.isJustPressed(7)) {
             driveSub.setStraightPIDSetpoint(72);
         }
         
@@ -113,13 +113,13 @@ public class PIDTuner extends ControlSystem {
         if (((pidEnabled || runningAutonAction) &&
                 (Math.abs(atkl.getAxis(JStick.ATK3_Y)) > 0.6
                     || Math.abs(atkr.getAxis(JStick.ATK3_Y)) > Math.abs(0.6)))
-                || atka.isPressed(2)) {
+                || atka.isJustPressed(2)) {
             driveSub.resetPIDPosition();
             pidEnabled = false;
         }
         
         // aux atk 3 resets pid constants
-        if (atka.isPressed(3)) {
+        if (atka.isJustPressed(3)) {
             SmartDashboard.putNumber("kp", 0.1);
             SmartDashboard.putNumber("ki", 0.01);
             SmartDashboard.putNumber("kd", 0.001);
@@ -132,9 +132,9 @@ public class PIDTuner extends ControlSystem {
         }
         
         // aux ATK 11 puts us in deadband tuning mode. aux ATK 10 disables it
-        if (atka.isPressed(11)) {
+        if (atka.isJustPressed(11)) {
             deadbandTune = true;
-        } else if (atka.isPressed(10)) {
+        } else if (atka.isJustPressed(10)) {
             deadbandTune = false;
         }
         

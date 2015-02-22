@@ -15,9 +15,6 @@ public class TripleATKControl extends ControlSystem {
     JStick atkr, atkl, atka;
 
     public boolean isCheesy;
-    
-    boolean currentlyGrabbingTote;
-    boolean toteGrabbed;
 
     public TripleATKControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator,
@@ -31,12 +28,10 @@ public class TripleATKControl extends ControlSystem {
     }
 
     public void teleopInit() {
-        elevatorSub.changeMode(true);
+        elevatorSub.enablePID(true);
         // because we will start off in PID mode, we should make sure that
         // we don't start moving the elevator immediately
         elevatorSub.setSetpoint(elevatorSub.getPosition());
-        toteGrabbed = false;
-        currentlyGrabbingTote = false;
     }
 
     public void teleopPeriodic() {
@@ -44,8 +39,6 @@ public class TripleATKControl extends ControlSystem {
         atkr.update();
         atka.update();
 
-        SmartDashboard.putBoolean("pid enabled", elevatorSub.inPositionMode());
-        SmartDashboard.putNumber("elevator manual speed", elevatorSub.getSpeed());
         SmartDashboard.putNumber("Elevator position", elevatorSub.getPosition());
         SmartDashboard.putBoolean("banner sensor", elevatorSub.toteLoaded());
         SmartDashboard.putNumber("totes", elevatorSub.getToteNumber());
@@ -80,16 +73,8 @@ public class TripleATKControl extends ControlSystem {
         }
 
         // holding down aux ATK trigger puts us in manual speed control mode
-        if (atka.justPressed(1)) {
-            elevatorSub.changeMode(false);
-        } else if (atka.isReleased(1)) {
-            elevatorSub.setSetpoint(elevatorSub.getPosition());
-            elevatorSub.changeMode(true);
-        }
-
-        if (!currentlyGrabbingTote) {
-            // aux ATK y manually moves the elevator (while the trigger is pressed)
-            elevatorSub.setSpeed(-atka.getAxis(JStick.ATK3_Y));
+        if (atka.isPressed(1)) {
+            elevatorSub.setSetpoint(elevatorSub.getSetpoint() - atka.getAxis(JStick.ATK3_Y));
         }
         
         // aux ATK 2 moves elevator to ground level
@@ -135,7 +120,6 @@ public class TripleATKControl extends ControlSystem {
         
         // aux ATK 10 puts the elevator in reset mode
         if (atka.isReleased(10)) {
-            elevatorSub.changeMode(false);
             elevatorSub.resetPosition();
         }
         
@@ -143,33 +127,36 @@ public class TripleATKControl extends ControlSystem {
         // this action should only be taken if the tote was loaded while the
         // elevator was up
         if (elevatorSub.toteLoaded()) {
-            if (elevatorSub.getPosition() > 10) {
-                if (!toteGrabbed) {
-                    elevatorSub.setSetpoint(0);
-                    currentlyGrabbingTote = true;
-                }
-            } else if (elevatorSub.getPosition() < 2) {
-                if (currentlyGrabbingTote) {
-                    elevatorSub.changeMode(false);
-                    groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
-                    elevatorSub.setSpeed(Constants.resetElevatorSpeed);
-                }
-                if (elevatorSub.getPosition() <= 0) {
-                    if (!toteGrabbed) {
-                        // increment the number of totes
-                        elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
-                        groundIntakeSub.setActuators(true);
-                    }
-                    toteGrabbed = true;
-                    if (currentlyGrabbingTote) {
-                        elevatorSub.changeMode(true);
-                        elevatorSub.setSetpoint(Constants.tote1Height);
-                        currentlyGrabbingTote = false;
-                    }
-                }
-            }
-        } else {
-            toteGrabbed = false;
+            
         }
+//        if (elevatorSub.toteLoaded()) {
+//            if (elevatorSub.getPosition() > 10) {
+//                if (!toteGrabbed) {
+//                    elevatorSub.setSetpoint(0);
+//                    currentlyGrabbingTote = true;
+//                }
+//            } else if (elevatorSub.getPosition() < 2) {
+//                if (currentlyGrabbingTote) {
+//                    elevatorSub.changeMode(false);
+//                    groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+//                    elevatorSub.setSpeed(Constants.resetElevatorSpeed);
+//                }
+//                if (elevatorSub.getPosition() <= 0) {
+//                    if (!toteGrabbed) {
+//                        // increment the number of totes
+//                        elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
+//                        groundIntakeSub.setActuators(true);
+//                    }
+//                    toteGrabbed = true;
+//                    if (currentlyGrabbingTote) {
+//                        elevatorSub.changeMode(true);
+//                        elevatorSub.setSetpoint(Constants.tote1Height);
+//                        currentlyGrabbingTote = false;
+//                    }
+//                }
+//            }
+//        } else {
+//            toteGrabbed = false;
+//        }
     }
 }

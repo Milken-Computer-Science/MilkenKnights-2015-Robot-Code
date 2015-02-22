@@ -101,12 +101,19 @@ public class JStick {
      * @param b The button number to be read.
      * @return The state of the button since the last update.
      */
-    public boolean isPressed(int b) {
+    public boolean isJustPressed(int b) {
         if (b >= 0 && b < buttonPressed.length) {
             return buttonPressed[b] && !buttonLastPressed[b];
         } else {
             return false;
         }
+    }
+    
+    public boolean isPressed(int b) {
+        if (b >= 0 && b < buttonPressed.length) {
+            return buttonPressed[b];
+        }
+        return false;
     }
 
     /**
