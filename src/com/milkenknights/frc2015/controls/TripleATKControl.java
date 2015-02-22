@@ -13,7 +13,7 @@ public class TripleATKControl extends ControlSystem {
     JStick atkr, atkl, atka;
 
     public boolean isCheesy;
-    private boolean toteGrabbed = false;
+    private boolean toteGrabbed;
 
     public TripleATKControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator,
@@ -24,12 +24,11 @@ public class TripleATKControl extends ControlSystem {
         atka = new JStick(2);
 
         isCheesy = false;
+        toteGrabbed = false;
     }
 
     public void teleopInit() {
         elevatorSub.enablePID(true);
-        // because we will start off in PID mode, we should make sure that
-        // we don't start moving the elevator immediately
         elevatorSub.setSetpoint(elevatorSub.getPosition());
     }
 
@@ -73,39 +72,37 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.abortReset();
         }
         
-        // aux ATK 2 moves elevator to ground level
+        // aux ATK 2 moves elevator to the lowest level
         if (atka.isReleased(2)) {
-            elevatorSub.setSetpoint(0);
+            elevatorSub.setSetpoint(Constants.elevatorScoringPlatformHeight);
         }
         
         // aux ATK 3 moves elevator to scoring platform
         if (atka.isReleased(3)) {
-            elevatorSub.setSetpoint(Constants.scoringPlatformHeight);
+            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
         }
         
         // aux ATK 4 moves elevator to first tote height
         if (atka.isReleased(4)) {
-            elevatorSub.setSetpoint(Constants.tote1Height);
+            groundIntakeSub.open();
         }
         
         // aux ATK 5 moves elevator to second tote height
         if (atka.isReleased(5)) {
-            elevatorSub.setSetpoint(Constants.tote2Height);
+            groundIntakeSub.setActuators(false);
         }
         
         // aux ATK 6 resets tote count
         if (atka.isReleased(6)) {
-            elevatorSub.setToteNumber(0);
+
         }
         
         if (atka.isReleased(7)) {
-            groundIntakeSub.setActuators(false);
-            //groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.BACKWARD);
+            
         }
         
-        // aux ATK 8 toggles intake actuators
         if (atka.isReleased(8)) {
-            groundIntakeSub.open();
+            
         }
         
         if (atka.isReleased(9)) {
@@ -126,12 +123,12 @@ public class TripleATKControl extends ControlSystem {
             if (elevatorSub.getPosition() <= Constants.elevatorMinDistance + .2) {
                 toteGrabbed = true;
                 groundIntakeSub.setActuators(true);
-                elevatorSub.setSetpoint(Constants.readyToIntakeHeight);
+                elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
             } else {
                 elevatorSub.setSetpoint(Constants.elevatorMinDistance);
             }
         }
-        if (toteGrabbed && elevatorSub.getPosition() >= Constants.tote1Height) {
+        if (toteGrabbed && elevatorSub.getPosition() >= Constants.elevatorTote1Height) {
             toteGrabbed = false;
             groundIntakeSub.setActuators(false);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
