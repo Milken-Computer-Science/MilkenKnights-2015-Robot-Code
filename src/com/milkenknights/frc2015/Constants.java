@@ -64,27 +64,14 @@ public class Constants {
     public static final double minimumWheelSpeed = 0.0069;
 
     //GroundIntake talon speed
-    public static final int groundIntakeTalonSpeed = 1;
+    public static final double groundIntakeTalonSlowdownSpeed = .01;
     
-    public static final double resetElevatorSpeed = -0.25;
+    public static final double resetElevatorDistance = 0.25;
+    public static final double elevatorMaxDistance = 34;
+    public static final double elevatorMinDistance = 0.25;
 
     //Elevator PID constants
-    public static final PIDGains[] elevatorUpPID = {
-        new PIDGains(0.19, 0, 0),
-        new PIDGains(0.19, 0, 0),
-        new PIDGains(0.19, 0, 0),
-        new PIDGains(0.19, 0, 0)
-    };
-    
-    public static final PIDGains[] elevatorDownPID = {
-        new PIDGains(0.155, 0, 0.13),
-        new PIDGains(0.18, 0, 1),
-        new PIDGains(0.01, 0, 0.01),
-        new PIDGains(0.01, 0, 0.01)
-    };
-    
-    public static final PIDGains manualElevatorPID =
-            new PIDGains(0.19, 0.19, 0.19);
+    public static final PIDGains elevatorPID = new PIDGains(0.195, 0, 0);
     
     public static final double scoringPlatformHeight = 3;
     public static final double readyToIntakeHeight = 24;

@@ -1,11 +1,11 @@
 package com.milkenknights.frc2015.subsystems;
 
 import com.milkenknights.common.MSubsystem;
-import com.milkenknights.common.RestrictedSolenoidPair;
 import com.milkenknights.common.SolenoidPair;
 import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 
 public class GroundIntakeSubsystem extends MSubsystem {
     CANTalon rightTalon;
@@ -29,6 +29,10 @@ public class GroundIntakeSubsystem extends MSubsystem {
                 Constants.groundIntakeFirstActuatorDeviceNumber,
                 Constants.groundIntakeSecondActuatorDeviceNumber,
                 false);
+        
+        rightTalon.changeControlMode(ControlMode.Follower);
+        rightTalon.set(leftTalon.getDeviceID());
+        rightTalon.reverseOutput(true);
     }
     
     public void open() {
@@ -70,14 +74,11 @@ public class GroundIntakeSubsystem extends MSubsystem {
     
     public void update() {
         if (wheelsState == WheelsState.FORWARD) {
-            leftTalon.set(-Constants.groundIntakeTalonSpeed);
-            rightTalon.set(Constants.groundIntakeTalonSpeed);
+            leftTalon.set(-1);
         } else if (wheelsState == WheelsState.BACKWARD) {
-            leftTalon.set(Constants.groundIntakeTalonSpeed);
-            rightTalon.set(-Constants.groundIntakeTalonSpeed);
+            leftTalon.set(1);
         } else {
             leftTalon.set(0);
-            rightTalon.set(0);
         }
         actuators.set(actuatorsState);
     }

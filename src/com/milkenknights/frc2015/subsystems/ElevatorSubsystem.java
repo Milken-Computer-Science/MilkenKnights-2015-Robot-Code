@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.PIDController;
  * @author Jake Reiner
  */
 public class ElevatorSubsystem extends MSubsystem {
-    boolean resetPosition = false;
+    boolean resetMode = false;
     int toteCount = 0;
     
     CANTalon elevatorTalonRight;
@@ -51,7 +51,7 @@ public class ElevatorSubsystem extends MSubsystem {
 
         enc_l.setDistancePerPulse(Constants.elevatorInchesPerPulse);
 
-        pid = new PIDController(0,0,0, enc_l, elevatorTalonLeft);
+        pid = new PIDController(Constants.elevatorPID.kp,Constants.elevatorPID.ki,Constants.elevatorPID.kd, enc_l, elevatorTalonLeft);
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
     }
@@ -76,7 +76,13 @@ public class ElevatorSubsystem extends MSubsystem {
      * @param setpoint The desired setpoint of the elevator.
      */
     public void setSetpoint(double setpoint) {
-        pid.setSetpoint(setpoint);
+        if (setpoint >= Constants.elevatorMaxDistance) {
+            pid.setSetpoint(Constants.elevatorMaxDistance);
+        } else if (setpoint <= Constants.elevatorMinDistance) {
+            pid.setSetpoint(Constants.elevatorMinDistance);
+        } else {
+            pid.setSetpoint(setpoint);
+        }
     }
     
     public double getSetpoint() {
@@ -91,14 +97,14 @@ public class ElevatorSubsystem extends MSubsystem {
      * calling abortReset().
      */
     public void resetPosition() {
-        
+        resetMode = true;
     }
 
     /**
      * If the robot is in reset mode, this will prematurely end the reset.
      */
     public void abortReset() {
-        
+        resetMode = false;
     }
     
     /**
@@ -137,14 +143,22 @@ public class ElevatorSubsystem extends MSubsystem {
         return bannerSensor.get();
     }
     
-    public void teleopInit() {}
+    public void teleopInit() {
+        pid.setSetpoint(enc_l.getDistance());
+    }
 
     public void update(){
         if (!hallEffectSensor.get()) {
-            elevatorTalonLeft.setPosition(0);
             enc_l.reset();
-            resetPosition = false;
+            if (resetMode) {
+                setSetpoint(1);
+                resetMode = false;
+            }
         }
-        System.out.println(pid.getSetpoint());
+        
+        if (resetMode) {
+            pid.setSetpoint(pid.getSetpoint() - Constants.resetElevatorDistance);
+        }
+        System.out.println(getSetpoint() + " " + enc_l.getDistance());
     }
 }

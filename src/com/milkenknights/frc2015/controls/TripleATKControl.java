@@ -15,6 +15,7 @@ public class TripleATKControl extends ControlSystem {
     JStick atkr, atkl, atka;
 
     public boolean isCheesy;
+    private boolean toteGrabbed = false;
 
     public TripleATKControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator,
@@ -74,7 +75,8 @@ public class TripleATKControl extends ControlSystem {
 
         // holding down aux ATK trigger puts us in manual speed control mode
         if (atka.isPressed(1)) {
-            elevatorSub.setSetpoint(elevatorSub.getSetpoint() - atka.getAxis(JStick.ATK3_Y));
+            elevatorSub.setSetpoint(elevatorSub.getSetpoint() + atka.getAxis(JStick.ATK3_Y));
+            elevatorSub.abortReset();
         }
         
         // aux ATK 2 moves elevator to ground level
@@ -102,7 +104,6 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.setToteNumber(0);
         }
         
-        // aux ATK 7 manually adds a tote
         if (atka.isReleased(7)) {
             groundIntakeSub.setActuators(false);
             //groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.BACKWARD);
@@ -126,37 +127,20 @@ public class TripleATKControl extends ControlSystem {
         // if a tote has been loaded, drop the elevator down and pick it up
         // this action should only be taken if the tote was loaded while the
         // elevator was up
-        if (elevatorSub.toteLoaded()) {
-            
+        
+        if (elevatorSub.toteLoaded() && !toteGrabbed) {
+            if (elevatorSub.getPosition() <= Constants.elevatorMinDistance + .2) {
+                toteGrabbed = true;
+                groundIntakeSub.setActuators(true);
+                elevatorSub.setSetpoint(Constants.readyToIntakeHeight);
+            } else {
+                elevatorSub.setSetpoint(Constants.elevatorMinDistance);
+            }
         }
-//        if (elevatorSub.toteLoaded()) {
-//            if (elevatorSub.getPosition() > 10) {
-//                if (!toteGrabbed) {
-//                    elevatorSub.setSetpoint(0);
-//                    currentlyGrabbingTote = true;
-//                }
-//            } else if (elevatorSub.getPosition() < 2) {
-//                if (currentlyGrabbingTote) {
-//                    elevatorSub.changeMode(false);
-//                    groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
-//                    elevatorSub.setSpeed(Constants.resetElevatorSpeed);
-//                }
-//                if (elevatorSub.getPosition() <= 0) {
-//                    if (!toteGrabbed) {
-//                        // increment the number of totes
-//                        elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
-//                        groundIntakeSub.setActuators(true);
-//                    }
-//                    toteGrabbed = true;
-//                    if (currentlyGrabbingTote) {
-//                        elevatorSub.changeMode(true);
-//                        elevatorSub.setSetpoint(Constants.tote1Height);
-//                        currentlyGrabbingTote = false;
-//                    }
-//                }
-//            }
-//        } else {
-//            toteGrabbed = false;
-//        }
+        if (toteGrabbed && elevatorSub.getPosition() >= Constants.tote1Height) {
+            toteGrabbed = false;
+            groundIntakeSub.setActuators(false);
+            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+        }
     }
 }
