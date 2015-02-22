@@ -101,10 +101,19 @@ public class JStick {
      * @param b The button number to be read.
      * @return The state of the button since the last update.
      */
-    public boolean isPressed(int b) {
-        if(b >= 0 && b < buttonPressed.length)
+    public boolean isJustPressed(int b) {
+        if (b >= 0 && b < buttonPressed.length) {
             return buttonPressed[b] && !buttonLastPressed[b];
-        else return false;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean isPressed(int b) {
+        if (b >= 0 && b < buttonPressed.length) {
+            return buttonPressed[b];
+        }
+        return false;
     }
 
     /**
@@ -114,9 +123,26 @@ public class JStick {
      * @return True if the button was pressed in the last update but not now.
      */
     public boolean isReleased(int b) {
-        if(b >= 0 && b < buttonPressed.length)
+        if (b >= 0 && b < buttonPressed.length) {
             return !buttonPressed[b] && buttonLastPressed[b];
-        else return false;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Gets whether or not the button has just been pressed
+     * 
+     * @param b The button number to be read.
+     * @return True if the button was not pressed in the last update but
+     *         pressed now.
+     */
+    public boolean justPressed(int b) {
+        if (b >= 0 && b < buttonPressed.length) {
+            return buttonPressed[b] && !buttonLastPressed[b];
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -14,8 +14,10 @@ public class GamepadControl extends ControlSystem {
     
     public boolean isCheesy;
     
-    public GamepadControl(DriveSubsystem sDrive, ElevatorSubsystem sElevator) {
-        super(sDrive, sElevator);
+    public GamepadControl(DriveSubsystem sDrive,
+            ElevatorSubsystem sElevator,
+            GroundIntakeSubsystem sGroundIntake) {
+        super(sDrive, sElevator, sGroundIntake);
         xbox = new JStick(0);
         atk = new JStick(1);
         
