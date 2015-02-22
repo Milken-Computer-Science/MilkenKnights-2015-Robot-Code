@@ -39,8 +39,8 @@ public class Constants {
     public static final int bannerSensorBlackDeviceNumber = 11;
     
     // solenoid ports
-    public static final int groundIntakeFirstActuatorDeviceNumber = 1;
-    public static final int groundIntakeSecondActuatorDeviceNumber = 2;
+    public static final int groundIntakeFirstActuatorDeviceNumber = 0;
+    public static final int groundIntakeSecondActuatorDeviceNumber = 1;
 
     // Pressure Transducer
     public static final double transducerScaleFactor = 50;
@@ -90,5 +90,5 @@ public class Constants {
     public static final double readyToIntakeHeight = 24;
     public static final double stepHeight = 12;
     public static final double tote1Height = 14;
-    public static final double tote2Height = 18;
+    public static final double tote2Height = 28;
 }

@@ -2,6 +2,7 @@ package com.milkenknights.frc2015.subsystems;
 
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.RestrictedSolenoidPair;
+import com.milkenknights.common.SolenoidPair;
 import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -13,7 +14,7 @@ public class GroundIntakeSubsystem extends MSubsystem {
     boolean actuatorsState;
     
     /** when this is false, the actuators are opened */
-    RestrictedSolenoidPair actuators;
+    SolenoidPair actuators;
     
     public enum WheelsState {
         FORWARD, BACKWARD, STOPPED
@@ -24,10 +25,15 @@ public class GroundIntakeSubsystem extends MSubsystem {
     public GroundIntakeSubsystem() {
         leftTalon = new CANTalon(Constants.groundIntakeLeftTalonDeviceNumber);
         rightTalon = new CANTalon(Constants.groundIntakeRightTalonDeviceNumber);
-        actuators = new RestrictedSolenoidPair(
+        actuators = new SolenoidPair(
                 Constants.groundIntakeFirstActuatorDeviceNumber,
                 Constants.groundIntakeSecondActuatorDeviceNumber,
-                false, 0, 0);
+                false);
+    }
+    
+    public void open() {
+        setWheelsState(WheelsState.FORWARD);
+        setActuators(true);
     }
     
     /**
@@ -64,10 +70,10 @@ public class GroundIntakeSubsystem extends MSubsystem {
     
     public void update() {
         if (wheelsState == WheelsState.FORWARD) {
-            leftTalon.set(Constants.groundIntakeTalonSpeed);
+            leftTalon.set(-Constants.groundIntakeTalonSpeed);
             rightTalon.set(Constants.groundIntakeTalonSpeed);
         } else if (wheelsState == WheelsState.BACKWARD) {
-            leftTalon.set(-Constants.groundIntakeTalonSpeed);
+            leftTalon.set(Constants.groundIntakeTalonSpeed);
             rightTalon.set(-Constants.groundIntakeTalonSpeed);
         } else {
             leftTalon.set(0);

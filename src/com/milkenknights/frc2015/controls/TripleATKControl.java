@@ -119,12 +119,18 @@ public class TripleATKControl extends ControlSystem {
         
         // aux ATK 7 manually adds a tote
         if (atka.isReleased(7)) {
-            elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
+            groundIntakeSub.setActuators(false);
+            //groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.BACKWARD);
         }
         
         // aux ATK 8 toggles intake actuators
         if (atka.isReleased(8)) {
-            groundIntakeSub.setActuators(!groundIntakeSub.getActuatorsState());
+            groundIntakeSub.open();
+        }
+        
+        if (atka.isReleased(9)) {
+            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            groundIntakeSub.setActuators(false);
         }
         
         // aux ATK 10 puts the elevator in reset mode
@@ -142,15 +148,17 @@ public class TripleATKControl extends ControlSystem {
                     elevatorSub.setSetpoint(0);
                     currentlyGrabbingTote = true;
                 }
-            } else if (elevatorSub.getPosition() < 3) {
+            } else if (elevatorSub.getPosition() < 2) {
                 if (currentlyGrabbingTote) {
                     elevatorSub.changeMode(false);
+                    groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
                     elevatorSub.setSpeed(Constants.resetElevatorSpeed);
                 }
-                if (elevatorSub.getPosition() < 0.28) {
+                if (elevatorSub.getPosition() <= 0) {
                     if (!toteGrabbed) {
                         // increment the number of totes
                         elevatorSub.setToteNumber(elevatorSub.getToteNumber()+1);
+                        groundIntakeSub.setActuators(true);
                     }
                     toteGrabbed = true;
                     if (currentlyGrabbingTote) {

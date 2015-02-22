@@ -48,6 +48,10 @@ public class ElevatorSubsystem extends MSubsystem {
                 Constants.leftElevatorTalonDeviceNumber);
         elevatorTalonRight = new CANTalon(
                 Constants.rightElevatorTalonDeviceNumber);
+        
+        elevatorTalonRight.changeControlMode(CANTalon.ControlMode.Follower);
+        elevatorTalonRight.set(elevatorTalonLeft.getDeviceID());
+        elevatorTalonRight.reverseOutput(true);
 
         resetPosition = false;
         positionMode = false;
@@ -241,6 +245,6 @@ public class ElevatorSubsystem extends MSubsystem {
         }
         
         // The right talon should just follow the left talon
-        elevatorTalonRight.set(-elevatorTalonLeft.get());
+        //elevatorTalonRight.set(-elevatorTalonLeft.get());
     }
 }
