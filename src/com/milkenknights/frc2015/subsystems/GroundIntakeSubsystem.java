@@ -74,9 +74,9 @@ public class GroundIntakeSubsystem extends MSubsystem {
     
     public void update() {
         if (wheelsState == WheelsState.FORWARD) {
-            leftTalon.set(-1);
+            leftTalon.set(-Constants.groundIntakeTalonSpeed);
         } else if (wheelsState == WheelsState.BACKWARD) {
-            leftTalon.set(1);
+            leftTalon.set(Constants.groundIntakeTalonSpeed);
         } else {
             leftTalon.set(0);
         }
