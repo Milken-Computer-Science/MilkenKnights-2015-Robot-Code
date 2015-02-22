@@ -9,19 +9,19 @@ import com.milkenknights.frc2015.subsystems.*;
  * AUX.
  * @author Daniel
  */
-public class TripleATKControl extends ControlSystem {
-    JStick atkr, atkl, atka;
+public class ATKGuitarControl extends ControlSystem {
+    JStick atkr, atkl, guitar;
 
     public boolean isCheesy;
     private boolean toteGrabbed;
 
-    public TripleATKControl(DriveSubsystem sDrive,
+    public ATKGuitarControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator,
             GroundIntakeSubsystem sGroundIntake) {
         super(sDrive, sElevator, sGroundIntake);
         atkl = new JStick(0);
         atkr = new JStick(1);
-        atka = new JStick(2);
+        guitar = new JStick(2);
 
         isCheesy = false;
         toteGrabbed = false;
@@ -35,7 +35,7 @@ public class TripleATKControl extends ControlSystem {
     public void teleopPeriodic() {
         atkl.update();
         atkr.update();
-        atka.update();
+        guitar.update();
 
         if (isCheesy) {
             // CHEESY DRIVE
@@ -67,46 +67,46 @@ public class TripleATKControl extends ControlSystem {
         }
 
         // holding down aux ATK trigger puts us in manual speed control mode
-        if (atka.isPressed(1)) {
-            elevatorSub.setSetpoint(elevatorSub.getSetpoint() + atka.getAxis(JStick.ATK3_Y));
+        if (guitar.isPressed(1)) {
+            elevatorSub.setSetpoint(elevatorSub.getSetpoint() + guitar.getAxis(JStick.ATK3_Y));
             elevatorSub.abortReset();
         }
         
-        if (atka.isReleased(2)) {
+        if (guitar.isReleased(2)) {
             elevatorSub.setSetpoint(Constants.elevatorScoringPlatformHeight);
         }
         
-        if (atka.isReleased(3)) {
+        if (guitar.isReleased(3)) {
             elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
         }
         
-        if (atka.isReleased(4)) {
+        if (guitar.isReleased(4)) {
             groundIntakeSub.open();
         }
         
-        if (atka.isReleased(5)) {
+        if (guitar.isReleased(5)) {
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
         }
         
-        if (atka.isReleased(6)) {
+        if (guitar.isReleased(6)) {
 
         }
         
-        if (atka.isReleased(7)) {
+        if (guitar.isReleased(7)) {
             
         }
         
-        if (atka.isReleased(8)) {
+        if (guitar.isReleased(8)) {
             
         }
         
-        if (atka.isReleased(9)) {
+        if (guitar.isReleased(9)) {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
         }
         
         // aux ATK 10 puts the elevator in reset mode
-        if (atka.isReleased(10)) {
+        if (guitar.isReleased(10)) {
             elevatorSub.resetPosition();
         }
         
