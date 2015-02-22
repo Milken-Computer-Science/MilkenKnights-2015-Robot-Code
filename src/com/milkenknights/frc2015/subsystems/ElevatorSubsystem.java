@@ -10,26 +10,26 @@ import edu.wpi.first.wpilibj.PIDController;
 
 /**
  * The subsystem that controls the elevator.
+ * 
  * @author Jake Reiner
  */
 public class ElevatorSubsystem extends MSubsystem {
-    boolean resetMode = false;
-    int toteCount = 0;
-    
-    CANTalon elevatorTalonRight;
+    /** when this returns true, a tote has been loaded */
+    DigitalInput bannerSensor;
     CANTalon elevatorTalonLeft;
+
+    CANTalon elevatorTalonRight;
+    Encoder enc;
+    // Encoder enc_r;
 
     /** false means the elevator is at its lowest point */
     DigitalInput hallEffectSensor;
 
-    Encoder enc_l;
-    //Encoder enc_r;
-
     PIDController pid;
-    //PIDController pid_r;
-    
-    /** when this returns true, a tote has been loaded */
-    DigitalInput bannerSensor;
+
+    boolean resetMode = false;
+
+    int toteCount = 0;
 
     public ElevatorSubsystem() {
         hallEffectSensor = new DigitalInput(
@@ -39,41 +39,91 @@ public class ElevatorSubsystem extends MSubsystem {
                 Constants.leftElevatorTalonDeviceNumber);
         elevatorTalonRight = new CANTalon(
                 Constants.rightElevatorTalonDeviceNumber);
-        
+
         elevatorTalonRight.changeControlMode(CANTalon.ControlMode.Follower);
         elevatorTalonRight.set(elevatorTalonLeft.getDeviceID());
         elevatorTalonRight.reverseOutput(true);
 
-        enc_l = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
+        enc = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
                 Constants.elevatorLeftEncoderDeviceNumberB);
-        //enc_r = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
-        //        Constants.elevatorRightEncoderDeviceNumberB);
 
-        enc_l.setDistancePerPulse(Constants.elevatorInchesPerPulse);
+        enc.setDistancePerPulse(Constants.elevatorInchesPerPulse);
 
-        pid = new PIDController(Constants.elevatorPID.kp,Constants.elevatorPID.ki,Constants.elevatorPID.kd, enc_l, elevatorTalonLeft);
+        pid = new PIDController(Constants.elevatorPID.kp,
+                Constants.elevatorPID.ki, Constants.elevatorPID.kd, enc,
+                elevatorTalonLeft);
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
     }
 
     /**
-     * Change the mode for us controlling the elevator.
-     * 
-     * @param mode True changes mode to position mode. False changes mode to
-     * manual speed control mode.
+     * If the robot is in reset mode, this will prematurely end the reset.
      */
-    public void enablePID(boolean b) {
-        if (b) {
+    public void abortReset() {
+        resetMode = false;
+    }
+
+    /**
+     * Enable or disable PID
+     * 
+     * @param enable
+     *            True if we want to enable PID. False if we want to disable PID
+     */
+    public void enablePID(boolean enable) {
+        if (enable) {
             pid.enable();
         } else {
             pid.disable();
         }
     }
-    
+
     /**
-     * Move the elevator position. Only does something if we are in position
-     * mode.
-     * @param setpoint The desired setpoint of the elevator.
+     * Get the elevator encoder position
+     * 
+     * @return the elevator encoder position.
+     */
+    public double getPosition() {
+        return enc.getDistance();
+    }
+
+    /**
+     * Get the current setpoint of the elevator
+     * 
+     * @return The current setpoint
+     */
+    public double getSetpoint() {
+        return pid.getSetpoint();
+    }
+
+    public int getToteNumber() {
+        return toteCount;
+    }
+
+    /**
+     * Reset the encoder to zero. This should only be called if we know that the
+     * elevator is its lowest point.
+     */
+    public void resetEncoder() {
+        enc.reset();
+    }
+
+    /**
+     * Triggers the robot to go in reset mode. In reset mode, the elevator will
+     * slowly decrease the setpoint thus lowering the elevator. When the robot
+     * is in reset mode, it will not react to any other controls until it is
+     * either finished, or if the reset is manually halted by calling
+     * abortReset().
+     */
+    public void resetPosition() {
+        resetMode = true;
+    }
+
+    /**
+     * Set the setpoint of the elevator. This is bounded by the maximum and
+     * minimum values of the elevator.
+     * 
+     * @param setpoint
+     *            The desired setpoint of the elevator.
      */
     public void setSetpoint(double setpoint) {
         if (setpoint >= Constants.elevatorMaxDistance) {
@@ -84,59 +134,19 @@ public class ElevatorSubsystem extends MSubsystem {
             pid.setSetpoint(setpoint);
         }
     }
-    
-    public double getSetpoint() {
-        return pid.getSetpoint();
-    }
-
-    /**
-     * Triggers the robot to go in reset mode. In reset mode, the elevator will
-     * descend at a slow speed until the bottom hall effect sensors are hit.
-     * When the robot is in reset mode, it will not react to any other controls
-     * until it is either finished, or if the reset is manually halted by
-     * calling abortReset().
-     */
-    public void resetPosition() {
-        resetMode = true;
-    }
-
-    /**
-     * If the robot is in reset mode, this will prematurely end the reset.
-     */
-    public void abortReset() {
-        resetMode = false;
-    }
-    
-    /**
-     * Get the average between the elevator encoder positions.
-     * @return the average between the elevator encoder positions.
-     */
-    public double getPosition() {
-        return enc_l.getDistance();
-    }
-    
-    /**
-     * Reset the encoders to zero. This should only be called if we know that
-     * the elevator is its lowest point.
-     */
-    public void resetEncoders() {
-        enc_l.reset();
-    }
 
     /**
      * 
-     * @param toteNumber Number of totes on the elevator
+     * @param toteNumber
+     *            Number of totes on the elevator
      */
     public void setToteNumber(int toteNumber) {
         toteCount = toteNumber;
     }
-    
-    public int getToteNumber() {
-        return toteCount;
-    }
-    
+
     /**
      * Tells us if a tote is ready to be picked up by the elevator
+     * 
      * @return true if the tote is loaded
      */
     public boolean toteLoaded() {
@@ -144,21 +154,19 @@ public class ElevatorSubsystem extends MSubsystem {
     }
     
     public void teleopInit() {
-        pid.setSetpoint(enc_l.getDistance());
+        pid.setSetpoint(enc.getDistance());
     }
 
-    public void update(){
+    public void update() {
         if (!hallEffectSensor.get()) {
-            enc_l.reset();
+            resetEncoder();
             if (resetMode) {
                 setSetpoint(1);
                 resetMode = false;
             }
         }
-        
         if (resetMode) {
-            pid.setSetpoint(pid.getSetpoint() - Constants.resetElevatorDistance);
+            pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
         }
-        System.out.println(getSetpoint() + " " + enc_l.getDistance());
     }
 }
