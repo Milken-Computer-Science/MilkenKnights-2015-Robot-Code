@@ -62,10 +62,8 @@ public class DriveSubsystem extends MSubsystem {
         CANTalon rightTalonB = new CANTalon(Constants.rightTalonDeviceNumberB);
         CANTalon rightTalonC = new CANTalon(Constants.rightTalonDeviceNumberC);
         
-        //leftTalonA.changeControlMode(ControlMode.Voltage);
         leftTalonB.changeControlMode(ControlMode.Follower);
         leftTalonC.changeControlMode(ControlMode.Follower);
-        //rightTalonA.changeControlMode(ControlMode.Voltage);
         rightTalonB.changeControlMode(ControlMode.Follower);
         rightTalonC.changeControlMode(ControlMode.Follower);
         
