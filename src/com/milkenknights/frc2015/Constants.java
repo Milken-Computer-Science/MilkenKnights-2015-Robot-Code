@@ -51,7 +51,7 @@ public class Constants {
     
     // PID constants for driving straight
     public static final PIDGains driveStraightPID =
-            new PIDGains(0.2, 0, 0.005);
+            new PIDGains(0.1, 0, 0);
     public static final PIDGains drivePivotPID =
             new PIDGains(0.2, 0, 0.005);
     

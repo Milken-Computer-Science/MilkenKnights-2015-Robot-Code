@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot {
         elevatorSubsystem = new ElevatorSubsystem();
         groundIntakeSubsystem = new GroundIntakeSubsystem();
 
-        controlSystem = new ATKGuitarControl(driveSubsystem,
+        controlSystem = new TripleATKControl(driveSubsystem,
                 elevatorSubsystem,
                 groundIntakeSubsystem);
 

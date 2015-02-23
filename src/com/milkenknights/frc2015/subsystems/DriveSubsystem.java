@@ -133,7 +133,7 @@ public class DriveSubsystem extends MSubsystem {
      */
     public void tankDrive(double left, double right) {
         leftSpeed = left;
-        rightSpeed = right;
+        rightSpeed = -right;
         setDriveMode(DriveMode.TANK);
     }
     
@@ -163,7 +163,7 @@ public class DriveSubsystem extends MSubsystem {
      */
     public void setStraightPIDSetpoint(double setpoint) {
         pid_l.setSetpoint(setpoint);
-        pid_r.setSetpoint(setpoint);
+        pid_r.setSetpoint(-setpoint);
     }
 
     /**

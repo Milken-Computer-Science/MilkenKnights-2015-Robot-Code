@@ -13,6 +13,8 @@ public class TripleATKControl extends ControlSystem {
     JStick atkr, atkl, atka;
 
     public boolean isCheesy;
+    private boolean autoLoad;
+    private boolean lowGear;
     private boolean toteGrabbed;
 
     public TripleATKControl(DriveSubsystem sDrive,
@@ -24,7 +26,9 @@ public class TripleATKControl extends ControlSystem {
         atka = new JStick(2);
 
         isCheesy = false;
+        autoLoad = true;
         toteGrabbed = false;
+        lowGear = false;
     }
 
     public void teleopInit() {
@@ -47,8 +51,17 @@ public class TripleATKControl extends ControlSystem {
         } else {
             // TANK DRIVE
             // controlled by left and right ATK y axes
-            driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_Y),
+            if (lowGear) {
+                driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_Y)/2,
+                    -atkr.getAxis(JStick.ATK3_Y)/2);
+            } else {
+                driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_Y),
                     -atkr.getAxis(JStick.ATK3_Y));
+            }
+        }
+        
+        if (atkr.isReleased(1)) {
+            lowGear = !lowGear;
         }
 
         // left ATK 7 toggles between cheesy and tank
@@ -65,56 +78,30 @@ public class TripleATKControl extends ControlSystem {
         if (atkl.isReleased(9)) {
             isCheesy = true;
         }
+        
+        if (atkl.isPressed(1)) {
+            driveSub.resetPIDPosition();
+            driveSub.setStraightPIDSetpoint(12);
+            driveSub.startStraightPID();
+        }
 
-        // holding down aux ATK trigger puts us in manual speed control mode
-        if (atka.isPressed(1)) {
-            elevatorSub.setSetpoint(elevatorSub.getSetpoint() + atka.getAxis(JStick.ATK3_Y));
-            elevatorSub.abortReset();
+        if (atka.isPressed(5)) {
+            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
         }
         
-        if (atka.isReleased(2)) {
-            elevatorSub.setSetpoint(Constants.elevatorScoringPlatformHeight);
-        }
-        
-        if (atka.isReleased(3)) {
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
-        }
-        
-        if (atka.isReleased(4)) {
-            groundIntakeSub.open();
-        }
-        
-        if (atka.isReleased(5)) {
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-        }
-        
-        if (atka.isReleased(6)) {
-
-        }
-        
-        if (atka.isReleased(7)) {
-            
-        }
-        
-        if (atka.isReleased(8)) {
-            
-        }
-        
-        if (atka.isReleased(9)) {
+        if (atka.isPressed(3)) {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
         }
         
-        // aux ATK 10 puts the elevator in reset mode
-        if (atka.isReleased(10)) {
-            elevatorSub.resetPosition();
+        if (atka.isPressed(4)) {
+            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.OUTPUT);
         }
-        
+
         // if a tote has been loaded, drop the elevator down and pick it up
         // this action should only be taken if the tote was loaded while the
         // elevator was up
         
-        if (elevatorSub.toteLoaded() && !toteGrabbed) {
+        if (elevatorSub.toteLoaded() && !toteGrabbed && autoLoad) {
             if (elevatorSub.getPosition() <= Constants.elevatorMinDistance) {
                 toteGrabbed = true;
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
@@ -126,10 +113,7 @@ public class TripleATKControl extends ControlSystem {
         }
         if (toteGrabbed && elevatorSub.getPosition() >= Constants.elevatorTote1Height) {
             toteGrabbed = false;
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
         }
-        
-        System.out.println(toteGrabbed);
     }
 }

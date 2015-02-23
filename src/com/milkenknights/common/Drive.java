@@ -104,7 +104,7 @@ public class Drive {
         }
         
         leftMotor.set(lPower);
-        rightMotor.set(-rPower);
+        rightMotor.set(rPower);
     }
     
     /**
