@@ -80,7 +80,7 @@ public class GroundIntakeSubsystem extends MSubsystem {
         } else if (wheelsState == WheelsState.OUTPUT) {
             leftTalon.set(Constants.groundIntakeTalonSpeed);
         } else if (wheelsState == WheelsState.SLOW_INTAKE) {
-            leftTalon.set(Constants.groundIntakeTalonSlowSpeed);
+            leftTalon.set(-Constants.groundIntakeTalonSlowSpeed);
         } else {
             leftTalon.set(0);
         }

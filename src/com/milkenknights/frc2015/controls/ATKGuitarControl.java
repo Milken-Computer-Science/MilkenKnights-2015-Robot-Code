@@ -13,6 +13,8 @@ public class ATKGuitarControl extends ControlSystem {
     JStick atkr, atkl, guitar;
 
     public boolean isCheesy;
+    private boolean autoLoad;
+    private boolean lowGear;
     private boolean toteGrabbed;
 
     public ATKGuitarControl(DriveSubsystem sDrive,
@@ -24,7 +26,9 @@ public class ATKGuitarControl extends ControlSystem {
         guitar = new JStick(2);
 
         isCheesy = false;
+        autoLoad = true;
         toteGrabbed = false;
+        lowGear = false;
     }
 
     public void teleopInit() {
@@ -47,8 +51,17 @@ public class ATKGuitarControl extends ControlSystem {
         } else {
             // TANK DRIVE
             // controlled by left and right ATK y axes
-            driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_Y),
+            if (lowGear) {
+                driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_Y)/2,
+                    -atkr.getAxis(JStick.ATK3_Y)/2);
+            } else {
+                driveSub.tankDrive(-atkl.getAxis(JStick.ATK3_Y),
                     -atkr.getAxis(JStick.ATK3_Y));
+            }
+        }
+        
+        if (atkr.isReleased(1)) {
+            lowGear = !lowGear;
         }
 
         // left ATK 7 toggles between cheesy and tank
@@ -66,55 +79,51 @@ public class ATKGuitarControl extends ControlSystem {
             isCheesy = true;
         }
 
-        // holding down aux ATK trigger puts us in manual speed control mode
-        if (guitar.isPressed(1)) {
-            elevatorSub.setSetpoint(elevatorSub.getSetpoint() + guitar.getAxis(JStick.ATK3_Y));
+        if (guitar.getPOV(0) == 0) {
+            elevatorSub.setSetpoint(elevatorSub.getSetpoint() + .5);
+            elevatorSub.abortReset();
+        } else if (guitar.getPOV(0) == 180) {
+            elevatorSub.setSetpoint(elevatorSub.getSetpoint() - .5);
             elevatorSub.abortReset();
         }
         
-        if (guitar.isReleased(2)) {
-            elevatorSub.setSetpoint(Constants.elevatorScoringPlatformHeight);
-        }
-        
-        if (guitar.isReleased(3)) {
+        if (guitar.isPressed(JStick.GUIRAR_GREEN)) {
             elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+            autoLoad = true;
         }
         
-        if (guitar.isReleased(4)) {
+        if (guitar.isPressed(JStick.GUIRAR_RED)) {
+            elevatorSub.setSetpoint(Constants.elevatorScoringPlatformHeight);
+            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            autoLoad = false;
+        }
+        
+        if (guitar.isPressed(JStick.GUIRAR_YELLOW)) {
             groundIntakeSub.open();
         }
         
-        if (guitar.isReleased(5)) {
+        if (guitar.isPressed(JStick.GUIRAR_BLUE)) {
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
         }
         
-        if (guitar.isReleased(6)) {
-
-        }
-        
-        if (guitar.isReleased(7)) {
-            
-        }
-        
-        if (guitar.isReleased(8)) {
-            
-        }
-        
-        if (guitar.isReleased(9)) {
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
+        if (guitar.isReleased(JStick.GUIRAR_ORANGE)) {
+            if (groundIntakeSub.getWheelsState() == GroundIntakeSubsystem.WheelsState.STOPPED) {
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.OUTPUT);
+            } else {
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            }
         }
         
         // aux ATK 10 puts the elevator in reset mode
-        if (guitar.isReleased(10)) {
+        if (guitar.isPressed(JStick.GUITAR_BACK)) {
             elevatorSub.resetPosition();
         }
-        
+
         // if a tote has been loaded, drop the elevator down and pick it up
         // this action should only be taken if the tote was loaded while the
         // elevator was up
         
-        if (elevatorSub.toteLoaded() && !toteGrabbed) {
+        if (elevatorSub.toteLoaded() && !toteGrabbed && autoLoad) {
             if (elevatorSub.getPosition() <= Constants.elevatorMinDistance) {
                 toteGrabbed = true;
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
@@ -126,10 +135,7 @@ public class ATKGuitarControl extends ControlSystem {
         }
         if (toteGrabbed && elevatorSub.getPosition() >= Constants.elevatorTote1Height) {
             toteGrabbed = false;
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
         }
-        
-        System.out.println(toteGrabbed);
     }
 }

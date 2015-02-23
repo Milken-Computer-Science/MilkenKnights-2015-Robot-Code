@@ -30,11 +30,17 @@ public class JStick {
     public static final int ATK3_Y = 1; // ATK3 stick y
     public static final int ATK3_KNOB = 2; // + side is negative
     
-    public static final int GUIRAR_GREEN = 0;
-    public static final int GUIRAR_RED = 1;
-    public static final int GUIRAR_YELLOW = 3;
-    public static final int GUIRAR_BLUE = 2;
-    public static final int GUIRAR_ORANGE = 4;
+    public static final int GUIRAR_GREEN = 1;
+    public static final int GUIRAR_RED = 2;
+    public static final int GUIRAR_YELLOW = 4;
+    public static final int GUIRAR_BLUE = 3;
+    public static final int GUIRAR_ORANGE = 5;
+    
+    public static final int GUITAR_START = 8;
+    public static final int GUITAR_BACK = 7;
+    
+    public static final int GUITAR_WHAMMY = 4;
+    
 
     private Joystick jstick;
     private boolean[] buttonPressed;
@@ -173,5 +179,13 @@ public class JStick {
         if(b >= 0 && b < axes.length)
             return slowAxes[b];
         else return 0;
+    }
+    
+    public int getPOV(int pov) {
+        return jstick.getPOV(pov);
+    }
+    
+    public int getButtonCount() {
+        return jstick.getButtonCount();
     }
 }

@@ -6,6 +6,7 @@ import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -61,10 +62,20 @@ public class DriveSubsystem extends MSubsystem {
         CANTalon rightTalonB = new CANTalon(Constants.rightTalonDeviceNumberB);
         CANTalon rightTalonC = new CANTalon(Constants.rightTalonDeviceNumberC);
         
-        CANTalon[] leftWheels = {leftTalonA, leftTalonB, leftTalonC};
-        CANTalon[] rightWheels = {rightTalonA, rightTalonB, rightTalonC};
+        //leftTalonA.changeControlMode(ControlMode.Voltage);
+        leftTalonB.changeControlMode(ControlMode.Follower);
+        leftTalonC.changeControlMode(ControlMode.Follower);
+        //rightTalonA.changeControlMode(ControlMode.Voltage);
+        rightTalonB.changeControlMode(ControlMode.Follower);
+        rightTalonC.changeControlMode(ControlMode.Follower);
         
-        driveMode = DriveMode.TANK;
+        leftTalonC.reverseOutput(true);
+        rightTalonC.reverseOutput(true);
+        
+        leftTalonB.set(leftTalonA.getDeviceID());
+        leftTalonC.set(leftTalonA.getDeviceID());
+        rightTalonB.set(rightTalonA.getDeviceID());
+        rightTalonC.set(rightTalonA.getDeviceID());
         
         enc_l = new Encoder(Constants.driveLeftEncoderDeviceNumberA,
                 Constants.driveLeftEncoderDeviceNumberB);
@@ -74,36 +85,22 @@ public class DriveSubsystem extends MSubsystem {
         enc_l.setDistancePerPulse(-Constants.driveInchesPerPulse);
         enc_r.setDistancePerPulse(Constants.driveInchesPerPulse);
         
+        driveMode = DriveMode.TANK;
+        
         gyro = new IMU(
                 new SerialPort(Constants.imuBaudRate, SerialPort.Port.kMXP));
         
-        drive = new Drive(leftWheels, rightWheels,
-                Constants.reversedLeftTalons, Constants.reversedRightTalons,
+        drive = new Drive(leftTalonA, rightTalonA,
                 Constants.minimumWheelSpeed);
-        
-        class LPIDOut implements PIDOutput {
-            @Override
-            public void pidWrite(double output) {
-                leftSpeedPID = output;
-            }
-        }
-        class RPIDOut implements PIDOutput {
-            @Override
-            public void pidWrite(double output) {
-                rightSpeedPID = output;
-            }
-        }
         
         pid_l = new PIDController(Constants.driveStraightPID.kp,
                 Constants.driveStraightPID.ki,
                 Constants.driveStraightPID.kd,
-                enc_l,
-                new LPIDOut());
+                enc_l, leftTalonA);
         pid_r = new PIDController(Constants.driveStraightPID.kp,
                 Constants.driveStraightPID.ki,
                 Constants.driveStraightPID.kd,
-                enc_r,
-                new RPIDOut());
+                enc_r, rightTalonA);
         
         class PivotController implements PIDOutput {
             @Override
@@ -237,12 +234,6 @@ public class DriveSubsystem extends MSubsystem {
         return Math.abs(pid_l.getError()) <= threshold &&
                 Math.abs(pid_r.getError()) <= threshold;
     }
-    
-    public void moveIndividualMotor(boolean isLeft, double amount) {
-        if (isLeft) {
-            
-        }
-    }
 
     /**
      * Updates wheel speeds depending on driveMode (which should be set to the
@@ -262,8 +253,9 @@ public class DriveSubsystem extends MSubsystem {
             break;
 
         case PIDSTRAIGHT:
+            break;
         case PIDPIVOT:
-            drive.tankDrive(leftSpeedPID, rightSpeedPID);
+            //drive.tankDrive(leftSpeedPID, rightSpeedPID);
             break;
         }
         

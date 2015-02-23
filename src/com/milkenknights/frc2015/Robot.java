@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot {
         elevatorSubsystem = new ElevatorSubsystem();
         groundIntakeSubsystem = new GroundIntakeSubsystem();
 
-        controlSystem = new TripleATKControl(driveSubsystem,
+        controlSystem = new ATKGuitarControl(driveSubsystem,
                 elevatorSubsystem,
                 groundIntakeSubsystem);
 
@@ -58,9 +58,9 @@ public class Robot extends IterativeRobot {
         runningActions = new LinkedList<AutonomousAction>();
 
         // COMPOSE THE PID STEPS HERE
-        autonomousList.add(new PIDStraightAction(driveSubsystem, 70, 1));
+        autonomousList.add(new PIDStraightAction(driveSubsystem, 12, 1));
         autonomousList.add(new AutonWait(8));
-        autonomousList.add(new PIDStraightAction(driveSubsystem, -70, 1));
+        autonomousList.add(new PIDStraightAction(driveSubsystem, -12, 1));
 
         autonomousSequence = autonomousList.listIterator();
     }

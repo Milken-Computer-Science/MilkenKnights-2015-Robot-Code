@@ -15,12 +15,6 @@ public class Constants {
     public static final int rightTalonDeviceNumberA = 8; // CIM
     public static final int rightElevatorTalonDeviceNumber = 9;
     public static final int groundIntakeRightTalonDeviceNumber = 10;
-
-    
-    // these correspond to index numbers, so A->0, B->1, and C->2
-    // these are the wheels that should be reversed
-    public static final int[] reversedLeftTalons = {2};
-    public static final int[] reversedRightTalons = {0,1};
     
     // Analog Ports
     public static final int pressureTransducerChannel = 0;
@@ -50,10 +44,10 @@ public class Constants {
     
     // 4 inch wheel diameter. encoder does 360 pulses per revolution
     // This is equal to 4pi/360
-    public static final double driveInchesPerPulse = 0.03490658503;
+    public static final double driveInchesPerPulse = 4 * Math.PI / 360;
     
     // INCORRECT VALUE. FIX THIS
-    public static final double elevatorInchesPerPulse = 0.01114794;
+    public static final double elevatorInchesPerPulse = 1.25 * Math.PI / 360;
     
     // PID constants for driving straight
     public static final PIDGains driveStraightPID =
@@ -67,12 +61,14 @@ public class Constants {
     public static final double groundIntakeTalonSpeed = 1;
     public static final double groundIntakeTalonSlowSpeed = .5;
     
-    public static final double elevatorResetDistance = 0.25;
-    public static final double elevatorMaxDistance = 34;
-    public static final double elevatorMinDistance = 0.25;
+
 
     //Elevator PID constants
     public static final PIDGains elevatorPID = new PIDGains(0.195, 0, 0);
+    
+    public static final double elevatorResetDistance = 0.25;
+    public static final double elevatorMaxDistance = 35;
+    public static final double elevatorMinDistance = 0;
     
     public static final double elevatorScoringPlatformHeight = 3;
     public static final double elevatorReadyToIntakeHeight = 24;

@@ -12,11 +12,8 @@ import edu.wpi.first.wpilibj.SpeedController;
  * @author Daniel Kessler
  */
 public class Drive {
-    SpeedController[] leftMotors;
-    SpeedController[] rightMotors;
-    
-    List<Integer> flippedLeftMotors;
-    List<Integer> flippedRightMotors;
+    SpeedController leftMotor;
+    SpeedController rightMotor;
     
     double deadband;
     
@@ -106,25 +103,8 @@ public class Drive {
             rPower = 0;
         }
         
-        int i = 0;
-        for (SpeedController m : leftMotors) {
-            if (flippedLeftMotors.contains(i)) {
-                m.set(-lPower);
-            } else {
-                m.set(lPower);
-            }
-            i++;
-        }
-        i = 0;
-        for (SpeedController m : rightMotors) {
-            if (flippedRightMotors.contains(i)) {
-                m.set(-rPower);
-            } else {
-                m.set(rPower);
-            }
-            i++;
-        }
-
+        leftMotor.set(lPower);
+        rightMotor.set(-rPower);
     }
     
     /**
@@ -132,7 +112,7 @@ public class Drive {
      * @return The speed of the right side of the robot.
      */
     public double getRight() {
-        return rightMotors[0].get();
+        return rightMotor.get();
     }
     
     /**
@@ -140,44 +120,25 @@ public class Drive {
      * @return The speed of the left side of the robot.
      */
     public double getLeft() {
-        return leftMotors[0].get();
+        return leftMotor.get();
     }
     
-    public Drive(SpeedController[] left, SpeedController[] right) {
-        this(left, right, new int[0], new int[0]);
-    }
-    
-    public Drive(SpeedController[] left, SpeedController[] right,
-            double deadbandSpeed) {
-        this(left, right, new int[0], new int[0], deadbandSpeed);
-    }
-    
-    public Drive(SpeedController[] left, SpeedController[] right,
-            int[] reversedLeftMotors, int[] reversedRightMotors) {
-        this(left, right, reversedLeftMotors, reversedRightMotors, 0);
+    public Drive(SpeedController left, SpeedController right) {
+        this(left, right, 0);
     }
     
     /**
      * Make a new Drive instance, and reverse motors, and set deadband speed
-     * @param left all of the SpeedControllers on the left side of the robot
-     * @param right all of the SpeedControllers on the right side of the robot
-     * @param reversedLeftMotors The array indexes of SpeedControllers in the
-     *                           left parameter that should be flipped
-     * @param reversedRightMotors The array indexes of SpeedControllers in the
-     *                            right parameter that should be flipped
+     * @param SpeedController on the left side of the robot
+     * @param SpeedController on the right side of the robot
      * @param deadbandSpeed The minimum speed that robot wheels should be
      *                      allowed to move at
      */
-    public Drive(SpeedController[] left, SpeedController[] right,
-            int[] reversedLeftMotors, int[] reversedRightMotors,
+    public Drive(SpeedController left, SpeedController right,
             double deadbandSpeed) {
-        leftMotors = left;
-        rightMotors = right;
-        flippedLeftMotors = Arrays.stream(reversedLeftMotors)
-                .boxed().collect(Collectors.toList());
-        flippedRightMotors = Arrays.stream(reversedRightMotors)
-                .boxed().collect(Collectors.toList());
         
+        leftMotor = left;
+        rightMotor = right;
         deadband = deadbandSpeed;
     }
     
