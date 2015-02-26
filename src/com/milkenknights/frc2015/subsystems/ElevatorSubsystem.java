@@ -57,6 +57,7 @@ public class ElevatorSubsystem extends MSubsystem {
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
         
         pid.setSetpoint(enc.getDistance());
+        pid.enable();
     }
 
     /**
