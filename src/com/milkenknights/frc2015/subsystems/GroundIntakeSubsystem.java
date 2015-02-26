@@ -35,11 +35,6 @@ public class GroundIntakeSubsystem extends MSubsystem {
         wheelsState = WheelsState.STOPPED;
     }
     
-    public void open() {
-        setWheelsState(WheelsState.INTAKE);
-        setActuators(ActuatorsState.OPEN);
-    }
-    
     /**
      * Start moving the wheels forward, backward, or stop them.
      * @param wheelsState The desired state of the wheels
