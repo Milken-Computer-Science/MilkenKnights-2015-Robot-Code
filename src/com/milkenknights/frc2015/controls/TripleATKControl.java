@@ -55,29 +55,17 @@ public class TripleATKControl extends ControlSystem {
             }
         }
         
+        // Toggle programmed low gear
         if (atkr.isReleased(1)) {
             lowGear = !lowGear;
         }
-
-        // left ATK 7 toggles between cheesy and tank
-        if (atkl.isReleased(7)) {
-            isCheesy = !isCheesy;
-        }
-
-        // left ATK 8 switches to tank drive.
-        if (atkl.isReleased(8)) {
-            isCheesy = false;
-        }
-
-        // left ATK 9 switches to cheesy drive.
-        if (atkl.isReleased(9)) {
-            isCheesy = true;
-        }
         
+        // Move the elevator and abort a reset
         if (atka.isPressed(1)) {
             elevatorSub.setSetpoint(elevatorSub.getSetpoint() + atka.getAxis(JStick.ATK3_Y));
             elevatorSub.abortReset();
         }
+        
         
         if (atka.isReleased(2)) {
             groundIntakeSub.setActuators(groundIntakeSub.getActuatorsState() == GroundIntakeSubsystem.ActuatorsState.CLOSED ? GroundIntakeSubsystem.ActuatorsState.OPEN : GroundIntakeSubsystem.ActuatorsState.CLOSED);
@@ -95,6 +83,7 @@ public class TripleATKControl extends ControlSystem {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.OUTPUT);
         }
         
+        // Reset elevator position
         if (atka.isPressed(10)) {
             elevatorSub.resetPosition();
         }
