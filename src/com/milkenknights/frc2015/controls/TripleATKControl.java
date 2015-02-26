@@ -34,6 +34,7 @@ public class TripleATKControl extends ControlSystem {
     public void teleopInit() {
         elevatorSub.enablePID(true);
         elevatorSub.setSetpoint(elevatorSub.getPosition());
+        //elevatorSub.resetPosition();
     }
 
     public void teleopPeriodic() {
@@ -79,22 +80,35 @@ public class TripleATKControl extends ControlSystem {
             isCheesy = true;
         }
         
-        if (atkl.isPressed(1)) {
+        if (atkl.isReleased(1)) {
             driveSub.resetPIDPosition();
-            driveSub.setStraightPIDSetpoint(12);
+            driveSub.setStraightPIDSetpoint(25);
             driveSub.startStraightPID();
         }
-
-        if (atka.isPressed(5)) {
+        
+        if (atka.isPressed(1)) {
+            elevatorSub.setSetpoint(elevatorSub.getSetpoint() + atka.getAxis(JStick.ATK3_Y));
+            elevatorSub.abortReset();
+        }
+        
+        if (atka.isReleased(2)) {
+            groundIntakeSub.setActuators(groundIntakeSub.getActuatorsState() == GroundIntakeSubsystem.ActuatorsState.CLOSED ? GroundIntakeSubsystem.ActuatorsState.OPEN : GroundIntakeSubsystem.ActuatorsState.CLOSED);
+        }
+ 
+        if (atka.isReleased(5)) {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
         }
         
-        if (atka.isPressed(3)) {
+        if (atka.isReleased(3)) {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
         }
         
         if (atka.isPressed(4)) {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.OUTPUT);
+        }
+        
+        if (atka.isPressed(10)) {
+            elevatorSub.resetPosition();
         }
 
         // if a tote has been loaded, drop the elevator down and pick it up
@@ -102,7 +116,7 @@ public class TripleATKControl extends ControlSystem {
         // elevator was up
         
         if (elevatorSub.toteLoaded() && !toteGrabbed && autoLoad) {
-            if (elevatorSub.getPosition() <= Constants.elevatorMinDistance) {
+            if (elevatorSub.getPosition() <= Constants.elevatorMinDistance + .5) {
                 toteGrabbed = true;
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
                 elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);

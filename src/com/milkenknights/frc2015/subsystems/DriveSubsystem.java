@@ -23,7 +23,6 @@ public class DriveSubsystem extends MSubsystem {
     Drive drive;
         
     boolean slowMode;
-    boolean reverseMode;
     boolean runPID;
     boolean runGyro;
     
@@ -47,7 +46,7 @@ public class DriveSubsystem extends MSubsystem {
     double leftSpeedPID;
     double rightSpeedPID;
     
-    private enum DriveMode {
+    public enum DriveMode {
         TANK, CHEESY, PIDSTRAIGHT, PIDPIVOT
     }
     
@@ -81,7 +80,7 @@ public class DriveSubsystem extends MSubsystem {
                 Constants.driveRightEncoderDeviceNumberB);
         
         enc_l.setDistancePerPulse(-Constants.driveInchesPerPulse);
-        enc_r.setDistancePerPulse(Constants.driveInchesPerPulse);
+        enc_r.setDistancePerPulse(-Constants.driveInchesPerPulse);
         
         driveMode = DriveMode.TANK;
         
@@ -103,7 +102,7 @@ public class DriveSubsystem extends MSubsystem {
         class PivotController implements PIDOutput {
             @Override
             public void pidWrite(double output) {
-                leftSpeedPID = -output;
+                leftSpeedPID = output;
                 rightSpeedPID = output;
             }
         }
@@ -118,7 +117,7 @@ public class DriveSubsystem extends MSubsystem {
     }
     
     public void teleopInit() {
-        reverseMode = false;
+
     }
     
     private void setDriveMode(DriveMode mode) {
@@ -132,9 +131,9 @@ public class DriveSubsystem extends MSubsystem {
      * @param right The desired speed of the robot's right side.
      */
     public void tankDrive(double left, double right) {
+        setDriveMode(DriveMode.TANK);
         leftSpeed = left;
         rightSpeed = -right;
-        setDriveMode(DriveMode.TANK);
     }
     
     /**
@@ -143,8 +142,7 @@ public class DriveSubsystem extends MSubsystem {
      * {@inheritDoc Drive#cheesyDrive(double, double, boolean)}
      */
     public void cheesyDrive(double power, double turn, boolean quickturn) {
-        drive.cheesyDrive(power, turn, quickturn);
-        setDriveMode(DriveMode.CHEESY);
+        //drive.cheesyDrive(power, turn, quickturn);
     }
     
     /**
@@ -180,6 +178,7 @@ public class DriveSubsystem extends MSubsystem {
      */
     public void startStraightPID() {
         setDriveMode(DriveMode.PIDSTRAIGHT);
+        pid_pivot.disable();
         pid_l.enable();
         pid_r.enable();
     }
@@ -208,7 +207,8 @@ public class DriveSubsystem extends MSubsystem {
      */
     public void startPivotPID() {
         setDriveMode(DriveMode.PIDPIVOT);
-        pid_pivot.enable();
+        pid_l.disable();
+        pid_r.disable();
         pid_pivot.enable();
     }
 
@@ -220,6 +220,25 @@ public class DriveSubsystem extends MSubsystem {
         enc_l.reset();
         enc_r.reset();
         pid_pivot.reset();
+    }
+    
+    public void disableAllPID() {
+        pid_l.disable();
+        pid_r.disable();
+        pid_pivot.disable();
+    }
+    
+    public void disableStraightPID() {
+        pid_l.disable();
+        pid_r.disable();
+    }
+    
+    public void disablePivotPID() {
+        pid_pivot.disable();
+    }
+    
+    public boolean isPIDEnabled() {
+        return pid_l.isEnable() || pid_r.isEnable() || pid_pivot.isEnable();
     }
 
     /**
@@ -241,27 +260,32 @@ public class DriveSubsystem extends MSubsystem {
     public void update() {
         switch (driveMode) {
         case TANK:
+            if (isPIDEnabled()) {
+                disableAllPID();
+            }
             drive.tankDrive(leftSpeed, rightSpeed);
-            SmartDashboard.putNumber("l speed", leftSpeed);
-            SmartDashboard.putNumber("r speed", rightSpeed);
             break;
             
         case CHEESY:
+            if (isPIDEnabled()) {
+                disableAllPID();
+            }
             drive.cheesyDrive(cheesyPower, cheesyTurn, cheesyQuickturn);
             break;
-
         case PIDSTRAIGHT:
             break;
         case PIDPIVOT:
-            //drive.tankDrive(leftSpeedPID, rightSpeedPID);
+            drive.tankDrive(leftSpeedPID, rightSpeedPID);
             break;
         }
         
-        SmartDashboard.putNumber("l ticks", enc_l.getRaw());
-        SmartDashboard.putNumber("r ticks", enc_r.getRaw());
         SmartDashboard.putNumber("l dist", enc_l.pidGet());
         SmartDashboard.putNumber("r dist", enc_r.pidGet());
-        SmartDashboard.putNumber("l rate", enc_l.getRate());
-        SmartDashboard.putNumber("r rate", enc_r.getRate());
+        SmartDashboard.putNumber("l setpoint", pid_l.getSetpoint());
+        SmartDashboard.putNumber("r setpoint", pid_r.getSetpoint());
+        SmartDashboard.putNumber("gyro", gyro.pidGet());
+        SmartDashboard.putBoolean("l pid", pid_l.isEnable());
+        SmartDashboard.putBoolean("r pid", pid_l.isEnable());
+        SmartDashboard.putBoolean("pivot pid", pid_pivot.isEnable());
     }
 }

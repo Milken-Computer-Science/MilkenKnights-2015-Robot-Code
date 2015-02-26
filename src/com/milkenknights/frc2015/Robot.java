@@ -10,7 +10,11 @@ import com.milkenknights.frc2015.controls.*;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
+import com.milkenknights.frc2015.subsystems.autonomous.ElevatorMoveAction;
+import com.milkenknights.frc2015.subsystems.autonomous.IntakeActuatorsSet;
+import com.milkenknights.frc2015.subsystems.autonomous.IntakeWheelsSet;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
+import com.milkenknights.frc2015.subsystems.autonomous.PIDPivotAction;
 import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -58,11 +62,20 @@ public class Robot extends IterativeRobot {
         runningActions = new LinkedList<AutonomousAction>();
 
         // COMPOSE THE PID STEPS HERE
-        autonomousList.add(new PIDStraightAction(driveSubsystem, 12, 1));
-        autonomousList.add(new AutonWait(8));
-        autonomousList.add(new PIDStraightAction(driveSubsystem, -12, 1));
+        //autonomousList.add(new IntakeActuatorsSet(groundIntakeSubsystem, GroundIntakeSubsystem.ActuatorsState.OPEN));
+        //autonomousList.add(new ElevatorMoveAction(elevatorSubsystem, Constants.elevatorReadyToIntakeHeight, .5));
+        //autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem, GroundIntakeSubsystem.WheelsState.RIGHT));
+//        autonomousList.add(new PIDStraightAction(driveSubsystem, 20, 1));
+        //autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem, GroundIntakeSubsystem.WheelsState.INTAKE));
+        autonomousList.add(new PIDStraightAction(driveSubsystem, 81, 1));
+        autonomousList.add(new AutonWait(2));
+        autonomousList.add(new PIDStraightAction(driveSubsystem, 162, 1));
+        autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 1));
 
         autonomousSequence = autonomousList.listIterator();
+        
+        driveSubsystem.resetPIDPosition();
+        driveSubsystem.disableAllPID();
     }
 
     public void autonomousPeriodic() {

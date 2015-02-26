@@ -43,17 +43,15 @@ public class Constants {
     public static final int imuBaudRate = 57600;
     
     // 4 inch wheel diameter. encoder does 360 pulses per revolution
-    // This is equal to 4pi/360
     public static final double driveInchesPerPulse = 4 * Math.PI / 360;
     
-    // INCORRECT VALUE. FIX THIS
     public static final double elevatorInchesPerPulse = 1.25 * Math.PI / 360;
     
     // PID constants for driving straight
     public static final PIDGains driveStraightPID =
-            new PIDGains(0.1, 0, 0);
+            new PIDGains(0.01, 0.00001, 0.005);
     public static final PIDGains drivePivotPID =
-            new PIDGains(0.2, 0, 0.005);
+            new PIDGains(0.0085, 0.00001, 0);
     
     public static final double minimumWheelSpeed = 0.0069;
 

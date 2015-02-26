@@ -3,8 +3,8 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 
-/** An action that wil pivot the robot to a certain angle using PID and Gyro */
-class PIDPivotAction extends AutonomousAction {
+/** An action that will pivot the robot to a certain angle using PID and Gyro */
+public class PIDPivotAction extends AutonomousAction {
     DriveSubsystem driveSubsystem;
     double setpoint;
     double tolerance;
@@ -24,7 +24,6 @@ class PIDPivotAction extends AutonomousAction {
 
     @Override
     public void start() {
-        driveSubsystem.resetPIDPosition();
         driveSubsystem.setPivotPIDSetpoint(setpoint);
         driveSubsystem.startPivotPID();
     }

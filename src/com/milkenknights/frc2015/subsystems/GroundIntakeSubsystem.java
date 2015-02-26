@@ -14,15 +14,15 @@ public class GroundIntakeSubsystem extends MSubsystem {
     SolenoidPair actuators;
     
     public enum WheelsState {
-        INTAKE, OUTPUT, SLOW_INTAKE, STOPPED
+        INTAKE, OUTPUT, SLOW_INTAKE, RIGHT, STOPPED
     }
     
     public enum ActuatorsState {
         CLOSED, OPEN
     }
-    
-    WheelsState wheelsState;
+   
     ActuatorsState actuatorsState;
+    WheelsState wheelsState;
     
     public GroundIntakeSubsystem() {
         leftTalon = new CANTalon(Constants.groundIntakeLeftTalonDeviceNumber);
@@ -32,9 +32,8 @@ public class GroundIntakeSubsystem extends MSubsystem {
                 Constants.groundIntakeSecondActuatorDeviceNumber,
                 false);
         
-        rightTalon.changeControlMode(ControlMode.Follower);
-        rightTalon.set(leftTalon.getDeviceID());
-        rightTalon.reverseOutput(true);
+        actuatorsState = ActuatorsState.CLOSED;
+        wheelsState = WheelsState.STOPPED;
     }
     
     public void open() {
@@ -75,15 +74,28 @@ public class GroundIntakeSubsystem extends MSubsystem {
     }
     
     public void update() {
-        if (wheelsState == WheelsState.INTAKE) {
+        switch (wheelsState) {
+        case INTAKE:
             leftTalon.set(-Constants.groundIntakeTalonSpeed);
-        } else if (wheelsState == WheelsState.OUTPUT) {
+            rightTalon.set(Constants.groundIntakeTalonSpeed);
+            break;
+        case OUTPUT:
             leftTalon.set(Constants.groundIntakeTalonSpeed);
-        } else if (wheelsState == WheelsState.SLOW_INTAKE) {
+            rightTalon.set(-Constants.groundIntakeTalonSpeed);
+            break;
+        case SLOW_INTAKE:
             leftTalon.set(-Constants.groundIntakeTalonSlowSpeed);
-        } else {
+            rightTalon.set(Constants.groundIntakeTalonSlowSpeed);
+            break;
+        case RIGHT:
+            leftTalon.set(-Constants.groundIntakeTalonSpeed);
+            rightTalon.set(-Constants.groundIntakeTalonSpeed);
+        default:
             leftTalon.set(0);
+            rightTalon.set(0);
+            break;
         }
+        
         actuators.set(actuatorsState == ActuatorsState.OPEN ? true : false);
     }
 }

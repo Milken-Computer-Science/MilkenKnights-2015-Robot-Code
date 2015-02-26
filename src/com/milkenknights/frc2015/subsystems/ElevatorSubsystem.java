@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The subsystem that controls the elevator.
@@ -54,6 +55,8 @@ public class ElevatorSubsystem extends MSubsystem {
                 elevatorTalonLeft);
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
+        
+        pid.setSetpoint(enc.getDistance());
     }
 
     /**
@@ -154,19 +157,21 @@ public class ElevatorSubsystem extends MSubsystem {
     }
     
     public void teleopInit() {
-        pid.setSetpoint(enc.getDistance());
+        pid.setSetpoint(getPosition());
     }
 
     public void update() {
-        if (!hallEffectSensor.get()) {
-            resetEncoder();
-            if (resetMode) {
-                setSetpoint(1);
-                resetMode = false;
-            }
-        }
         if (resetMode) {
             pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
         }
+        if (elevatorTalonLeft.getOutputCurrent() > 8 && resetMode) {
+            resetEncoder();
+            setSetpoint(1);
+            resetMode = false;
+        }
+        
+        SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
+        SmartDashboard.putNumber("Elevator Setpoint", pid.getSetpoint());
+        SmartDashboard.putNumber("Elevator Position", enc.getDistance());
     }
 }
