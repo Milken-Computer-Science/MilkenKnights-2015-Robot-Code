@@ -5,7 +5,6 @@ import com.milkenknights.common.SolenoidPair;
 import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 
 public class GroundIntakeSubsystem extends MSubsystem {
     CANTalon rightTalon;
@@ -90,6 +89,7 @@ public class GroundIntakeSubsystem extends MSubsystem {
         case RIGHT:
             leftTalon.set(-Constants.groundIntakeTalonSpeed);
             rightTalon.set(-Constants.groundIntakeTalonSpeed);
+            break;
         default:
             leftTalon.set(0);
             rightTalon.set(0);
