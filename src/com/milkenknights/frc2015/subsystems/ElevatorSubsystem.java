@@ -30,8 +30,6 @@ public class ElevatorSubsystem extends MSubsystem {
 
     boolean resetMode = false;
 
-    int toteCount = 0;
-
     public ElevatorSubsystem() {
         hallEffectSensor = new DigitalInput(
                 Constants.hallEffectSensorDeviceNumber);
@@ -99,10 +97,6 @@ public class ElevatorSubsystem extends MSubsystem {
         return pid.getSetpoint();
     }
 
-    public int getToteNumber() {
-        return toteCount;
-    }
-
     /**
      * Reset the encoder to zero. This should only be called if we know that the
      * elevator is its lowest point.
@@ -140,15 +134,6 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     /**
-     * 
-     * @param toteNumber
-     *            Number of totes on the elevator
-     */
-    public void setToteNumber(int toteNumber) {
-        toteCount = toteNumber;
-    }
-
-    /**
      * Tells us if a tote is ready to be picked up by the elevator
      * 
      * @return true if the tote is loaded
@@ -167,7 +152,6 @@ public class ElevatorSubsystem extends MSubsystem {
         }
         if (elevatorTalonLeft.getOutputCurrent() > 8 && resetMode) {
             resetEncoder();
-            setSetpoint(1);
             resetMode = false;
         }
         
