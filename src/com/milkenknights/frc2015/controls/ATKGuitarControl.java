@@ -99,7 +99,7 @@ public class ATKGuitarControl extends ControlSystem {
         }
         
         if (guitar.isPressed(JStick.GUIRAR_YELLOW)) {
-            groundIntakeSub.open();
+
         }
         
         if (guitar.isPressed(JStick.GUIRAR_BLUE)) {
