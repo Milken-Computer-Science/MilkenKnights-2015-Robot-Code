@@ -3,6 +3,7 @@ package com.milkenknights.frc2015.controls;
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.common.JStick;
 import com.milkenknights.frc2015.subsystems.*;
+import com.milkenknights.frc2015.subsystems.DriveSubsystem.DriveMode;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDTrapezoidal;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -94,7 +95,7 @@ public class PIDTuner extends ControlSystem {
         
         // aux ATK 1 enables PID
         if (atka.isReleased(1)) {
-            driveSub.startStraightPID();
+            driveSub.setDriveMode(DriveMode.PIDSTRAIGHT);
             pidEnabled = true;
         }
         
@@ -163,7 +164,7 @@ public class PIDTuner extends ControlSystem {
         SmartDashboard.putNumber("kd_cur", kd_in);
         SmartDashboard.putNumber("setpoint_cur", sp_in);
         
-        driveSub.setStraightPID(kp_in, ki_in, kd_in);
+        //driveSub.setStraightPID(kp_in, ki_in, kd_in);
         driveSub.setStraightPIDSetpoint(sp_in);
     }
 }

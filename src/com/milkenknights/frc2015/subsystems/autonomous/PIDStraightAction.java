@@ -2,6 +2,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
+import com.milkenknights.frc2015.subsystems.DriveSubsystem.DriveMode;
 
 /**
  * An action that will move the robot straight using PID
@@ -27,7 +28,7 @@ public class PIDStraightAction extends AutonomousAction {
     @Override
     public void start() {
         driveSubsystem.setStraightPIDSetpoint(setpoint);
-        driveSubsystem.startStraightPID();
+        driveSubsystem.setDriveMode(DriveMode.PIDSTRAIGHT);
     }
 
     @Override

@@ -31,12 +31,6 @@ public class TripleATKControl extends ControlSystem {
         lowGear = false;
     }
 
-    public void teleopInit() {
-        elevatorSub.enablePID(true);
-        elevatorSub.setSetpoint(elevatorSub.getPosition());
-        //elevatorSub.resetPosition();
-    }
-
     public void teleopPeriodic() {
         atkl.update();
         atkr.update();
@@ -78,12 +72,6 @@ public class TripleATKControl extends ControlSystem {
         // left ATK 9 switches to cheesy drive.
         if (atkl.isReleased(9)) {
             isCheesy = true;
-        }
-        
-        if (atkl.isReleased(1)) {
-            driveSub.resetPIDPosition();
-            driveSub.setStraightPIDSetpoint(25);
-            driveSub.startStraightPID();
         }
         
         if (atka.isPressed(1)) {
@@ -129,5 +117,10 @@ public class TripleATKControl extends ControlSystem {
             toteGrabbed = false;
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
         }
+    }
+
+    @Override
+    public void teleopInit() {
+        
     }
 }

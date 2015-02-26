@@ -75,7 +75,6 @@ public class Robot extends IterativeRobot {
         autonomousSequence = autonomousList.listIterator();
         
         driveSubsystem.resetPIDPosition();
-        driveSubsystem.disableAllPID();
     }
 
     public void autonomousPeriodic() {

@@ -2,6 +2,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
+import com.milkenknights.frc2015.subsystems.DriveSubsystem.DriveMode;
 
 import edu.wpi.first.wpilibj.Timer;
 
@@ -70,7 +71,7 @@ public class PIDTrapezoidal extends AutonomousAction {
         
         driveSubsystem.resetPIDPosition();
         driveSubsystem.setStraightPIDSetpoint(0);
-        driveSubsystem.startStraightPID();
+        driveSubsystem.setDriveMode(DriveMode.PIDSTRAIGHT);
     }
 
     @Override

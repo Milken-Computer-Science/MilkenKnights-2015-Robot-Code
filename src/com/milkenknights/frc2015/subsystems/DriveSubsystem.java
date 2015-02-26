@@ -21,10 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveSubsystem extends MSubsystem {
     Drive drive;
-        
-    boolean slowMode;
-    boolean runPID;
-    boolean runGyro;
     
     double leftSpeed;
     double rightSpeed;
@@ -33,18 +29,17 @@ public class DriveSubsystem extends MSubsystem {
     double cheesyTurn;
     boolean cheesyQuickturn;
     
+    double leftPivotPIDSpeed;
+    double rightPivotPIDSpeed;
+    
     PIDController pid_l;
     PIDController pid_r;
-    
     PIDController pid_pivot;
     
     Encoder enc_l;
     Encoder enc_r;
     
     IMU gyro;
-    
-    double leftSpeedPID;
-    double rightSpeedPID;
     
     public enum DriveMode {
         TANK, CHEESY, PIDSTRAIGHT, PIDPIVOT
@@ -102,8 +97,8 @@ public class DriveSubsystem extends MSubsystem {
         class PivotController implements PIDOutput {
             @Override
             public void pidWrite(double output) {
-                leftSpeedPID = output;
-                rightSpeedPID = output;
+                leftPivotPIDSpeed = output;
+                rightPivotPIDSpeed = output;
             }
         }
         
@@ -116,12 +111,20 @@ public class DriveSubsystem extends MSubsystem {
         pid_pivot.setContinuous(true);
     }
     
-    public void teleopInit() {
-
-    }
-    
-    private void setDriveMode(DriveMode mode) {
+    /**
+     * Change the current drive mode
+     * 
+     * @param mode The mode to change to
+     */
+    public void setDriveMode(DriveMode mode) {
         driveMode = mode;
+        if (driveMode == DriveMode.PIDSTRAIGHT) {
+            pid_r.enable();
+            pid_l.enable();
+        } else {
+            safeDisablePID(pid_l);
+            safeDisablePID(pid_r);
+        }
     }
 
     /**
@@ -131,7 +134,6 @@ public class DriveSubsystem extends MSubsystem {
      * @param right The desired speed of the robot's right side.
      */
     public void tankDrive(double left, double right) {
-        setDriveMode(DriveMode.TANK);
         leftSpeed = left;
         rightSpeed = -right;
     }
@@ -143,14 +145,6 @@ public class DriveSubsystem extends MSubsystem {
      */
     public void cheesyDrive(double power, double turn, boolean quickturn) {
         //drive.cheesyDrive(power, turn, quickturn);
-    }
-    
-    /**
-     * Set the PID constants for driving straight
-     */
-    public void setStraightPID(double p, double i, double d) {
-        pid_l.setPID(p, i, d);
-        pid_r.setPID(p, i, d);
     }
     
     /**
@@ -171,16 +165,6 @@ public class DriveSubsystem extends MSubsystem {
      */
     public double getStraightPIDSetpoint() {
         return pid_l.getSetpoint();
-    }
-    
-    /**
-     * Go to the setpoint that we have set for driving straight.
-     */
-    public void startStraightPID() {
-        setDriveMode(DriveMode.PIDSTRAIGHT);
-        pid_pivot.disable();
-        pid_l.enable();
-        pid_r.enable();
     }
 
     /**
@@ -203,16 +187,6 @@ public class DriveSubsystem extends MSubsystem {
     }
 
     /**
-     * Go to the setpoint that we have set for pivoting.
-     */
-    public void startPivotPID() {
-        setDriveMode(DriveMode.PIDPIVOT);
-        pid_l.disable();
-        pid_r.disable();
-        pid_pivot.enable();
-    }
-
-    /**
      * "Zero out" our position. If the robot has moved forward or rotated, this will
      * reset the position back to zero.
      */
@@ -221,28 +195,9 @@ public class DriveSubsystem extends MSubsystem {
         enc_r.reset();
         pid_pivot.reset();
     }
-    
-    public void disableAllPID() {
-        pid_l.disable();
-        pid_r.disable();
-        pid_pivot.disable();
-    }
-    
-    public void disableStraightPID() {
-        pid_l.disable();
-        pid_r.disable();
-    }
-    
-    public void disablePivotPID() {
-        pid_pivot.disable();
-    }
-    
-    public boolean isPIDEnabled() {
-        return pid_l.isEnable() || pid_r.isEnable() || pid_pivot.isEnable();
-    }
 
     /**
-     * Find out if we have reached our PID target.
+     * Find out if we have reached our straight PID target.
      *
      * @param threshold How close/precise we want to be
      * @return true if we have reached the target
@@ -250,6 +205,17 @@ public class DriveSubsystem extends MSubsystem {
     public boolean pidOnTarget(double threshold) {
         return Math.abs(pid_l.getError()) <= threshold &&
                 Math.abs(pid_r.getError()) <= threshold;
+    }
+    
+    /**
+     * Safely disables a PID controller by first checking if it is enabled. 
+     * 
+     * @param pidController The PID controller
+     */
+    private void safeDisablePID(PIDController pidController) {
+        if (pidController.isEnable()) {
+            pidController.disable();
+        }
     }
 
     /**
@@ -260,22 +226,15 @@ public class DriveSubsystem extends MSubsystem {
     public void update() {
         switch (driveMode) {
         case TANK:
-            if (isPIDEnabled()) {
-                disableAllPID();
-            }
             drive.tankDrive(leftSpeed, rightSpeed);
-            break;
-            
+            break;  
         case CHEESY:
-            if (isPIDEnabled()) {
-                disableAllPID();
-            }
             drive.cheesyDrive(cheesyPower, cheesyTurn, cheesyQuickturn);
             break;
         case PIDSTRAIGHT:
             break;
         case PIDPIVOT:
-            drive.tankDrive(leftSpeedPID, rightSpeedPID);
+            drive.tankDrive(leftPivotPIDSpeed, rightPivotPIDSpeed);
             break;
         }
         
