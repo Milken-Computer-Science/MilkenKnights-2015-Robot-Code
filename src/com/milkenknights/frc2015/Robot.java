@@ -55,18 +55,43 @@ public class Robot extends IterativeRobot {
                 new LinkedList<AutonomousAction>();
         
         runningActions = new LinkedList<AutonomousAction>();
-
+        
+        // FAKE ULTRASONIC SENSOR FOR AUTONOMOUS
+        FakeUltrasonic fakeUltrasonic = new FakeUltrasonic();
+        
         // COMPOSE THE AUTONOMOUS STEPS HERE
+        /*
         //autonomousList.add(new IntakeActuatorsSet(groundIntakeSubsystem, GroundIntakeSubsystem.ActuatorsState.OPEN));
         //autonomousList.add(new ElevatorMoveAction(elevatorSubsystem, Constants.elevatorReadyToIntakeHeight, .5));
         //autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem, GroundIntakeSubsystem.WheelsState.RIGHT));
-//        autonomousList.add(new PIDStraightAction(driveSubsystem, 20, 1));
+        //autonomousList.add(new PIDStraightAction(driveSubsystem, 20, 1));
         //autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem, GroundIntakeSubsystem.WheelsState.INTAKE));
         autonomousList.add(new PIDStraightAction(driveSubsystem, 81, 1));
         autonomousList.add(new AutonWait(2));
         autonomousList.add(new PIDStraightAction(driveSubsystem, 162, 1));
         autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 1));
-
+        */
+        autonomousList.add(new ElevatorMoveAction(elevatorSubsystem,
+                Constants.elevatorReadyToIntakeHeight,
+                0.35));
+        
+        autonomousList.add(new IntakeActuatorsSet(groundIntakeSubsystem,
+                GroundIntakeSubsystem.ActuatorsState.OPEN));
+        autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem,
+                GroundIntakeSubsystem.WheelsState.RIGHT));
+        
+        autonomousList.add(new PIDStraightAction(driveSubsystem, 40, 0.35));
+        
+        autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem,
+                GroundIntakeSubsystem.WheelsState.INTAKE));
+        autonomousList.add(new WaitForAndLoadTote(elevatorSubsystem,
+                groundIntakeSubsystem,
+                fakeUltrasonic));
+        
+        autonomousList.add(new PIDStraightAction(driveSubsystem, 41, 0.35));
+        
+        autonomousList.add(fakeUltrasonic.setReadingAction(7));
+        
         autonomousSequence = autonomousList.listIterator();
         
         driveSubsystem.resetPIDPosition();

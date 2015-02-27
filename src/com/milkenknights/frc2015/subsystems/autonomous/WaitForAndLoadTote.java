@@ -8,7 +8,7 @@ import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 /**
  * Backgrounds immediately and does the following procedure:
  * 
- * - Wait for ultrasonic to pass 12 inches
+ * - Wait for ultrasonic to be less than 12 inches
  * - Close intake actuators
  * - Set wheels to slow intake
  * - Wait for banner / wait for ultrasonic to be less than 2
@@ -50,7 +50,7 @@ public class WaitForAndLoadTote extends AutonomousAction {
             stage++;
             return EndState.BACKGROUND;
         } else if (stage == 0) {
-            if (ultrasonic.reading() > 12) {
+            if (ultrasonic.reading() <= 12) {
                 stage++;
                 groundIntakeSubsystem.setActuators(
                         GroundIntakeSubsystem.ActuatorsState.CLOSED);
