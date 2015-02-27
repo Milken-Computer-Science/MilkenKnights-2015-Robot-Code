@@ -10,12 +10,7 @@ import com.milkenknights.frc2015.controls.*;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
-import com.milkenknights.frc2015.subsystems.autonomous.ElevatorMoveAction;
-import com.milkenknights.frc2015.subsystems.autonomous.IntakeActuatorsSet;
-import com.milkenknights.frc2015.subsystems.autonomous.IntakeWheelsSet;
-import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
-import com.milkenknights.frc2015.subsystems.autonomous.PIDPivotAction;
-import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
+import com.milkenknights.frc2015.subsystems.autonomous.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 

@@ -1,11 +1,22 @@
 package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
-import com.milkenknights.common.AutonomousAction.EndState;
 import com.milkenknights.frc2015.Constants;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 
+/**
+ * Backgrounds immediately and does the following procedure:
+ * 
+ * - Wait for ultrasonic to pass 12 inches
+ * - Close intake actuators
+ * - Set wheels to slow intake
+ * - Wait for banner / wait for ultrasonic to be less than 2
+ * - Drop elevator to 0
+ * - Set intake to open
+ * - Raise elevator to intake height (ends immediately setting setpoint)
+ * @author Daniel
+ */
 public class WaitForAndLoadTote extends AutonomousAction {
     ElevatorSubsystem elevatorSubsystem;
     GroundIntakeSubsystem groundIntakeSubsystem;
@@ -41,7 +52,7 @@ public class WaitForAndLoadTote extends AutonomousAction {
                         GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
             }
         } else if (stage == 1) {
-            // wait for banner OR check ultrasonic sensor
+            // wait for banner OR check if ultrasonic sensor is less than 2
             // this might be changed
             if (elevatorSubsystem.toteLoaded()) {
                 elevatorSubsystem.setSetpoint(0);
