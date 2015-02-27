@@ -66,7 +66,7 @@ public class PIDTrapezoidal extends AutonomousAction {
     }
     
     @Override
-    public void start() {
+    public void startCode() {
         startTime = Timer.getFPGATimestamp();
         
         driveSubsystem.resetPIDPosition();
@@ -75,7 +75,7 @@ public class PIDTrapezoidal extends AutonomousAction {
     }
 
     @Override
-    public EndState run() {
+    public EndState periodicCode() {
         double currentTime = Timer.getFPGATimestamp() - startTime;
         
         driveSubsystem.setStraightPIDSetpoint(

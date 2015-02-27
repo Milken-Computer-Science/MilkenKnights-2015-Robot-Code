@@ -124,7 +124,7 @@ public class Robot extends IterativeRobot {
             
             // run the action and find out what to do next based on its return
             // value.
-            switch(a.run()) {
+            switch(a.periodicRun()) {
             case CONTINUE:
                 break;
             // END doesn't break because it falls through and sets

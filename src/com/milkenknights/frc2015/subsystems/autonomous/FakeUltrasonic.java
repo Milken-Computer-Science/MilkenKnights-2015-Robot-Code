@@ -25,12 +25,12 @@ public class FakeUltrasonic implements WaitForAndLoadTote.UltrasonicSensor {
             this.a = a;
         }
         @Override
-        public void start() {
+        public void startCode() {
             setReading(a);
         }
 
         @Override
-        public EndState run() {
+        public EndState periodicCode() {
             return EndState.END;
         }
     }

@@ -24,13 +24,13 @@ public class ElevatorMoveAction extends AutonomousAction {
     }
     
     @Override
-    public void start() {
+    public void startCode() {
         elevatorSubsystem.setSetpoint(setpoint);
         elevatorSubsystem.enablePID(true);
     }
 
     @Override
-    public EndState run() {
+    public EndState periodicCode() {
         if (Math.abs(elevatorSubsystem.getPosition() - setpoint) < tolerance) {
             return EndState.END;
         } else {

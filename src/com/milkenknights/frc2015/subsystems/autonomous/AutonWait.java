@@ -18,12 +18,12 @@ public class AutonWait extends AutonomousAction {
     }
 
     @Override
-    public void start() {
+    public void startCode() {
         startTime = Timer.getFPGATimestamp();
     }
 
     @Override
-    public EndState run() {
+    public EndState periodicCode() {
         if (Timer.getFPGATimestamp() - startTime >= waitTime) {
             return EndState.END;
         } else {

@@ -27,13 +27,13 @@ public class PIDPivotAction extends AutonomousAction {
     }
 
     @Override
-    public void start() {
+    public void startCode() {
         driveSubsystem.setPivotPIDSetpoint(setpoint);
         driveSubsystem.setDriveMode(DriveMode.PIDPIVOT);
     }
 
     @Override
-    public EndState run() {
+    public EndState periodicCode() {
         if (driveSubsystem.pidOnTarget(tolerance)) {
             return EndState.END;
         } else {

@@ -70,7 +70,7 @@ public class PIDTuner extends ControlSystem {
                 driveSub.cheesyDrive(-atkl.getAxis(JStick.ATK3_Y),
                         atkr.getAxis(JStick.ATK3_X), false);
             } else if (runningAutonAction) {
-                action.run();
+                action.periodicRun();
             } else {
                 // TANK DRIVE
                 // controlled by left and right ATK y axes

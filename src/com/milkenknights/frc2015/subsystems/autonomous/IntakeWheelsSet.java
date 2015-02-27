@@ -21,12 +21,12 @@ public class IntakeWheelsSet extends AutonomousAction {
     }
 
     @Override
-    public void start() {
+    public void startCode() {
         groundIntakeSubsystem.setWheelsState(s);
     }
 
     @Override
-    public EndState run() {
+    public EndState periodicCode() {
         return EndState.END;
     }
 

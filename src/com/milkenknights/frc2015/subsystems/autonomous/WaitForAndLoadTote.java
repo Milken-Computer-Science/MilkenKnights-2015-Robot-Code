@@ -40,12 +40,12 @@ public class WaitForAndLoadTote extends AutonomousAction {
     
     
     @Override
-    public void start() {
+    public void startCode() {
         stage = -1;
     }
 
     @Override
-    public EndState run() {
+    public EndState periodicCode() {
         if (stage == -1) {
             stage++;
             return EndState.BACKGROUND;

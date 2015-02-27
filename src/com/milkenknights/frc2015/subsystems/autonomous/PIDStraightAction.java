@@ -26,14 +26,14 @@ public class PIDStraightAction extends AutonomousAction {
     }
 
     @Override
-    public void start() {
+    public void startCode() {
         driveSubsystem.resetPIDPosition();
         driveSubsystem.setStraightPIDSetpoint(setpoint);
         driveSubsystem.setDriveMode(DriveMode.PIDSTRAIGHT);
     }
 
     @Override
-    public EndState run() {
+    public EndState periodicCode() {
         if (driveSubsystem.pidOnTarget(tolerance)) {
             return EndState.END;
         } else {

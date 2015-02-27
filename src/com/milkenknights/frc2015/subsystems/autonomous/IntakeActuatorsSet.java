@@ -22,12 +22,12 @@ public class IntakeActuatorsSet extends AutonomousAction {
     }
 
     @Override
-    public void start() {
+    public void startCode() {
         groundIntakeSubsystem.setActuators(s);
     }
 
     @Override
-    public EndState run() {
+    public EndState periodicCode() {
         return EndState.END;
     }
 
