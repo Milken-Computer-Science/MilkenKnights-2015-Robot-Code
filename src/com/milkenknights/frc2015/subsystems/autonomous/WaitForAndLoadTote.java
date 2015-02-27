@@ -23,15 +23,21 @@ public class WaitForAndLoadTote extends AutonomousAction {
     
     int stage;
     
-    public WaitForAndLoadTote(ElevatorSubsystem elevatorSubsystem,
-            GroundIntakeSubsystem groundIntakeSubsystem) {
-        this.elevatorSubsystem = elevatorSubsystem;
-        this.groundIntakeSubsystem = groundIntakeSubsystem;
+    public interface UltrasonicSensor {
+        public double reading();
     }
     
-    private double ultrasonicReading() {
-        return 0;
+    UltrasonicSensor ultrasonic;
+    
+    public WaitForAndLoadTote(ElevatorSubsystem elevatorSubsystem,
+            GroundIntakeSubsystem groundIntakeSubsystem,
+            UltrasonicSensor ultrasonic) {
+        this.elevatorSubsystem = elevatorSubsystem;
+        this.groundIntakeSubsystem = groundIntakeSubsystem;
+        
+        this.ultrasonic = ultrasonic;
     }
+    
     
     @Override
     public void start() {
@@ -44,7 +50,7 @@ public class WaitForAndLoadTote extends AutonomousAction {
             stage++;
             return EndState.BACKGROUND;
         } else if (stage == 0) {
-            if (ultrasonicReading() > 12) {
+            if (ultrasonic.reading() > 12) {
                 stage++;
                 groundIntakeSubsystem.setActuators(
                         GroundIntakeSubsystem.ActuatorsState.CLOSED);
