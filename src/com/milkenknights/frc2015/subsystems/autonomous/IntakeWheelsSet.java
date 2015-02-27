@@ -4,7 +4,7 @@ import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 
 /**
- * A simple autonomous action that sets the state of the ground intake wheels.
+ * A quick autonomous action that sets the state of the ground intake wheels.
  * 
  * @see GroundIntakeSubsystem#setWheelsState(WheelsState)
  */

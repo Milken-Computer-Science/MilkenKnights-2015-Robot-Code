@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.Timer;
  * This action will make the robot's velocity follow a trapezoidal path--
  * accelerating towards a maximum velocity, coasting, then eventually
  * decelerating down to zero.
- * @author Daniel
  *
+ * @author Daniel
  */
 public class PIDTrapezoidal extends AutonomousAction {
     DriveSubsystem driveSubsystem;

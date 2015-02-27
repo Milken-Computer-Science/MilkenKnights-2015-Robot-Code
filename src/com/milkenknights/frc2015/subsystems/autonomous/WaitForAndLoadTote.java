@@ -6,7 +6,7 @@ import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 
 /**
- * Backgrounds immediately and does the following procedure:
+ * Backgrounds immediately and carries out the following procedure:
  * 
  * - Wait for ultrasonic to be less than 12 inches
  * - Close intake actuators

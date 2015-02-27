@@ -9,6 +9,10 @@ public class AutonWait extends AutonomousAction {
     double startTime;
     double waitTime;
 
+    /**
+     * Create a new AutonWait.
+     * @param time The time to wait, in seconds.
+     */
     public AutonWait(double time) {
         waitTime = time;
     }

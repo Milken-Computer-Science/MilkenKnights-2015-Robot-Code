@@ -3,7 +3,8 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 import com.milkenknights.common.AutonomousAction;
 
 /**
- * A fake ultrasonic sensor, whose value can be whatever we want it to be
+ * A fake ultrasonic sensor, whose sensor reading can be whatever we want it to
+ * be.
  * @author Daniel
  */
 public class FakeUltrasonic implements WaitForAndLoadTote.UltrasonicSensor {
