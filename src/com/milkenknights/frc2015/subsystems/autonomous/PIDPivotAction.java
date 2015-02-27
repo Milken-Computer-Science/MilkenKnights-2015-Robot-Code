@@ -19,14 +19,17 @@ public class PIDPivotAction extends AutonomousAction {
     public PIDPivotAction(DriveSubsystem driveSubsystem, double setpoint,
             double tolerance) {
         this.driveSubsystem = driveSubsystem;
-        this.setpoint = setpoint;
+        
+        // bound setpoint between -180 and 180
+        this.setpoint = ((setpoint + 180) % 360) - 180;
+        
         this.tolerance = tolerance;
     }
 
     @Override
     public void start() {
         driveSubsystem.setPivotPIDSetpoint(setpoint);
-        driveSubsystem.setDriveMode(DriveMode.PIDPIVOT);;
+        driveSubsystem.setDriveMode(DriveMode.PIDPIVOT);
     }
 
     @Override

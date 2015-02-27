@@ -125,6 +125,12 @@ public class DriveSubsystem extends MSubsystem {
             safeDisablePID(pid_l);
             safeDisablePID(pid_r);
         }
+        
+        if (driveMode == DriveMode.PIDPIVOT) {
+            pid_pivot.enable();
+        } else {
+            safeDisablePID(pid_pivot);
+        }
     }
 
     /**
@@ -187,8 +193,8 @@ public class DriveSubsystem extends MSubsystem {
     }
 
     /**
-     * "Zero out" our position. If the robot has moved forward or rotated, this will
-     * reset the position back to zero.
+     * "Zero out" our position. If the robot has moved forward or rotated, this
+     * will reset the position back to zero.
      */
     public void resetPIDPosition() {
         enc_l.reset();

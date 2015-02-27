@@ -17,7 +17,13 @@ public class GroundIntakeSubsystem extends MSubsystem {
     }
     
     public enum ActuatorsState {
-        CLOSED, OPEN
+        CLOSED(false), OPEN(true);
+
+        public final boolean b;
+        
+        private ActuatorsState(boolean b) {
+            this.b = b;
+        }
     }
    
     ActuatorsState actuatorsState;
@@ -91,6 +97,6 @@ public class GroundIntakeSubsystem extends MSubsystem {
             break;
         }
         
-        actuators.set(actuatorsState == ActuatorsState.OPEN ? true : false);
+        actuators.set(actuatorsState.b);
     }
 }

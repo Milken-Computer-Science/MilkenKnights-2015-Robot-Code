@@ -62,7 +62,8 @@ public class TripleATKControl extends ControlSystem {
         
         // Move the elevator and abort a reset
         if (atka.isPressed(1)) {
-            elevatorSub.setSetpoint(elevatorSub.getSetpoint() + atka.getAxis(JStick.ATK3_Y));
+            elevatorSub.setSetpoint(elevatorSub.getSetpoint() +
+                    atka.getAxis(JStick.ATK3_Y));
             elevatorSub.abortReset();
         }
         

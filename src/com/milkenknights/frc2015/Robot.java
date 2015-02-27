@@ -61,7 +61,7 @@ public class Robot extends IterativeRobot {
         
         runningActions = new LinkedList<AutonomousAction>();
 
-        // COMPOSE THE PID STEPS HERE
+        // COMPOSE THE AUTONOMOUS STEPS HERE
         //autonomousList.add(new IntakeActuatorsSet(groundIntakeSubsystem, GroundIntakeSubsystem.ActuatorsState.OPEN));
         //autonomousList.add(new ElevatorMoveAction(elevatorSubsystem, Constants.elevatorReadyToIntakeHeight, .5));
         //autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem, GroundIntakeSubsystem.WheelsState.RIGHT));

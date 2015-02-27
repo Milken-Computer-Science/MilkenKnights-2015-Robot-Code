@@ -120,8 +120,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * Set the setpoint of the elevator. This is bounded by the maximum and
      * minimum values of the elevator.
      * 
-     * @param setpoint
-     *            The desired setpoint of the elevator.
+     * @param setpoint The desired setpoint of the elevator.
      */
     public void setSetpoint(double setpoint) {
         if (setpoint >= Constants.elevatorMaxDistance) {
@@ -150,6 +149,7 @@ public class ElevatorSubsystem extends MSubsystem {
         if (resetMode) {
             pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
         }
+        // TODO: change this to use the hall effect sensor
         if (elevatorTalonLeft.getOutputCurrent() > 8 && resetMode) {
             resetEncoder();
             resetMode = false;

@@ -27,6 +27,7 @@ public class PIDStraightAction extends AutonomousAction {
 
     @Override
     public void start() {
+        driveSubsystem.resetPIDPosition();
         driveSubsystem.setStraightPIDSetpoint(setpoint);
         driveSubsystem.setDriveMode(DriveMode.PIDSTRAIGHT);
     }
