@@ -70,6 +70,7 @@ public class Robot extends IterativeRobot {
         autonomousList.add(new AutonWait(2));
         autonomousList.add(new PIDStraightAction(driveSubsystem, 162, 1));
         autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 1));
+        //test to see if the flash drive is working
         */
         autonomousList.add(new ElevatorMoveAction(elevatorSubsystem,
                 Constants.elevatorReadyToIntakeHeight,
