@@ -65,6 +65,15 @@ public class GroundIntakeSubsystem extends MSubsystem {
         actuatorsState = s;
     }
     
+    /** Toggle the state of the actuators */
+    public void toggleActuators() {
+        if (getActuatorsState() == ActuatorsState.CLOSED) {
+            setActuators(ActuatorsState.OPEN);
+        } else {
+            setActuators(ActuatorsState.CLOSED);
+        }
+    }
+    
     /**
      * Get the most recently set state of the actuators
      * @return The most recently set state of the actuators

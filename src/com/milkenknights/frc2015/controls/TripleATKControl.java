@@ -69,7 +69,7 @@ public class TripleATKControl extends ControlSystem {
         
         
         if (atka.isReleased(2)) {
-            groundIntakeSub.setActuators(groundIntakeSub.getActuatorsState() == GroundIntakeSubsystem.ActuatorsState.CLOSED ? GroundIntakeSubsystem.ActuatorsState.OPEN : GroundIntakeSubsystem.ActuatorsState.CLOSED);
+            groundIntakeSub.toggleActuators();
         }
  
         if (atka.isReleased(5)) {
