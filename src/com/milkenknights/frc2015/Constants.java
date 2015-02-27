@@ -55,13 +55,13 @@ public class Constants {
     
     public static final double minimumWheelSpeed = 0.0069;
 
-    //GroundIntake talon speed
+    // GroundIntake talon speed
     public static final double groundIntakeTalonSpeed = 1;
     public static final double groundIntakeTalonSlowSpeed = .5;
     
 
 
-    //Elevator PID constants
+    // Elevator PID constants
     public static final PIDGains elevatorPID = new PIDGains(0.195, 0, 0);
     
     public static final double elevatorResetDistance = 0.25;
@@ -73,4 +73,7 @@ public class Constants {
     public static final double elevatorStepHeight = 12;
     public static final double elevatorTote1Height = 14;
     public static final double elevatorTote2Height = 28;
+    
+    // autonomous Threshold
+    public static final double elevatorThreshold = 0.35;
 }

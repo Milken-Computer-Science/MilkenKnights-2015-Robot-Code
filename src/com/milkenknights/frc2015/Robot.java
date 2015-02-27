@@ -73,7 +73,7 @@ public class Robot extends IterativeRobot {
         */
         autonomousList.add(new ElevatorMoveAction(elevatorSubsystem,
                 Constants.elevatorReadyToIntakeHeight,
-                0.35));
+                Constants.elevatorThreshold));
         
         autonomousList.add(new IntakeActuatorsSet(groundIntakeSubsystem,
                 GroundIntakeSubsystem.ActuatorsState.OPEN));
