@@ -55,36 +55,43 @@ public class TripleATKControl extends ControlSystem {
             }
         }
         
-        // Toggle programmed low gear
+        // right ATK 1 toggles software gear
         if (atkr.isReleased(1)) {
             lowGear = !lowGear;
         }
         
-        // Move the elevator and abort a reset
+        // aux ATK 1 puts us in manual elevator control mode
+        // also aborts a reset if we are in one
         if (atka.isPressed(1)) {
             elevatorSub.setSetpoint(elevatorSub.getSetpoint() +
                     atka.getAxis(JStick.ATK3_Y));
             elevatorSub.abortReset();
         }
         
-        
+        // aux ATK 2 toggles actuators
         if (atka.isReleased(2)) {
             groundIntakeSub.toggleActuators();
         }
  
+        // aux ATK 5 enables intake mode
         if (atka.isReleased(5)) {
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
+            groundIntakeSub.setWheelsState(
+                    GroundIntakeSubsystem.WheelsState.INTAKE);
         }
         
+        // aux ATK 3 stops intake
         if (atka.isReleased(3)) {
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            groundIntakeSub.setWheelsState(
+                    GroundIntakeSubsystem.WheelsState.STOPPED);
         }
         
+        // aux ATK 4 enables intake output mode
         if (atka.isPressed(4)) {
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.OUTPUT);
+            groundIntakeSub.setWheelsState(
+                    GroundIntakeSubsystem.WheelsState.OUTPUT);
         }
         
-        // Reset elevator position
+        // aux ATK 10 resets elevator position
         if (atka.isPressed(10)) {
             elevatorSub.resetPosition();
         }
@@ -92,20 +99,23 @@ public class TripleATKControl extends ControlSystem {
         // if a tote has been loaded, drop the elevator down and pick it up
         // this action should only be taken if the tote was loaded while the
         // elevator was up
-        
         if (elevatorSub.toteLoaded() && !toteGrabbed && autoLoad) {
-            if (elevatorSub.getPosition() <= Constants.elevatorMinDistance + .5) {
-                toteGrabbed = true;
-                groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-                elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
-            } else {
+            if (elevatorSub.getPosition() > Constants.elevatorMinDistance + 0.5) {
                 elevatorSub.setSetpoint(Constants.elevatorMinDistance);
-                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
+                groundIntakeSub.setWheelsState(
+                        GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
+            } else {
+                toteGrabbed = true;
+                groundIntakeSub.setActuators(
+                        GroundIntakeSubsystem.ActuatorsState.OPEN);
+                elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
             }
         }
-        if (toteGrabbed && elevatorSub.getPosition() >= Constants.elevatorTote1Height) {
+        if (toteGrabbed && elevatorSub.getPosition() >=
+                Constants.elevatorTote1Height) {
             toteGrabbed = false;
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            groundIntakeSub.setWheelsState(
+                    GroundIntakeSubsystem.WheelsState.STOPPED);
         }
     }
 
