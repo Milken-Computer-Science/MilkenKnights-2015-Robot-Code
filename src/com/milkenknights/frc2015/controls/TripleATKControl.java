@@ -91,10 +91,20 @@ public class TripleATKControl extends ControlSystem {
                     GroundIntakeSubsystem.WheelsState.OUTPUT);
         }
         
+        if (atka.isPressed(6)) {
+            elevatorSub.setSetpoint(Constants.elevatorTote1Height);
+            groundIntakeSub.setActuators(
+                    GroundIntakeSubsystem.ActuatorsState.OPEN);
+            groundIntakeSub.setWheelsState(
+                    GroundIntakeSubsystem.WheelsState.OUTPUT);
+        }
+        
         // aux ATK 10 resets elevator position
         if (atka.isPressed(10)) {
             elevatorSub.resetPosition();
         }
+        
+        
 
         // if a tote has been loaded, drop the elevator down and pick it up
         // this action should only be taken if the tote was loaded while the
@@ -118,6 +128,8 @@ public class TripleATKControl extends ControlSystem {
                     GroundIntakeSubsystem.WheelsState.STOPPED);
         }
     }
+    
+    
 
     @Override
     public void teleopInit() {
