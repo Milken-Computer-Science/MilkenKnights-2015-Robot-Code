@@ -50,24 +50,24 @@ public class DriveSubsystem extends MSubsystem {
     public DriveSubsystem() {
         CANTalon leftTalonA = new CANTalon(Constants.leftTalonDeviceNumberA);
         CANTalon leftTalonB = new CANTalon(Constants.leftTalonDeviceNumberB);
-        CANTalon leftTalonC = new CANTalon(Constants.leftTalonDeviceNumberC);
+        //CANTalon leftTalonC = new CANTalon(Constants.leftTalonDeviceNumberC);
         
         CANTalon rightTalonA = new CANTalon(Constants.rightTalonDeviceNumberA);
         CANTalon rightTalonB = new CANTalon(Constants.rightTalonDeviceNumberB);
-        CANTalon rightTalonC = new CANTalon(Constants.rightTalonDeviceNumberC);
+        //CANTalon rightTalonC = new CANTalon(Constants.rightTalonDeviceNumberC);
         
         leftTalonB.changeControlMode(ControlMode.Follower);
-        leftTalonC.changeControlMode(ControlMode.Follower);
+        //leftTalonC.changeControlMode(ControlMode.Follower);
         rightTalonB.changeControlMode(ControlMode.Follower);
-        rightTalonC.changeControlMode(ControlMode.Follower);
-        
-        leftTalonC.reverseOutput(true);
-        rightTalonC.reverseOutput(true);
+        //rightTalonC.changeControlMode(ControlMode.Follower);
+                
+        ///leftTalonC.reverseOutput(true);
+        //rightTalonC.reverseOutput(true);
         
         leftTalonB.set(leftTalonA.getDeviceID());
-        leftTalonC.set(leftTalonA.getDeviceID());
+        //leftTalonC.set(leftTalonA.getDeviceID());
         rightTalonB.set(rightTalonA.getDeviceID());
-        rightTalonC.set(rightTalonA.getDeviceID());
+        //rightTalonC.set(rightTalonA.getDeviceID());
         
         enc_l = new Encoder(Constants.driveLeftEncoderDeviceNumberA,
                 Constants.driveLeftEncoderDeviceNumberB);
@@ -256,5 +256,7 @@ public class DriveSubsystem extends MSubsystem {
         SmartDashboard.putBoolean("l pid", pid_l.isEnable());
         SmartDashboard.putBoolean("r pid", pid_l.isEnable());
         SmartDashboard.putBoolean("pivot pid", pid_pivot.isEnable());
+        
+        System.out.println("l "+enc_l.pidGet()+" r "+enc_r.pidGet());
     }
 }
