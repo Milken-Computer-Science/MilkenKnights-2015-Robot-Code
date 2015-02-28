@@ -70,8 +70,6 @@ public class TripleATKControl extends ControlSystem {
         }
         */
         
-        elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y));
-        
         // aux ATK 2 toggles actuators
         if (atka.isReleased(2)) {
             groundIntakeSub.toggleActuators();

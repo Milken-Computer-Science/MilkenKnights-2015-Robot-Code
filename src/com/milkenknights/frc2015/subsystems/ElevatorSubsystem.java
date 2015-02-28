@@ -72,7 +72,7 @@ public class ElevatorSubsystem extends MSubsystem {
      */
     public void enablePID(boolean enable) {
         if (enable) {
-            pid.enable();
+            //pid.enable();
         } else {
             pid.disable();
         }
@@ -149,27 +149,15 @@ public class ElevatorSubsystem extends MSubsystem {
         pid.setSetpoint(getPosition());
     }
     
-    double elevatorSpeed;
-    /**
-     * Set speed of the elevator
-     * @param speed value from -1 to 1
-     */
-    public void setSpeed(double speed) {
-        elevatorSpeed = speed;
-    }
 
     public void update() {
-        /*
         if (resetMode) {
-            pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
+            //pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
             if (!hallEffectSensor.get()) {
                 resetEncoder();
                 resetMode = false;
             }
         }
-        */
-        
-        elevatorTalonLeft.set(elevatorSpeed);
         
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
         SmartDashboard.putNumber("Elevator Setpoint", pid.getSetpoint());
