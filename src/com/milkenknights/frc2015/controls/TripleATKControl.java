@@ -104,8 +104,6 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.resetPosition();
         }
         
-        
-
         // if a tote has been loaded, drop the elevator down and pick it up
         // this action should only be taken if the tote was loaded while the
         // elevator was up
@@ -128,8 +126,6 @@ public class TripleATKControl extends ControlSystem {
                     GroundIntakeSubsystem.WheelsState.STOPPED);
         }
     }
-    
-    
 
     @Override
     public void teleopInit() {

@@ -71,6 +71,8 @@ public class Robot extends IterativeRobot {
         autonomousList.add(new PIDStraightAction(driveSubsystem, 162, 1));
         autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 1));
         */
+        
+        /*
         autonomousList.add(new ElevatorMoveAction(elevatorSubsystem,
                 Constants.elevatorReadyToIntakeHeight,
                 Constants.elevatorThreshold));
@@ -100,6 +102,10 @@ public class Robot extends IterativeRobot {
         autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 0.35));
         
         autonomousList.add(new PIDStraightAction(driveSubsystem, 50, 0.35));
+        */
+        
+        autonomousList.add(new PIDStraightAction(driveSubsystem, 40, 0.35));
+        autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 0.35));
         
         autonomousSequence = autonomousList.listIterator();
         
@@ -161,9 +167,11 @@ public class Robot extends IterativeRobot {
         for (MSubsystem s : subsystems) {
             s.update();
         }
+        
+        System.out.println(elevatorSubsystem.getSetpoint());
     }
 
     public void testPeriodic() {
-
+        System.out.println(elevatorSubsystem.hallEffectSensor());
     }
 }

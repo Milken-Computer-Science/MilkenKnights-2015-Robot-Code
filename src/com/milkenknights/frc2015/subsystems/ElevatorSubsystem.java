@@ -54,7 +54,6 @@ public class ElevatorSubsystem extends MSubsystem {
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
         
-        pid.setSetpoint(enc.getDistance());
         pid.enable();
     }
 
@@ -115,6 +114,10 @@ public class ElevatorSubsystem extends MSubsystem {
     public void resetPosition() {
         resetMode = true;
     }
+    
+    public boolean hallEffectSensor() {
+        return hallEffectSensor.get();
+    }
 
     /**
      * Set the setpoint of the elevator. This is bounded by the maximum and
@@ -138,7 +141,8 @@ public class ElevatorSubsystem extends MSubsystem {
      * @return true if the tote is loaded
      */
     public boolean toteLoaded() {
-        return bannerSensor.get();
+        //return bannerSensor.get();
+        return false;
     }
     
     public void teleopInit() {

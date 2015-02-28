@@ -119,8 +119,8 @@ public class DriveSubsystem extends MSubsystem {
     public void setDriveMode(DriveMode mode) {
         driveMode = mode;
         if (driveMode == DriveMode.PIDSTRAIGHT) {
-            pid_r.enable();
             pid_l.enable();
+            pid_r.enable();
         } else {
             safeDisablePID(pid_l);
             safeDisablePID(pid_r);
