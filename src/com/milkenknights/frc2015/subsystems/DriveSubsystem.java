@@ -209,7 +209,7 @@ public class DriveSubsystem extends MSubsystem {
      * @return true if we have reached the target
      */
     public boolean pidOnTarget(double threshold) {
-        return Math.abs(pid_l.getError()) <= threshold &&
+        return Math.abs(pid_l.getError()) <= threshold ||
                 Math.abs(pid_r.getError()) <= threshold;
     }
     
