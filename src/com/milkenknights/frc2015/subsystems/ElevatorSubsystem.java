@@ -72,7 +72,7 @@ public class ElevatorSubsystem extends MSubsystem {
      */
     public void enablePID(boolean enable) {
         if (enable) {
-            //pid.enable();
+           pid.enable();
         } else {
             pid.disable();
         }
@@ -152,7 +152,7 @@ public class ElevatorSubsystem extends MSubsystem {
 
     public void update() {
         if (resetMode) {
-            //pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
+            pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
             if (!hallEffectSensor.get()) {
                 resetEncoder();
                 resetMode = false;
