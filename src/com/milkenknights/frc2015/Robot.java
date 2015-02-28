@@ -167,8 +167,6 @@ public class Robot extends IterativeRobot {
         for (MSubsystem s : subsystems) {
             s.update();
         }
-        
-        System.out.println(elevatorSubsystem.getSetpoint());
     }
 
     public void testPeriodic() {
