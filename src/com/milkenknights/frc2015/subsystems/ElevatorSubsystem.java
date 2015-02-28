@@ -148,11 +148,10 @@ public class ElevatorSubsystem extends MSubsystem {
     public void update() {
         if (resetMode) {
             pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
-        }
-        // TODO: change this to use the hall effect sensor
-        if (elevatorTalonLeft.getOutputCurrent() > 8 && resetMode) {
-            resetEncoder();
-            resetMode = false;
+            if (hallEffectSensor.get()) {
+                resetEncoder();
+                resetMode = false;
+            }
         }
         
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
