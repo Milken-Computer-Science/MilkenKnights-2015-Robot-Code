@@ -60,6 +60,7 @@ public class TripleATKControl extends ControlSystem {
             lowGear = !lowGear;
         }
         
+        /*
         // aux ATK 1 puts us in manual elevator control mode
         // also aborts a reset if we are in one
         if (atka.isPressed(1)) {
@@ -67,6 +68,9 @@ public class TripleATKControl extends ControlSystem {
                     atka.getAxis(JStick.ATK3_Y));
             elevatorSub.abortReset();
         }
+        */
+        
+        elevatorSub.setSpeed(atka.getAxis(JStick.ATK3_Y));
         
         // aux ATK 2 toggles actuators
         if (atka.isReleased(2)) {

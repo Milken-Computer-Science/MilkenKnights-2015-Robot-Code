@@ -224,6 +224,10 @@ public class DriveSubsystem extends MSubsystem {
         }
     }
 
+    public void teleopInit() {
+        setDriveMode(DriveMode.TANK);
+    }
+    
     /**
      * Updates wheel speeds depending on driveMode (which should be set to the
      * desired mode with setDriveMode().

@@ -54,7 +54,7 @@ public class ElevatorSubsystem extends MSubsystem {
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
         
-        pid.enable();
+        //pid.enable();
     }
 
     /**
@@ -148,8 +148,18 @@ public class ElevatorSubsystem extends MSubsystem {
     public void teleopInit() {
         pid.setSetpoint(getPosition());
     }
+    
+    double elevatorSpeed;
+    /**
+     * Set speed of the elevator
+     * @param speed value from -1 to 1
+     */
+    public void setSpeed(double speed) {
+        elevatorSpeed = speed;
+    }
 
     public void update() {
+        /*
         if (resetMode) {
             pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
             if (!hallEffectSensor.get()) {
@@ -157,6 +167,9 @@ public class ElevatorSubsystem extends MSubsystem {
                 resetMode = false;
             }
         }
+        */
+        
+        elevatorTalonLeft.set(elevatorSpeed);
         
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
         SmartDashboard.putNumber("Elevator Setpoint", pid.getSetpoint());
