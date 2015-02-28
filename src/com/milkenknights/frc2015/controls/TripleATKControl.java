@@ -100,7 +100,7 @@ public class TripleATKControl extends ControlSystem {
         // this action should only be taken if the tote was loaded while the
         // elevator was up
         if (elevatorSub.toteLoaded() && !toteGrabbed && autoLoad) {
-            if (elevatorSub.getPosition() > Constants.elevatorMinDistance + 0.5) {
+            if (elevatorSub.getPosition() > Constants.elevatorMinDistance) {
                 elevatorSub.setSetpoint(Constants.elevatorMinDistance);
                 groundIntakeSub.setWheelsState(
                         GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);

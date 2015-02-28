@@ -21,10 +21,10 @@ public class Constants {
     
     // DIO Ports
     public static final int hallEffectSensorDeviceNumber = 13;
-    public static final int elevatorLeftEncoderDeviceNumberA = 6;
-    public static final int elevatorLeftEncoderDeviceNumberB = 7;
-    public static final int elevatorRightEncoderDeviceNumberA = 4;
-    public static final int elevatorRightEncoderDeviceNumberB = 5;
+    public static final int elevatorLeftEncoderDeviceNumberA = 4;
+    public static final int elevatorLeftEncoderDeviceNumberB = 5;
+    public static final int elevatorRightEncoderDeviceNumberA = 6;
+    public static final int elevatorRightEncoderDeviceNumberB = 7;
     public static final int driveLeftEncoderDeviceNumberA = 0;
     public static final int driveLeftEncoderDeviceNumberB = 1;
     public static final int driveRightEncoderDeviceNumberA = 2;

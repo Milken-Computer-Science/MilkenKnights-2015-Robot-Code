@@ -148,7 +148,7 @@ public class ElevatorSubsystem extends MSubsystem {
     public void update() {
         if (resetMode) {
             pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
-            if (hallEffectSensor.get()) {
+            if (!hallEffectSensor.get()) {
                 resetEncoder();
                 resetMode = false;
             }
