@@ -112,9 +112,18 @@ public class Robot extends IterativeRobot {
         //autonomousList.add(new PIDStraightAction(driveSubsystem, 40, 0.35));
         //autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 0.35));
         */
+        
+        /*
         autonomousList.add(new StraightAction(driveSubsystem, 0.6));
         autonomousList.add(new AutonWait(3));
-        autonomousList.add(new StraightAction(driveSubsystem, 0));       
+        autonomousList.add(new StraightAction(driveSubsystem, 0));
+        */
+        
+        autonomousList.add(new BinGrabberSpeedAction(binGrabberSubsystem, 0.6));
+        autonomousList.add(new AutonWait(2));
+        autonomousList.add(new BinGrabberSpeedAction(binGrabberSubsystem, 0));
+        autonomousList.add(new AutonWait(3));
+        autonomousList.add(new PIDStraightAction(driveSubsystem, 30, 1));
         
         autonomousSequence = autonomousList.listIterator();
         
