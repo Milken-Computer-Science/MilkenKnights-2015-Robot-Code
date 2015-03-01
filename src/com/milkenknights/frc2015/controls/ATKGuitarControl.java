@@ -19,8 +19,9 @@ public class ATKGuitarControl extends ControlSystem {
 
     public ATKGuitarControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator,
-            GroundIntakeSubsystem sGroundIntake) {
-        super(sDrive, sElevator, sGroundIntake);
+            GroundIntakeSubsystem sGroundIntake,
+            BinGrabberSubsystem sBinGrabber) {
+        super(sDrive, sElevator, sGroundIntake, sBinGrabber);
         atkl = new JStick(0);
         atkr = new JStick(1);
         guitar = new JStick(2);

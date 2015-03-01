@@ -16,8 +16,9 @@ public class GamepadControl extends ControlSystem {
     
     public GamepadControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator,
-            GroundIntakeSubsystem sGroundIntake) {
-        super(sDrive, sElevator, sGroundIntake);
+            GroundIntakeSubsystem sGroundIntake,
+            BinGrabberSubsystem sBinGrabber) {
+        super(sDrive, sElevator, sGroundIntake, sBinGrabber);
         xbox = new JStick(0);
         atk = new JStick(1);
         

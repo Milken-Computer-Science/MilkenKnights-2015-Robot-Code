@@ -25,8 +25,9 @@ public class PIDTuner extends ControlSystem {
 
     public PIDTuner(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator,
-            GroundIntakeSubsystem sGroundIntake) {
-        super(sDrive, sElevator, sGroundIntake);
+            GroundIntakeSubsystem sGroundIntake,
+            BinGrabberSubsystem sBinGrabber) {
+        super(sDrive, sElevator, sGroundIntake, sBinGrabber);
         atkl = new JStick(0);
         atkr = new JStick(1);
         atka = new JStick(2);

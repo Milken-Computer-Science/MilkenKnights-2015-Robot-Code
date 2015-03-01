@@ -7,6 +7,7 @@ import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.RestrictedSolenoid;
 import com.milkenknights.frc2015.controls.*;
+import com.milkenknights.frc2015.subsystems.BinGrabberSubsystem;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
@@ -20,6 +21,7 @@ public class Robot extends IterativeRobot {
     DriveSubsystem driveSubsystem;
     ElevatorSubsystem elevatorSubsystem;
     GroundIntakeSubsystem groundIntakeSubsystem;
+    BinGrabberSubsystem binGrabberSubsystem;
 
     ControlSystem controlSystem;
 
@@ -30,15 +32,18 @@ public class Robot extends IterativeRobot {
         driveSubsystem = new DriveSubsystem();
         elevatorSubsystem = new ElevatorSubsystem();
         groundIntakeSubsystem = new GroundIntakeSubsystem();
+        binGrabberSubsystem = new BinGrabberSubsystem();
 
         controlSystem = new TripleATKControl(driveSubsystem,
                 elevatorSubsystem,
-                groundIntakeSubsystem);
+                groundIntakeSubsystem,
+                binGrabberSubsystem);
 
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
         subsystems.add(elevatorSubsystem);
         subsystems.add(groundIntakeSubsystem);
+        subsystems.add(binGrabberSubsystem);
     }
     
     /** An iterator through all the sequence of autonomous actions. */

@@ -5,7 +5,8 @@ import com.milkenknights.frc2015.subsystems.*;
 public class ControlSystemSelect {
     public static ControlSystem controlSystem(DriveSubsystem drive,
             ElevatorSubsystem elevator,
-            GroundIntakeSubsystem groundIntake) {
-        return new TripleATKControl(drive, elevator, groundIntake);
+            GroundIntakeSubsystem groundIntake,
+            BinGrabberSubsystem binGrabber) {
+        return new TripleATKControl(drive, elevator, groundIntake, binGrabber);
     }
 }

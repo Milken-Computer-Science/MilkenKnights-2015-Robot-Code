@@ -1,5 +1,6 @@
 package com.milkenknights.frc2015.controls;
 
+import com.milkenknights.frc2015.subsystems.BinGrabberSubsystem;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
@@ -15,13 +16,16 @@ public abstract class ControlSystem {
     protected DriveSubsystem driveSub;
     protected ElevatorSubsystem elevatorSub;
     protected GroundIntakeSubsystem groundIntakeSub;
+    protected BinGrabberSubsystem binGrabberSub;
     
     protected ControlSystem(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator,
-            GroundIntakeSubsystem sGroundIntake) {
+            GroundIntakeSubsystem sGroundIntake,
+            BinGrabberSubsystem sBinGrabber) {
         driveSub = sDrive;
         elevatorSub = sElevator;
         groundIntakeSub = sGroundIntake;
+        binGrabberSub = sBinGrabber;
     }
     
     /**
