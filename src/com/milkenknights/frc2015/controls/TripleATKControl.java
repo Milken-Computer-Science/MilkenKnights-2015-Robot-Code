@@ -105,6 +105,13 @@ public class TripleATKControl extends ControlSystem {
             elevatorSub.resetPosition();
         }
         
+        double knob = atka.getAxis(JStick.ATK3_KNOB);
+        if (Math.abs(knob) > 0.5) {
+            binGrabberSub.setSpeed(knob);
+        } else {
+            binGrabberSub.setSpeed(0);
+        }
+        
         // if a tote has been loaded, drop the elevator down and pick it up
         // this action should only be taken if the tote was loaded while the
         // elevator was up

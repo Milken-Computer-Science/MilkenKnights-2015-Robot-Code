@@ -53,10 +53,10 @@ public class DriveSubsystem extends MSubsystem {
         
         CANTalon rightTalonA = new CANTalon(Constants.rightTalonDeviceNumberA);
         CANTalon rightTalonB = new CANTalon(Constants.rightTalonDeviceNumberB);
-        CANTalon rightTalonC = new CANTalon(Constants.rightTalonDeviceNumberC);
+        //CANTalon rightTalonC = new CANTalon(Constants.rightTalonDeviceNumberC);
         
         CANTalon[] leftWheels = {leftTalonA, leftTalonB, leftTalonC};
-        CANTalon[] rightWheels = {rightTalonA, rightTalonB, rightTalonC};
+        CANTalon[] rightWheels = {rightTalonA, rightTalonB};
         
         drive = new Drive(leftWheels, rightWheels,
                 Constants.reversedLeftTalons, Constants.reversedRightTalons,

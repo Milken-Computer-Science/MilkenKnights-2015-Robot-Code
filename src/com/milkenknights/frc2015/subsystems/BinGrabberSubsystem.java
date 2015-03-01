@@ -16,6 +16,7 @@ public class BinGrabberSubsystem extends MSubsystem {
     
     /**
      * Set the speed that the grabber talon should move at.
+     * Out is negative.
      * @param speed The desired speed. Should be between -1 and 1.
      */
     public void setSpeed(double speed) {

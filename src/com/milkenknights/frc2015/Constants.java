@@ -10,12 +10,12 @@ public class Constants {
     public static final int leftTalonDeviceNumberA = 3; // CIM
     public static final int leftTalonDeviceNumberB = 4; // CIM
     public static final int leftTalonDeviceNumberC = 5; // 550
-    public static final int rightTalonDeviceNumberC = 6; // 550
+    //public static final int rightTalonDeviceNumberC = 6; // 550
     public static final int rightTalonDeviceNumberB = 7; // CIM
     public static final int rightTalonDeviceNumberA = 8; // CIM
     public static final int rightElevatorTalonDeviceNumber = 9;
     public static final int groundIntakeRightTalonDeviceNumber = 10;
-    public static final int binGrabberTalonDeviceNumber = 11;
+    public static final int binGrabberTalonDeviceNumber = 6;
     
     // these correspond to index numbers, so A->0, B->1, and C->2
     // these are the wheels that should be reversed
