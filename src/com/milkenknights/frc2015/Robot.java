@@ -72,7 +72,7 @@ public class Robot extends IterativeRobot {
         autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 1));
         */
         
-        /*
+        // the infamous 3-tote auto
         autonomousList.add(new ElevatorMoveAction(elevatorSubsystem,
                 Constants.elevatorReadyToIntakeHeight,
                 Constants.elevatorThreshold));
@@ -102,14 +102,15 @@ public class Robot extends IterativeRobot {
         autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 0.35));
         
         autonomousList.add(new PIDStraightAction(driveSubsystem, 50, 0.35));
-        */
         
         //autonomousList.add(new PIDStraightAction(driveSubsystem, 40, 0.35));
         //autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 0.35));
         
+        /*
         autonomousList.add(new StraightAction(driveSubsystem, 0.6));
         autonomousList.add(new AutonWait(3));
         autonomousList.add(new StraightAction(driveSubsystem, 0));       
+        */
         
         autonomousSequence = autonomousList.listIterator();
         
