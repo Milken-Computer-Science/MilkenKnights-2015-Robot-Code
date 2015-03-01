@@ -162,7 +162,5 @@ public class ElevatorSubsystem extends MSubsystem {
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
         SmartDashboard.putNumber("Elevator Setpoint", pid.getSetpoint());
         SmartDashboard.putNumber("Elevator Position", enc.getDistance());
-        
-        System.out.println("elevator position "+enc.getDistance());
     }
 }
