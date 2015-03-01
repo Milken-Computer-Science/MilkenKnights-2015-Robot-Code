@@ -257,7 +257,7 @@ public class DriveSubsystem extends MSubsystem {
         SmartDashboard.putBoolean("r pid", pid_l.isEnable());
         SmartDashboard.putBoolean("pivot pid", pid_pivot.isEnable());
         
-        System.out.println("l "+enc_l.getDistance()+" r "+enc_r.getDistance()+
-                " a "+gyro.pidGet());
+        //System.out.println("l "+enc_l.getDistance()+" r "+enc_r.getDistance()+
+        //        " a "+gyro.pidGet());
     }
 }

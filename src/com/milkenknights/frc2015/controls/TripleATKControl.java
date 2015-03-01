@@ -26,7 +26,7 @@ public class TripleATKControl extends ControlSystem {
         atka = new JStick(2);
 
         isCheesy = false;
-        autoLoad = true;
+        autoLoad = false;
         toteGrabbed = false;
         lowGear = false;
     }

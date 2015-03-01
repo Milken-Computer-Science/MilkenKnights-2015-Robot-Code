@@ -141,8 +141,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * @return true if the tote is loaded
      */
     public boolean toteLoaded() {
-        //return bannerSensor.get();
-        return false;
+        return bannerSensor.get();
     }
     
     public void teleopInit() {
@@ -162,5 +161,7 @@ public class ElevatorSubsystem extends MSubsystem {
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
         SmartDashboard.putNumber("Elevator Setpoint", pid.getSetpoint());
         SmartDashboard.putNumber("Elevator Position", enc.getDistance());
+        
+        System.out.println("banner sensor "+toteLoaded());
     }
 }
