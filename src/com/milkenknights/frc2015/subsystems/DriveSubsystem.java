@@ -213,11 +213,17 @@ public class DriveSubsystem extends MSubsystem {
      * Find out if we have reached our straight PID target.
      *
      * @param threshold How close/precise we want to be
-     * @return true if we have reached the target
+     * @return true if we have reached the target.
+     *         false if we are not in a PID mode at all
      */
     public boolean pidOnTarget(double threshold) {
-        return Math.abs(pid_l.getError()) <= threshold ||
-                Math.abs(pid_r.getError()) <= threshold;
+        if (driveMode == DriveMode.PIDPIVOT) {
+            return Math.abs(pid_pivot.getError()) <= threshold;
+        } else if (driveMode == DriveMode.PIDSTRAIGHT) {
+            return Math.abs(pid_l.getError()) <= threshold ||
+            Math.abs(pid_r.getError()) <= threshold;
+        }
+        return false;
     }
     
     /**
