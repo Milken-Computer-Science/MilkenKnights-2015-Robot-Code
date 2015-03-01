@@ -28,6 +28,7 @@ public class PIDPivotAction extends AutonomousAction {
 
     @Override
     public void startCode() {
+        driveSubsystem.resetPIDPosition();
         driveSubsystem.setPivotPIDSetpoint(setpoint);
         driveSubsystem.setDriveMode(DriveMode.PIDPIVOT);
     }
