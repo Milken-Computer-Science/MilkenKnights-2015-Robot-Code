@@ -6,7 +6,6 @@ import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -29,8 +28,8 @@ public class DriveSubsystem extends MSubsystem {
     double cheesyTurn;
     boolean cheesyQuickturn;
     
-    double leftPivotPIDSpeed;
-    double rightPivotPIDSpeed;
+    double leftSpeedPID;
+    double rightSpeedPID;
     
     PIDController pid_l;
     PIDController pid_r;
@@ -56,49 +55,57 @@ public class DriveSubsystem extends MSubsystem {
         CANTalon rightTalonB = new CANTalon(Constants.rightTalonDeviceNumberB);
         CANTalon rightTalonC = new CANTalon(Constants.rightTalonDeviceNumberC);
         
-        leftTalonB.changeControlMode(ControlMode.Follower);
-        leftTalonC.changeControlMode(ControlMode.Follower);
-        rightTalonB.changeControlMode(ControlMode.Follower);
-        rightTalonC.changeControlMode(ControlMode.Follower);
-                
-        leftTalonC.reverseOutput(true);
-        rightTalonC.reverseOutput(true);
+        CANTalon[] leftWheels = {leftTalonA, leftTalonB, leftTalonC};
+        CANTalon[] rightWheels = {rightTalonA, rightTalonB, rightTalonC};
         
-        leftTalonB.set(leftTalonA.getDeviceID());
-        leftTalonC.set(leftTalonA.getDeviceID());
-        rightTalonB.set(rightTalonA.getDeviceID());
-        rightTalonC.set(rightTalonA.getDeviceID());
+        drive = new Drive(leftWheels, rightWheels,
+                Constants.reversedLeftTalons, Constants.reversedRightTalons,
+                Constants.minimumWheelSpeed);
         
         enc_l = new Encoder(Constants.driveLeftEncoderDeviceNumberA,
                 Constants.driveLeftEncoderDeviceNumberB);
         enc_r = new Encoder(Constants.driveRightEncoderDeviceNumberA,
                 Constants.driveRightEncoderDeviceNumberB);
         
-        enc_l.setDistancePerPulse(-Constants.driveInchesPerPulse);
-        enc_r.setDistancePerPulse(-Constants.driveInchesPerPulse);
+        enc_l.setDistancePerPulse(Constants.driveInchesPerPulse);
+        enc_r.setDistancePerPulse(Constants.driveInchesPerPulse);
+        
+        enc_l.setReverseDirection(true);
         
         driveMode = DriveMode.TANK;
         
         gyro = new IMU(
                 new SerialPort(Constants.imuBaudRate, SerialPort.Port.kMXP));
         
-        drive = new Drive(leftTalonA, rightTalonA,
-                Constants.minimumWheelSpeed);
+        class LPIDOut implements PIDOutput {
+            @Override
+            public void pidWrite(double output) {
+                leftSpeedPID = output;
+            }
+        }
+        class RPIDOut implements PIDOutput {
+            @Override
+            public void pidWrite(double output) {
+                rightSpeedPID = output;
+            }
+        }
         
         pid_l = new PIDController(Constants.driveStraightPID.kp,
                 Constants.driveStraightPID.ki,
                 Constants.driveStraightPID.kd,
-                enc_l, leftTalonA);
+                enc_l,
+                new LPIDOut());
         pid_r = new PIDController(Constants.driveStraightPID.kp,
                 Constants.driveStraightPID.ki,
                 Constants.driveStraightPID.kd,
-                enc_r, rightTalonA);
+                enc_r,
+                new RPIDOut());
         
         class PivotController implements PIDOutput {
             @Override
             public void pidWrite(double output) {
-                leftPivotPIDSpeed = output;
-                rightPivotPIDSpeed = output;
+                leftSpeedPID = output;
+                rightSpeedPID = -output;
             }
         }
         
@@ -141,7 +148,7 @@ public class DriveSubsystem extends MSubsystem {
      */
     public void tankDrive(double left, double right) {
         leftSpeed = left;
-        rightSpeed = -right;
+        rightSpeed = right;
     }
     
     /**
@@ -161,7 +168,7 @@ public class DriveSubsystem extends MSubsystem {
      */
     public void setStraightPIDSetpoint(double setpoint) {
         pid_l.setSetpoint(setpoint);
-        pid_r.setSetpoint(-setpoint);
+        pid_r.setSetpoint(setpoint);
     }
 
     /**
@@ -242,9 +249,8 @@ public class DriveSubsystem extends MSubsystem {
             drive.cheesyDrive(cheesyPower, cheesyTurn, cheesyQuickturn);
             break;
         case PIDSTRAIGHT:
-            break;
         case PIDPIVOT:
-            drive.tankDrive(leftPivotPIDSpeed, rightPivotPIDSpeed);
+            drive.tankDrive(leftSpeedPID, rightSpeedPID);
             break;
         }
         
