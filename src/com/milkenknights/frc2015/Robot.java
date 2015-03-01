@@ -106,10 +106,10 @@ public class Robot extends IterativeRobot {
         
         //autonomousList.add(new PIDStraightAction(driveSubsystem, 40, 0.35));
         //autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 0.35));
+        
         autonomousList.add(new StraightAction(driveSubsystem, 0.6));
         autonomousList.add(new AutonWait(3));
-        autonomousList.add(new StraightAction(driveSubsystem, 0));
-        
+        autonomousList.add(new StraightAction(driveSubsystem, 0));       
         
         autonomousSequence = autonomousList.listIterator();
         
