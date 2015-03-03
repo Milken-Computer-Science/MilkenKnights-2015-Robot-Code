@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.Joystick;
  * @author Daniel Kessler
  */
 public class JStick {
+    private static final int MAX_BUTTONS = 15;
+    private static final int MAX_AXES = 10;
+    
     public static final int XBOX_A = 1;
     public static final int XBOX_B = 2;
     public static final int XBOX_X = 3;
@@ -40,7 +43,6 @@ public class JStick {
     public static final int GUITAR_BACK = 7;
     
     public static final int GUITAR_WHAMMY = 4;
-    
 
     private Joystick jstick;
     private boolean[] buttonPressed;
@@ -48,8 +50,8 @@ public class JStick {
     private double[] axes;
     private double[] slowAxes;
 
-    private double slow;
-
+    private double slow; 
+    
     /**
      * Make a new JStick.
      * @param port The port of the joystick.
@@ -57,10 +59,10 @@ public class JStick {
     public JStick(int port) {
         // initialize everything
         jstick = new Joystick(port);
-        buttonPressed = new boolean[jstick.getButtonCount() + 1];
-        buttonLastPressed = new boolean[jstick.getButtonCount() + 1];
-        axes = new double[jstick.getAxisCount()];
-        slowAxes = new double[jstick.getAxisCount()];
+        buttonPressed = new boolean[MAX_BUTTONS + 1];
+        buttonLastPressed = new boolean[MAX_BUTTONS + 1];
+        axes = new double[MAX_AXES];
+        slowAxes = new double[MAX_AXES];
         slow = 2;
     }
 
@@ -68,12 +70,12 @@ public class JStick {
      * Update the stored joystick values. Should be called only once per loop.
      */
     public void update() {
-        for(int i = 1; i < buttonPressed.length; ++i) {
+        for(int i = 1; i <= jstick.getButtonCount(); i++) {
             buttonLastPressed[i] = buttonPressed[i];
             buttonPressed[i] = jstick.getRawButton(i);
         }
 
-        for(int i = 0; i < axes.length; i++) {
+        for(int i = 0; i < jstick.getAxisCount(); i++) {
             double newAxis = jstick.getRawAxis(i);
 
             if (newAxis - axes[i] > slow) {
