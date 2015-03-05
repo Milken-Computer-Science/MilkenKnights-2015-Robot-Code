@@ -20,15 +20,15 @@ public class ElevatorSubsystem extends MSubsystem {
     CANTalon elevatorTalonLeft;
 
     CANTalon elevatorTalonRight;
-    Encoder enc;
-    // Encoder enc_r;
+    Encoder encLeft;
+    Encoder encRight;
 
     /** false means the elevator is at its lowest point */
     DigitalInput hallEffectSensor;
 
-    PIDController pid;
-
     boolean resetMode = false;
+    
+    double setpoint = 0;
 
     public ElevatorSubsystem() {
         hallEffectSensor = new DigitalInput(
@@ -43,18 +43,16 @@ public class ElevatorSubsystem extends MSubsystem {
         elevatorTalonRight.set(elevatorTalonLeft.getDeviceID());
         elevatorTalonRight.reverseOutput(true);
 
-        enc = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
+        encLeft = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
                 Constants.elevatorLeftEncoderDeviceNumberB);
-
-        enc.setDistancePerPulse(Constants.elevatorInchesPerPulse);
-
-        pid = new PIDController(Constants.elevatorPID.kp,
-                Constants.elevatorPID.ki, Constants.elevatorPID.kd, enc,
-                elevatorTalonLeft);
+        encRight = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
+                Constants.elevatorRightEncoderDeviceNumberB);
+        
+        encLeft.setDistancePerPulse(Constants.elevatorInchesPerPulse);
+        encRight.setDistancePerPulse(Constants.elevatorInchesPerPulse);
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
-        
-        enablePID(true);
+
     }
 
     /**
@@ -64,19 +62,6 @@ public class ElevatorSubsystem extends MSubsystem {
         resetMode = false;
     }
 
-    /**
-     * Enable or disable PID
-     * 
-     * @param enable
-     *            True if we want to enable PID. False if we want to disable PID
-     */
-    public void enablePID(boolean enable) {
-        if (enable) {
-           pid.enable();
-        } else {
-            pid.disable();
-        }
-    }
 
     /**
      * Get the elevator encoder position
@@ -84,7 +69,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * @return the elevator encoder position.
      */
     public double getPosition() {
-        return enc.getDistance();
+        return (encLeft.getDistance() + encRight.getDistance()) / 2;
     }
 
     /**
@@ -93,7 +78,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * @return The current setpoint
      */
     public double getSetpoint() {
-        return pid.getSetpoint();
+        return setpoint;
     }
 
     /**
@@ -101,7 +86,8 @@ public class ElevatorSubsystem extends MSubsystem {
      * elevator is its lowest point.
      */
     public void resetEncoder() {
-        enc.reset();
+        encLeft.reset();
+        encRight.reset();
     }
 
     /**
@@ -127,11 +113,11 @@ public class ElevatorSubsystem extends MSubsystem {
      */
     public void setSetpoint(double setpoint) {
         if (setpoint >= Constants.elevatorMaxDistance) {
-            pid.setSetpoint(Constants.elevatorMaxDistance);
+            this.setpoint = Constants.elevatorMaxDistance;
         } else if (setpoint <= Constants.elevatorMinDistance) {
-            pid.setSetpoint(Constants.elevatorMinDistance);
+            this.setpoint = Constants.elevatorMinDistance;
         } else {
-            pid.setSetpoint(setpoint);
+            this.setpoint = setpoint;
         }
     }
 
@@ -145,13 +131,13 @@ public class ElevatorSubsystem extends MSubsystem {
     }
     
     public void teleopInit() {
-        pid.setSetpoint(getPosition());
+        
     }
     
 
     public void update() {
         if (resetMode) {
-            pid.setSetpoint(pid.getSetpoint() - Constants.elevatorResetDistance);
+            setpoint -= Constants.elevatorResetDistance;
             if (!hallEffectSensor.get()) {
                 resetEncoder();
                 resetMode = false;
@@ -159,7 +145,7 @@ public class ElevatorSubsystem extends MSubsystem {
         }
         
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
-        SmartDashboard.putNumber("Elevator Setpoint", pid.getSetpoint());
-        SmartDashboard.putNumber("Elevator Position", enc.getDistance());
+        SmartDashboard.putNumber("Elevator Setpoint", getSetpoint());
+        SmartDashboard.putNumber("Elevator Position", getPosition());
     }
 }

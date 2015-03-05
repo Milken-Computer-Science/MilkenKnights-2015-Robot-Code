@@ -1,7 +1,6 @@
 package com.milkenknights.frc2015.subsystems;
 
 import com.kauailabs.nav6.frc.IMU;
-import com.milkenknights.common.Drive;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
@@ -9,6 +8,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Jake Reiner
  */
 public class DriveSubsystem extends MSubsystem {
-    Drive drive;
+    RobotDrive drive;
     
     double leftSpeed;
     double rightSpeed;
@@ -49,19 +49,18 @@ public class DriveSubsystem extends MSubsystem {
     public DriveSubsystem() {
         CANTalon leftTalonA = new CANTalon(Constants.leftTalonDeviceNumberA);
         CANTalon leftTalonB = new CANTalon(Constants.leftTalonDeviceNumberB);
-        CANTalon leftTalonC = new CANTalon(Constants.leftTalonDeviceNumberC);
         
         CANTalon rightTalonA = new CANTalon(Constants.rightTalonDeviceNumberA);
         CANTalon rightTalonB = new CANTalon(Constants.rightTalonDeviceNumberB);
-        //CANTalon rightTalonC = new CANTalon(Constants.rightTalonDeviceNumberC);
         
-        CANTalon[] leftWheels = {leftTalonA, leftTalonB, leftTalonC};
-        CANTalon[] rightWheels = {rightTalonA, rightTalonB};
+        leftTalonB.changeControlMode(CANTalon.ControlMode.Follower);
+        rightTalonB.changeControlMode(CANTalon.ControlMode.Follower);
         
-        drive = new Drive(leftWheels, rightWheels,
-                Constants.reversedLeftTalons, Constants.reversedRightTalons,
-                Constants.minimumWheelSpeed);
-        
+        leftTalonB.set(Constants.leftTalonDeviceNumberA);
+        rightTalonB.set(Constants.rightTalonDeviceNumberA);
+                
+        drive = new RobotDrive(leftTalonA, rightTalonA);
+               
         enc_l = new Encoder(Constants.driveLeftEncoderDeviceNumberA,
                 Constants.driveLeftEncoderDeviceNumberB);
         enc_r = new Encoder(Constants.driveRightEncoderDeviceNumberA,
@@ -251,9 +250,9 @@ public class DriveSubsystem extends MSubsystem {
         case TANK:
             drive.tankDrive(leftSpeed, rightSpeed);
             break;  
-        case CHEESY:
-            drive.cheesyDrive(cheesyPower, cheesyTurn, cheesyQuickturn);
-            break;
+        /*case CHEESY:
+            //drive.cheesyDrive(cheesyPower, cheesyTurn, cheesyQuickturn);
+            break; */
         case PIDSTRAIGHT:
         case PIDPIVOT:
             drive.tankDrive(leftSpeedPID, rightSpeedPID);
