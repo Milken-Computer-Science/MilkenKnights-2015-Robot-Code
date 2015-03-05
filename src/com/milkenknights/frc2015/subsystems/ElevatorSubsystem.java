@@ -170,5 +170,3 @@ public class ElevatorSubsystem extends MSubsystem {
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
     }
 }
-
-}
