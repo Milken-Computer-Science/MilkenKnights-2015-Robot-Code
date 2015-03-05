@@ -120,6 +120,14 @@ public class ElevatorSubsystem extends MSubsystem {
             this.setpoint = setpoint;
         }
     }
+    
+    public void teleopInit() {
+        
+    }
+    
+    public boolean elevatorZero() {
+        return !hallEffectSensor.get();
+    }
 
     /**
      * Tells us if a tote is ready to be picked up by the elevator
@@ -130,10 +138,17 @@ public class ElevatorSubsystem extends MSubsystem {
         return bannerSensor.get();
     }
     
-    public void teleopInit() {
-        
+    private double limit(double val, double lim) {
+        if (Math.abs(val) <= lim) {
+            return val;
+        } else if (val > 0) {
+                return lim;
+        } else if (val < 0){
+                return -lim;
+        } else {
+            return 0;
+        }
     }
-    
 
     public void update() {
         if (resetMode) {
@@ -144,8 +159,16 @@ public class ElevatorSubsystem extends MSubsystem {
             }
         }
         
+        double l_error = (setpoint - enc_l.pidGet());
+        double r_error = (setpoint - enc_r.pidGet());
+        
+        elevatorTalonLeft.set(limit(limit(l_error * Constants.elevatorP, .9) + 
+                limit(((l_error - r_error)/2) * Constants.elevatorSteeringP, .1), 1));
+        elevatorTalonRight.set(limit(limit(r_error * Constants.elevatorP, .9) + 
+                limit(((r_error - l_error)/2) * Constants.elevatorSteeringP, .1), 1));
+        
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
-        SmartDashboard.putNumber("Elevator Setpoint", getSetpoint());
-        SmartDashboard.putNumber("Elevator Position", getPosition());
     }
+}
+
 }
