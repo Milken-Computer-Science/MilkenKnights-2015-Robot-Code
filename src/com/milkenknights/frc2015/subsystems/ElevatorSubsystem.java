@@ -159,8 +159,8 @@ public class ElevatorSubsystem extends MSubsystem {
             }
         }
         
-        double l_error = (setpoint - enc_l.pidGet());
-        double r_error = (setpoint - enc_r.pidGet());
+        double l_error = (setpoint - encLeft.pidGet());
+        double r_error = (setpoint - encRight.pidGet());
         
         elevatorTalonLeft.set(limit(limit(l_error * Constants.elevatorP, .9) + 
                 limit(((l_error - r_error)/2) * Constants.elevatorSteeringP, .1), 1));
