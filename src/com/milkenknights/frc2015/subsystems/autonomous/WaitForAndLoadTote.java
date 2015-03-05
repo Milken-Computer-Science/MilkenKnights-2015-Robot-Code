@@ -62,7 +62,6 @@ public class WaitForAndLoadTote extends AutonomousAction {
             // this might be changed
             if (elevatorSubsystem.toteLoaded()) {
                 elevatorSubsystem.setSetpoint(0);
-                elevatorSubsystem.enablePID(true);
                 stage++;
             }
         } else if (stage == 2) {

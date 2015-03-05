@@ -26,7 +26,6 @@ public class ElevatorMoveAction extends AutonomousAction {
     @Override
     public void startCode() {
         elevatorSubsystem.setSetpoint(setpoint);
-        elevatorSubsystem.enablePID(true);
     }
 
     @Override
