@@ -39,10 +39,6 @@ public class ElevatorSubsystem extends MSubsystem {
         elevatorTalonRight = new CANTalon(
                 Constants.rightElevatorTalonDeviceNumber);
 
-        elevatorTalonRight.changeControlMode(CANTalon.ControlMode.Follower);
-        elevatorTalonRight.set(elevatorTalonLeft.getDeviceID());
-        elevatorTalonRight.reverseOutput(true);
-
         encLeft = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
                 Constants.elevatorLeftEncoderDeviceNumberB);
         encRight = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
@@ -50,6 +46,8 @@ public class ElevatorSubsystem extends MSubsystem {
         
         encLeft.setDistancePerPulse(Constants.elevatorInchesPerPulse);
         encRight.setDistancePerPulse(Constants.elevatorInchesPerPulse);
+        
+        encRight.setReverseDirection(true);
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
 
@@ -164,9 +162,11 @@ public class ElevatorSubsystem extends MSubsystem {
         
         elevatorTalonLeft.set(limit(limit(l_error * Constants.elevatorP, .9) + 
                 limit(((l_error - r_error)/2) * Constants.elevatorSteeringP, .1), 1));
-        elevatorTalonRight.set(limit(limit(r_error * Constants.elevatorP, .9) + 
+        elevatorTalonRight.set(-limit(limit(r_error * Constants.elevatorP, .9) + 
                 limit(((r_error - l_error)/2) * Constants.elevatorSteeringP, .1), 1));
         
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
+        SmartDashboard.putNumber("elevator left dist", encLeft.getDistance());
+        SmartDashboard.putNumber("elevator right dist", encRight.getDistance());
     }
 }

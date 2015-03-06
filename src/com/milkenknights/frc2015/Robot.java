@@ -189,6 +189,10 @@ public class Robot extends IterativeRobot {
             s.update();
         }
     }
+    
+    public void disabledPeriodic() {
+        
+    }
 
     public void testPeriodic() {
         System.out.println(elevatorSubsystem.hallEffectSensor());
