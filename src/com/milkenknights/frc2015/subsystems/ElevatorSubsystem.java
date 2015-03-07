@@ -45,9 +45,7 @@ public class ElevatorSubsystem extends MSubsystem {
                 Constants.elevatorRightEncoderDeviceNumberB);
         
         encLeft.setDistancePerPulse(Constants.elevatorInchesPerPulse);
-        encRight.setDistancePerPulse(Constants.elevatorInchesPerPulse);
-        
-        encRight.setReverseDirection(true);
+        encRight.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
 
