@@ -61,11 +61,11 @@ public class Constants {
     public static final double groundIntakeTalonSlowSpeed = .5;
     
     // Elevator PID constants
-    public static final double elevatorP = 0.195;
+    public static final double elevatorP = 0.2;
     public static final double elevatorSteeringP = 0.1;
     
-    public static final double elevatorResetDistance = 0.25;
-    public static final double elevatorMaxDistance = 35;
+    public static final double elevatorResetDistance = 0.2;
+    public static final double elevatorMaxDistance = 36;
     public static final double elevatorMinDistance = 0;
     
     public static final double elevatorScoringPlatformHeight = 3;
@@ -75,5 +75,5 @@ public class Constants {
     public static final double elevatorTote2Height = 28;
     
     // autonomous Threshold
-    public static final double elevatorThreshold = 0.35;
+    public static final double elevatorThreshold = 0.1;
 }

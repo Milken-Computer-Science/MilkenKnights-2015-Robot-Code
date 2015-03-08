@@ -1,5 +1,6 @@
 package com.milkenknights.frc2015.subsystems;
 
+import com.milkenknights.common.DebugLogger;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
@@ -26,58 +27,63 @@ public class ElevatorSubsystem extends MSubsystem {
 
     /** false means the elevator is at its lowest point */
     DigitalInput hallEffectSensor;
-    
+
     Solenoid flaps;
 
     boolean resetMode = false;
+    boolean pidMode = true;
     double setpoint = 0;
-    
+    double manSpeed = 0;
+
     public enum ActuatorsState {
         CLOSED(false), OPEN(true);
 
         public final boolean b;
-        
+
         private ActuatorsState(boolean b) {
             this.b = b;
         }
     }
-    
+
     ActuatorsState flapsState;
 
     public ElevatorSubsystem() {
-        hallEffectSensor = new DigitalInput(
-                Constants.hallEffectSensorDeviceNumber);
-
         elevatorTalonLeft = new CANTalon(
                 Constants.leftElevatorTalonDeviceNumber);
         elevatorTalonRight = new CANTalon(
                 Constants.rightElevatorTalonDeviceNumber);
 
+        flaps = new Solenoid(Constants.elevatorActuatorDeviceNumber);
+
         encLeft = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
                 Constants.elevatorLeftEncoderDeviceNumberB);
         encRight = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
                 Constants.elevatorRightEncoderDeviceNumberB);
-        
+
+        bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
+
+        hallEffectSensor = new DigitalInput(
+                Constants.hallEffectSensorDeviceNumber);
+
         encLeft.setDistancePerPulse(Constants.elevatorInchesPerPulse);
         encRight.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
 
-        bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
-        
-        flaps = new Solenoid(Constants.elevatorActuatorDeviceNumber);
-        
         flapsState = ActuatorsState.CLOSED;
     }
-    
+
     /**
      * Set the elevator flaps
-     * @param s The status of the flaps
+     * 
+     * @param s
+     *            The status of the flaps
      */
     public void setFlapsState(ActuatorsState s) {
         flapsState = s;
     }
-    
+
     /**
      * Get the current state of the flaps
+     * 
      * @return The state of the flaps
      */
     public ActuatorsState getFlapsState() {
@@ -90,7 +96,6 @@ public class ElevatorSubsystem extends MSubsystem {
     public void abortReset() {
         resetMode = false;
     }
-
 
     /**
      * Get the elevator encoder position
@@ -129,7 +134,7 @@ public class ElevatorSubsystem extends MSubsystem {
     public void resetPosition() {
         resetMode = true;
     }
-    
+
     public boolean hallEffectSensor() {
         return hallEffectSensor.get();
     }
@@ -138,7 +143,8 @@ public class ElevatorSubsystem extends MSubsystem {
      * Set the setpoint of the elevator. This is bounded by the maximum and
      * minimum values of the elevator.
      * 
-     * @param setpoint The desired setpoint of the elevator.
+     * @param setpoint
+     *            The desired setpoint of the elevator.
      */
     public void setSetpoint(double setpoint) {
         if (setpoint >= Constants.elevatorMaxDistance) {
@@ -149,11 +155,11 @@ public class ElevatorSubsystem extends MSubsystem {
             this.setpoint = setpoint;
         }
     }
-    
+
     public void teleopInit() {
-        
+
     }
-    
+
     public boolean elevatorZero() {
         return !hallEffectSensor.get();
     }
@@ -166,40 +172,66 @@ public class ElevatorSubsystem extends MSubsystem {
     public boolean toteLoaded() {
         return bannerSensor.get();
     }
-    
+
     private double limit(double val, double lim) {
         if (Math.abs(val) <= lim) {
             return val;
         } else if (val > 0) {
-                return lim;
-        } else if (val < 0){
-                return -lim;
+            return lim;
+        } else if (val < 0) {
+            return -lim;
         } else {
             return 0;
         }
     }
 
+    public void setPIDMode(boolean b) {
+        pidMode = b;
+    }
+    
+    public boolean getPIDMode() {
+        return pidMode;
+    }
+    
+    public void setManSpeed(double d) {
+        manSpeed = d;
+    }
+
     public void update() {
         if (resetMode) {
             setpoint -= Constants.elevatorResetDistance;
-            if (!hallEffectSensor.get()) {
-                resetEncoder();
-                resetMode = false;
+        }
+
+        if (!hallEffectSensor.get()) {
+            resetEncoder();
+            resetMode = false;
+            if (setpoint < 0) {
+                setSetpoint(0);
             }
         }
-        
-        double l_error = (setpoint - encLeft.pidGet());
-        double r_error = (setpoint - encRight.pidGet());
-        
-        elevatorTalonLeft.set(limit(limit(l_error * Constants.elevatorP, .9) + 
-                limit(((l_error - r_error)/2) * Constants.elevatorSteeringP, .1), 1));
-        elevatorTalonRight.set(-limit(limit(r_error * Constants.elevatorP, .9) + 
-                limit(((r_error - l_error)/2) * Constants.elevatorSteeringP, .1), 1));
-        
+
+        if (pidMode) {
+            double l_error = (setpoint - encLeft.pidGet());
+            double r_error = (setpoint - encRight.pidGet());
+
+            elevatorTalonLeft.set(limit(
+                    limit(l_error * Constants.elevatorP, .9)
+                            + limit(((l_error - r_error) / 2)
+                                    * Constants.elevatorSteeringP, .1), 1));
+            elevatorTalonRight.set(-limit(
+                    limit(r_error * Constants.elevatorP, .9)
+                            + limit(((r_error - l_error) / 2)
+                                    * Constants.elevatorSteeringP, .1), 1));
+        } else {
+            elevatorTalonLeft.set(manSpeed);
+            elevatorTalonRight.set(-manSpeed);
+        }
+
         flaps.set(flapsState.b);
-        
+
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
         SmartDashboard.putNumber("elevator left dist", encLeft.getDistance());
         SmartDashboard.putNumber("elevator right dist", encRight.getDistance());
+        SmartDashboard.putNumber("elevator setpoint", setpoint);
     }
 }

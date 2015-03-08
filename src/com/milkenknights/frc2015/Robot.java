@@ -173,7 +173,6 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-        controlSystem.teleopInit();
         for (MSubsystem s : subsystems) {
             s.teleopInit();
         }
@@ -188,7 +187,9 @@ public class Robot extends IterativeRobot {
     }
     
     public void disabledPeriodic() {
-        
+        for (MSubsystem s : subsystems) {
+            s.update();
+        }
     }
 
     public void testPeriodic() {

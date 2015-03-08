@@ -13,8 +13,7 @@ public abstract class MSubsystem {
     }
     
     /**
-     * This function will be run periodically during both teleop and
-     * autonomous.
+     * This function will be run periodically
      */
     public void update() {
         
