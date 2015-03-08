@@ -75,5 +75,5 @@ public class Constants {
     public static final double elevatorTote2Height = 28;
     
     // autonomous Threshold
-    public static final double elevatorThreshold = 0.1;
+    public static final double elevatorThreshold = 0.25;
 }

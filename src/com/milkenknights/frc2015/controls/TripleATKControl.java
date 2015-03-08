@@ -17,7 +17,6 @@ public class TripleATKControl extends ControlSystem {
     Joystick atkr, atkl, atka;
 
     public boolean isCheesy;
-    private boolean autoLoad;
     private int elevatorCommand;
     
     private boolean released4;
@@ -32,7 +31,6 @@ public class TripleATKControl extends ControlSystem {
         atka = new Joystick(2);
 
         isCheesy = false;
-        autoLoad = false;
         elevatorCommand = 0;
     }
 
@@ -53,10 +51,17 @@ public class TripleATKControl extends ControlSystem {
         }
 
         if (atka.getRawButton(6)) {
+            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+            groundIntakeSub
+                    .setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
+            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             elevatorCommand = 3;
         }
         
         if (atka.getRawButton(7)) {
+            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
+            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             elevatorCommand = 4;
         }
         
@@ -132,10 +137,7 @@ public class TripleATKControl extends ControlSystem {
                     .setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             break;
         case 3:
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
-            groundIntakeSub
-                    .setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-            if (elevatorSub.toteLoaded() && autoLoad) {
+            if (elevatorSub.toteLoaded()) {
                 if (elevatorSub.getPosition() > Constants.elevatorMinDistance + Constants.elevatorThreshold) {
                     elevatorSub.setSetpoint(Constants.elevatorMinDistance);
                     groundIntakeSub
@@ -151,9 +153,7 @@ public class TripleATKControl extends ControlSystem {
             }
             break;
         case 4:
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-            if (elevatorSub.toteLoaded() && autoLoad) {
+            if (elevatorSub.toteLoaded()) {
                 if (elevatorSub.getPosition() > Constants.elevatorMinDistance + Constants.elevatorThreshold) {
                     elevatorSub.setSetpoint(Constants.elevatorMinDistance);
                     groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
