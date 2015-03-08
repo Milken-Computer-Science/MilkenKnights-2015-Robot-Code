@@ -61,9 +61,6 @@ public class Robot extends IterativeRobot {
         
         runningActions = new LinkedList<AutonomousAction>();
         
-        // FAKE ULTRASONIC SENSOR FOR AUTONOMOUS
-        FakeUltrasonic fakeUltrasonic = new FakeUltrasonic();
-        
         // COMPOSE THE AUTONOMOUS STEPS HERE
         /*
         //autonomousList.add(new IntakeActuatorsSet(groundIntakeSubsystem, GroundIntakeSubsystem.ActuatorsState.OPEN));
