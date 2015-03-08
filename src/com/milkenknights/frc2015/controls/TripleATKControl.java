@@ -158,9 +158,4 @@ public class TripleATKControl extends ControlSystem {
                     GroundIntakeSubsystem.WheelsState.STOPPED);
         }
     }
-
-    @Override
-    public void teleopInit() {
-        
-    }
 }

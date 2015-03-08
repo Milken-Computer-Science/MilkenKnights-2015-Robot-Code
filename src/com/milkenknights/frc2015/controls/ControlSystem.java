@@ -27,11 +27,6 @@ public abstract class ControlSystem {
         groundIntakeSub = sGroundIntake;
         binGrabberSub = sBinGrabber;
     }
-    
-    /**
-     * This function is run once at the start of the teleop period.
-     */
-    public abstract void teleopInit();
 
     /**
      * This function is run periodically during the teleop period.
