@@ -170,7 +170,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * @return true if the tote is loaded
      */
     public boolean toteLoaded() {
-        return !bannerSensor.get();
+        return bannerSensor.get();
     }
 
     private double limit(double val, double lim) {

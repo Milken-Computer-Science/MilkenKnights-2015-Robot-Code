@@ -22,6 +22,7 @@ public class TripleATKControl extends ControlSystem {
     
     private boolean released4;
     private boolean released5;
+    private boolean released9;
 
     public TripleATKControl(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
             GroundIntakeSubsystem sGroundIntake, BinGrabberSubsystem sBinGrabber) {
@@ -95,8 +96,12 @@ public class TripleATKControl extends ControlSystem {
         
         if (atka.getRawButton(9)) {
             elevatorCommand = 0;
+            released9 = true;
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.OUTPUT);
+        } else if (released9) {
+            released9 = false;
+            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
         }
         
         

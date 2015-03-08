@@ -32,7 +32,7 @@ public class Constants {
     public static final int driveRightEncoderDeviceNumberA = 2;
     public static final int driveRightEncoderDeviceNumberB = 3;
     public static final int bannerSensorWhiteDeviceNumber = 10;
-    public static final int bannerSensorBlackDeviceNumber = 11;
+    public static final int bannerSensorBlackDeviceNumber = 8;
     
     // solenoid ports
     public static final int groundIntakeLeftActuatorDeviceNumber = 0;
