@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -25,10 +26,23 @@ public class ElevatorSubsystem extends MSubsystem {
 
     /** false means the elevator is at its lowest point */
     DigitalInput hallEffectSensor;
+    
+    Solenoid flaps;
 
     boolean resetMode = false;
-    
     double setpoint = 0;
+    
+    public enum ActuatorsState {
+        CLOSED(false), OPEN(true);
+
+        public final boolean b;
+        
+        private ActuatorsState(boolean b) {
+            this.b = b;
+        }
+    }
+    
+    ActuatorsState flapsState;
 
     public ElevatorSubsystem() {
         hallEffectSensor = new DigitalInput(
@@ -48,7 +62,26 @@ public class ElevatorSubsystem extends MSubsystem {
         encRight.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
 
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
-
+        
+        flaps = new Solenoid(Constants.elevatorActuatorDeviceNumber);
+        
+        flapsState = ActuatorsState.CLOSED;
+    }
+    
+    /**
+     * Set the elevator flaps
+     * @param s The status of the flaps
+     */
+    public void setFlapsState(ActuatorsState s) {
+        flapsState = s;
+    }
+    
+    /**
+     * Get the current state of the flaps
+     * @return The state of the flaps
+     */
+    public ActuatorsState getFlapsState() {
+        return flapsState;
     }
 
     /**
@@ -162,6 +195,8 @@ public class ElevatorSubsystem extends MSubsystem {
                 limit(((l_error - r_error)/2) * Constants.elevatorSteeringP, .1), 1));
         elevatorTalonRight.set(-limit(limit(r_error * Constants.elevatorP, .9) + 
                 limit(((r_error - l_error)/2) * Constants.elevatorSteeringP, .1), 1));
+        
+        flaps.set(flapsState.b);
         
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
         SmartDashboard.putNumber("elevator left dist", encLeft.getDistance());

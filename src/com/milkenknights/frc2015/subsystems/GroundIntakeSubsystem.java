@@ -33,8 +33,8 @@ public class GroundIntakeSubsystem extends MSubsystem {
         leftTalon = new CANTalon(Constants.groundIntakeLeftTalonDeviceNumber);
         rightTalon = new CANTalon(Constants.groundIntakeRightTalonDeviceNumber);
         actuators = new SolenoidPair(
-                Constants.groundIntakeFirstActuatorDeviceNumber,
-                Constants.groundIntakeSecondActuatorDeviceNumber,
+                Constants.groundIntakeLeftActuatorDeviceNumber,
+                Constants.groundIntakeRightActuatorDeviceNumber,
                 false);
         
         actuatorsState = ActuatorsState.CLOSED;
