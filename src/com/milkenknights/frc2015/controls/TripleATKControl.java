@@ -1,11 +1,11 @@
 package com.milkenknights.frc2015.controls;
 
-import java.util.LinkedList;
-
+import com.milkenknights.common.DebugLogger;
 import com.milkenknights.frc2015.Constants;
 import com.milkenknights.frc2015.subsystems.*;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This control system uses three ATK3 controllers: two for driving and one for
@@ -19,6 +19,9 @@ public class TripleATKControl extends ControlSystem {
     public boolean isCheesy;
     private boolean autoLoad;
     private int elevatorCommand;
+    
+    private boolean released4;
+    private boolean released5;
 
     public TripleATKControl(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
             GroundIntakeSubsystem sGroundIntake, BinGrabberSubsystem sBinGrabber) {
@@ -33,6 +36,7 @@ public class TripleATKControl extends ControlSystem {
     }
 
     public void teleopPeriodic() {
+        SmartDashboard.putNumber("Elevator Command", elevatorCommand);
 
         // TANK DRIVE
         // controlled by left and right ATK y axes
@@ -63,22 +67,30 @@ public class TripleATKControl extends ControlSystem {
         
         if (atka.getRawButton(4)) {
             elevatorCommand = 0;
+            released4 = true;
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             if (!elevatorSub.toteLoaded()) {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             } else {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
             }
+        } else if (released4) {
+            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            released4 = false;
         }
         
         if (atka.getRawButton(5)) {
             elevatorCommand = 0;
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            released5 = true;
+            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
             if (!elevatorSub.toteLoaded()) {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             } else {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
             }
+        } else if (released5) {
+            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            released5 = false;
         }
         
         if (atka.getRawButton(9)) {
@@ -103,17 +115,17 @@ public class TripleATKControl extends ControlSystem {
         
         switch (elevatorCommand) {
         case 0:
-            return;
+            break;
         case 1:
             elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
             groundIntakeSub
                     .setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-            return;
+            break;
         case 2:
             elevatorSub.setSetpoint(Constants.elevatorTote1Height);
             groundIntakeSub
                     .setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-            return;
+            break;
         case 3:
             elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
             groundIntakeSub
@@ -132,7 +144,7 @@ public class TripleATKControl extends ControlSystem {
                     groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
                 }
             }
-            return;
+            break;
         case 4:
             elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
@@ -145,9 +157,9 @@ public class TripleATKControl extends ControlSystem {
                     groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
                 }
             }
-            return;
+            break;
         default:
-            return;
+            break;
         }
     }
 }

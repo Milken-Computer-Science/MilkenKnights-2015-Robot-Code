@@ -1,5 +1,6 @@
 package com.milkenknights.frc2015.subsystems;
 
+import com.milkenknights.common.DebugLogger;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.SolenoidPair;
 import com.milkenknights.frc2015.Constants;
@@ -26,8 +27,8 @@ public class GroundIntakeSubsystem extends MSubsystem {
         }
     }
    
-    ActuatorsState actuatorsState;
-    WheelsState wheelsState;
+    private ActuatorsState actuatorsState;
+    private WheelsState wheelsState;
     
     public GroundIntakeSubsystem() {
         leftTalon = new CANTalon(Constants.groundIntakeLeftTalonDeviceNumber);
@@ -105,7 +106,6 @@ public class GroundIntakeSubsystem extends MSubsystem {
             rightTalon.set(0);
             break;
         }
-        
         actuators.set(actuatorsState.b);
     }
 }

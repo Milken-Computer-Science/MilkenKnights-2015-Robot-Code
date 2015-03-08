@@ -170,7 +170,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * @return true if the tote is loaded
      */
     public boolean toteLoaded() {
-        return bannerSensor.get();
+        return !bannerSensor.get();
     }
 
     private double limit(double val, double lim) {
@@ -230,6 +230,7 @@ public class ElevatorSubsystem extends MSubsystem {
         flaps.set(flapsState.b);
 
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
+        SmartDashboard.putBoolean("Tote Loaded", toteLoaded());
         SmartDashboard.putNumber("elevator left dist", encLeft.getDistance());
         SmartDashboard.putNumber("elevator right dist", encRight.getDistance());
         SmartDashboard.putNumber("elevator setpoint", setpoint);
