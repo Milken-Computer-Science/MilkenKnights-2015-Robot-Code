@@ -133,10 +133,9 @@ public class DriveSubsystem extends MSubsystem {
      * "Zero out" our position. If the robot has moved forward or rotated, this
      * will reset the position back to zero.
      */
-    public void resetPIDPosition() {
+    public void resetStraightPIDPosition() {
         enc_l.reset();
         enc_r.reset();
-        gyro.zeroYaw();
     }
 
     /**

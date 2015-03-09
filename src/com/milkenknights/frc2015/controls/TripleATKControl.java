@@ -41,6 +41,8 @@ public class TripleATKControl extends ControlSystem {
         // controlled by left and right ATK y axes
         driveSub.tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
                 -atkr.getAxis(Joystick.AxisType.kY));
+        
+        driveSub.setDriveMode(DriveSubsystem.DriveMode.TANK);
 
         if (atka.getRawButton(3)) {
             elevatorCommand = 1;
@@ -166,5 +168,17 @@ public class TripleATKControl extends ControlSystem {
         default:
             break;
         }
+    }
+
+    @Override
+    public void autonomousPeriodic() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void autonomousInit() {
+        // TODO Auto-generated method stub
+        
     }
 }

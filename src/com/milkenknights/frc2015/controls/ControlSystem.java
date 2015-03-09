@@ -32,4 +32,7 @@ public abstract class ControlSystem {
      * This function is run periodically during the teleop period.
      */
     public abstract void teleopPeriodic();
+    
+    public abstract void autonomousInit();
+    public abstract void autonomousPeriodic();
 }

@@ -23,7 +23,8 @@ public class Robot extends IterativeRobot {
     GroundIntakeSubsystem groundIntakeSubsystem;
     BinGrabberSubsystem binGrabberSubsystem;
 
-    ControlSystem controlSystem;
+    ControlSystem teleControlSystem;
+    ControlSystem autoControlSystem;
 
     public void robotInit() {
         RestrictedSolenoid.initPressureSensor(Constants.pressureTransducerChannel, 
@@ -34,10 +35,15 @@ public class Robot extends IterativeRobot {
         groundIntakeSubsystem = new GroundIntakeSubsystem();
         binGrabberSubsystem = new BinGrabberSubsystem();
 
-        controlSystem = new TripleATKControl(driveSubsystem,
+        teleControlSystem = new TripleATKControl(driveSubsystem,
                 elevatorSubsystem,
                 groundIntakeSubsystem,
                 binGrabberSubsystem);
+        autoControlSystem = new AutonomousControl(driveSubsystem,
+                elevatorSubsystem,
+                groundIntakeSubsystem,
+                binGrabberSubsystem);
+        
 
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
@@ -45,127 +51,13 @@ public class Robot extends IterativeRobot {
         subsystems.add(groundIntakeSubsystem);
         subsystems.add(binGrabberSubsystem);
     }
-    
-    /** An iterator through all the sequence of autonomous actions. */
-    ListIterator<AutonomousAction> autonomousSequence;
-    
-    /**
-     * The list of autonomous actions that are currently running, including
-     * ones that have been backgrounded.
-     */
-    LinkedList<AutonomousAction> runningActions;
 
     public void autonomousInit() {
-        LinkedList<AutonomousAction> autonomousList =
-                new LinkedList<AutonomousAction>();
-        
-        runningActions = new LinkedList<AutonomousAction>();
-        
-        // COMPOSE THE AUTONOMOUS STEPS HERE
-        /*
-        //autonomousList.add(new IntakeActuatorsSet(groundIntakeSubsystem, GroundIntakeSubsystem.ActuatorsState.OPEN));
-        //autonomousList.add(new ElevatorMoveAction(elevatorSubsystem, Constants.elevatorReadyToIntakeHeight, .5));
-        //autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem, GroundIntakeSubsystem.WheelsState.RIGHT));
-        //autonomousList.add(new PIDStraightAction(driveSubsystem, 20, 1));
-        //autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem, GroundIntakeSubsystem.WheelsState.INTAKE));
-        autonomousList.add(new PIDStraightAction(driveSubsystem, 81, 1));
-        autonomousList.add(new AutonWait(2));
-        autonomousList.add(new PIDStraightAction(driveSubsystem, 162, 1));
-        autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 1));
-        */
-        
-        /*
-        // the infamous 3-tote auto
-        autonomousList.add(new ElevatorMoveAction(elevatorSubsystem,
-                Constants.elevatorReadyToIntakeHeight,
-                Constants.elevatorThreshold));
-        
-        autonomousList.add(new IntakeActuatorsSet(groundIntakeSubsystem,
-                GroundIntakeSubsystem.ActuatorsState.OPEN));
-        
-        // repeat this twice
-        for (int i = 0; i < 2; i++) {
-            autonomousList.add(fakeUltrasonic.setReadingAction(30));
-            autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem,
-                    GroundIntakeSubsystem.WheelsState.RIGHT));
-
-            autonomousList.add(new PIDStraightAction(driveSubsystem, 40, 0.35));
-
-            autonomousList.add(new IntakeWheelsSet(groundIntakeSubsystem,
-                    GroundIntakeSubsystem.WheelsState.INTAKE));
-            autonomousList.add(new WaitForAndLoadTote(elevatorSubsystem,
-                    groundIntakeSubsystem,
-                    fakeUltrasonic));
-
-            autonomousList.add(new PIDStraightAction(driveSubsystem, 41, 0.35));
-
-            autonomousList.add(fakeUltrasonic.setReadingAction(7));
-        }
-        
-        autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 0.35));
-        
-        autonomousList.add(new PIDStraightAction(driveSubsystem, 50, 0.35));
-        
-        //autonomousList.add(new PIDStraightAction(driveSubsystem, 40, 0.35));
-        //autonomousList.add(new PIDPivotAction(driveSubsystem, 90, 0.35));
-        */
-        
-        /*
-        autonomousList.add(new StraightAction(driveSubsystem, 0.6));
-        autonomousList.add(new AutonWait(1.7));
-        autonomousList.add(new StraightAction(driveSubsystem, 0));
-        */
-        
-        autonomousList.add(new BinGrabberSpeedAction(binGrabberSubsystem, -1));
-        autonomousList.add(new AutonWait(12));
-        autonomousList.add(new BinGrabberSpeedAction(binGrabberSubsystem, 0));
-        
-        /*
-        autonomousList.add(new AutonWait(3));
-        autonomousList.add(new PIDStraightAction(driveSubsystem, 30, 1));
-        */
-        
-        autonomousSequence = autonomousList.listIterator();
-        
-        driveSubsystem.resetPIDPosition();
+        autoControlSystem.autonomousInit();
     }
 
     public void autonomousPeriodic() {
-        // if this ends up being true at the end of the while loop, start the
-        // next queued AutonomousAction.
-        // If runningActions is ever empty (e.g. at the beginning of
-        // autonomous), the while loop will never happen, startNextAction will
-        // stay true, and we will find the next action to add.
-        boolean startNextAction = true;
-        
-        // Loop through the list of currently running actions. We use a manual
-        // ListIterator instead of the syntax shortcut because we need to
-        // remove the element mid-loop when it ends.
-        ListIterator<AutonomousAction> i = runningActions.listIterator();
-        while (i.hasNext()) {
-            AutonomousAction a = i.next();
-            startNextAction = false;
-            
-            // run the action and find out what to do next based on its return
-            // value.
-            switch(a.periodicRun()) {
-            case CONTINUE:
-                break;
-            // END doesn't break because it falls through and sets
-            // startNextAction to true.
-            case END:
-                i.remove();
-            case BACKGROUND:
-                startNextAction = true;
-                break;
-            }
-        }
-        
-        if (startNextAction && autonomousSequence.hasNext()) {
-            AutonomousAction nextAction = autonomousSequence.next();
-            nextAction.start();
-            runningActions.add(nextAction);
-        }
+        autoControlSystem.autonomousPeriodic();
         
         for (MSubsystem s : subsystems) {
             s.update();
@@ -179,7 +71,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        controlSystem.teleopPeriodic();
+        teleControlSystem.teleopPeriodic();
         
         for (MSubsystem s : subsystems) {
             s.update();

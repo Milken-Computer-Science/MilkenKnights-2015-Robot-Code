@@ -1,6 +1,5 @@
 package com.milkenknights.frc2015.subsystems;
 
-import com.milkenknights.common.DebugLogger;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.SolenoidPair;
 import com.milkenknights.frc2015.Constants;
