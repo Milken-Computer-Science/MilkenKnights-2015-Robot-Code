@@ -213,11 +213,11 @@ public class ElevatorSubsystem extends MSubsystem {
             elevatorTalonLeft.set(limit(
                     limit(l_error * Constants.elevatorP, .9)
                             + limit(((l_error - r_error) / 2)
-                                    * Constants.elevatorSteeringP, .1) + .1, 1));
+                                    * Constants.elevatorSteeringP, .1), 1));
             elevatorTalonRight.set(-limit(
                     limit(r_error * Constants.elevatorP, .9)
                             + limit(((r_error - l_error) / 2)
-                                    * Constants.elevatorSteeringP, .1) + .1, 1));
+                                    * Constants.elevatorSteeringP, .1), 1));
         } else {
             elevatorTalonLeft.set(manSpeed);
             elevatorTalonRight.set(-manSpeed);

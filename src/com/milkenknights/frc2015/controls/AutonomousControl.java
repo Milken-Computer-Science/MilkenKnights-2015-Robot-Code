@@ -13,15 +13,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutonomousControl extends ControlSystem {
 
     private int step = 0;
-    private boolean toteGrabbed;
 
     public AutonomousControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator, GroundIntakeSubsystem sGroundIntake,
             BinGrabberSubsystem sBinGrabber) {
         super(sDrive, sElevator, sGroundIntake, sBinGrabber);
         // TODO Auto-generated constructor stub
-        
-        toteGrabbed = false;
     }
 
     @Override
@@ -42,11 +39,10 @@ public class AutonomousControl extends ControlSystem {
             driveSub.resetStraightPIDPosition();
             driveSub.setStraightPIDSetpoint(0);
             driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDSTRAIGHT);
-            toteGrabbed = false;
+            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
             step++;
             break;
         case 1:
-            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
             elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
             
             if (elevatorSub.getPosition() > elevatorSub.getSetpoint() - Constants.elevatorThreshold) {
@@ -67,11 +63,8 @@ public class AutonomousControl extends ControlSystem {
         case 3:
             elevatorSub.setSetpoint(Constants.elevatorMinDistance);
             if (elevatorSub.getPosition() < Constants.elevatorMinDistance + Constants.elevatorThreshold) {
-                elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
                 elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
                 step++;
-            } else if (elevatorSub.getPosition() < 8) {
-                elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.OPEN);
             }
             break;
         case 4:
@@ -79,7 +72,7 @@ public class AutonomousControl extends ControlSystem {
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             
-            if (elevatorSub.toteLoaded()) {
+            if (elevatorSub.toteLoaded() && driveSub.pidOnTarget(20)) {
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
                 step++;
@@ -88,7 +81,6 @@ public class AutonomousControl extends ControlSystem {
         case 5:
             elevatorSub.setSetpoint(Constants.elevatorMinDistance);
             if (elevatorSub.getPosition() < Constants.elevatorMinDistance + Constants.elevatorThreshold) {
-                elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
                 elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
                 driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDPIVOT);
                 driveSub.setPivotPIDSetpoint(90);
@@ -96,8 +88,6 @@ public class AutonomousControl extends ControlSystem {
                     driveSub.resetStraightPIDPosition();
                     step++;
                 }     
-            } else if (elevatorSub.getPosition() < 8) {
-                elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.OPEN);
             }
             break;
         case 6:
@@ -116,6 +106,10 @@ public class AutonomousControl extends ControlSystem {
                     }
                 }
             }
+            break;
+        case 7:
+            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+            break;
         }
     }
 }

@@ -58,7 +58,7 @@ public class DriveSubsystem extends MSubsystem {
         leftTalonB.set(leftTalonA.getDeviceID());
         rightTalonB.set(rightTalonA.getDeviceID());
 
-        enc_l.setDistancePerPulse(Constants.driveInchesPerPulse);
+        enc_l.setDistancePerPulse(-Constants.driveInchesPerPulse);
         enc_r.setDistancePerPulse(Constants.driveInchesPerPulse);
 
         enc_l.setReverseDirection(true);
@@ -204,5 +204,6 @@ public class DriveSubsystem extends MSubsystem {
         SmartDashboard.putNumber("l dist", enc_l.pidGet());
         SmartDashboard.putNumber("r dist", enc_r.pidGet());
         SmartDashboard.putNumber("gyro", gyro.pidGet());
+        SmartDashboard.putString("Drive Mode", driveMode.toString());
     }
 }

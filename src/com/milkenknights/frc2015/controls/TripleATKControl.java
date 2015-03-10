@@ -1,6 +1,7 @@
 package com.milkenknights.frc2015.controls;
 
 import com.milkenknights.common.DebugLogger;
+import com.milkenknights.common.MTimer;
 import com.milkenknights.frc2015.Constants;
 import com.milkenknights.frc2015.subsystems.*;
 
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class TripleATKControl extends ControlSystem {
     Joystick atkr, atkl, atka;
+    
+    MTimer timer = new MTimer();
 
     public boolean isCheesy;
     private int elevatorCommand;
@@ -71,6 +74,7 @@ public class TripleATKControl extends ControlSystem {
             elevatorCommand = 0;
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.OPEN);
         }
         
         if (atka.getRawButton(4)) {
@@ -80,7 +84,7 @@ public class TripleATKControl extends ControlSystem {
             if (!elevatorSub.toteLoaded()) {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             } else {
-                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
             }
         } else if (released4) {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
@@ -94,7 +98,7 @@ public class TripleATKControl extends ControlSystem {
             if (!elevatorSub.toteLoaded()) {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             } else {
-                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
             }
         } else if (released5) {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
@@ -129,12 +133,15 @@ public class TripleATKControl extends ControlSystem {
         case 0:
             break;
         case 1:
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
             groundIntakeSub
                     .setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+            elevatorCommand = 0;
             break;
         case 2:
-            elevatorSub.setSetpoint(Constants.elevatorTote1Height);
+            elevatorSub.setSetpoint(Constants.elevatorMinDistance);
+            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
             groundIntakeSub
                     .setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             break;
