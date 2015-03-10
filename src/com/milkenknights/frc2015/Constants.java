@@ -63,6 +63,7 @@ public class Constants {
     // Elevator PID constants
     public static final double elevatorP = 0.205;
     public static final double elevatorSteeringP = 0.1;
+    public static final double elevatorFF = 0.1;
     
     public static final double elevatorResetDistance = 0.2;
     public static final double elevatorMaxDistance = 36;
