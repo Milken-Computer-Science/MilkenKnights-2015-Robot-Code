@@ -217,7 +217,7 @@ public class ElevatorSubsystem extends MSubsystem {
             } else {
                 ff = 0;
             }
-            DebugLogger.log(DebugLogger.LVL_STREAM, this, String.valueOf(ff));
+
             elevatorTalonLeft.set(limit(
                     limit(l_error * Constants.elevatorP + ff, .9)
                             + limit(((l_error - r_error) / 2)
