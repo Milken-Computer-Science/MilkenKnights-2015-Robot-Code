@@ -52,7 +52,8 @@ public class Constants {
     
     // PID constants for driving straight
     public static final double driveStraightP = 0.012;
-    public static final double drivePivotP = 0.0085;
+    public static final double driveSteeringP = 0.006;
+    public static final double drivePivotP = 0.015;
     
     public static final double minimumWheelSpeed = 0.0069;
 

@@ -235,6 +235,7 @@ public class ElevatorSubsystem extends MSubsystem {
 
         SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
         SmartDashboard.putBoolean("Tote Loaded", toteLoaded());
+        System.out.println("Hall effect: " + hallEffectSensor.get());
         SmartDashboard.putNumber("elevator left dist", encLeft.getDistance());
         SmartDashboard.putNumber("elevator right dist", encRight.getDistance());
         SmartDashboard.putNumber("elevator setpoint", setpoint);

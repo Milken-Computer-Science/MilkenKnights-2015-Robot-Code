@@ -17,9 +17,28 @@ public class MTimer {
         running = true;
     }
     
+    public void stop() {
+        running = false;
+        startTime = -1;
+    }
+    
+    /**
+     * Checks if the timer is already running.  If it is not running -> start
+     */
+    public void safeStart() {
+        if (getRunning()) {
+            start();
+        }
+    }
+    
+    /**
+     * Has the period passed
+     * @param i The period in seconds
+     * @return if the period has passed
+     */
     public boolean hasPeriodPassed(long i) {
         if (running) {
-            return startTime + i <= Utility.getFPGATime();
+            return startTime + (i * 1000000) <= Utility.getFPGATime();
         } else {
             return false;
         }

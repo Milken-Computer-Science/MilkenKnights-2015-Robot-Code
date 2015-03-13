@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveSubsystem extends MSubsystem {
     RobotDrive drive;
 
-    Encoder enc_l;
-    Encoder enc_r;
+    Encoder encLeft;
+    Encoder encRight;
 
     IMU gyro;
 
@@ -44,9 +44,9 @@ public class DriveSubsystem extends MSubsystem {
 
         drive = new RobotDrive(leftTalonA, rightTalonA);
 
-        enc_l = new Encoder(Constants.driveLeftEncoderDeviceNumberA,
+        encLeft = new Encoder(Constants.driveLeftEncoderDeviceNumberA,
                 Constants.driveLeftEncoderDeviceNumberB);
-        enc_r = new Encoder(Constants.driveRightEncoderDeviceNumberA,
+        encRight = new Encoder(Constants.driveRightEncoderDeviceNumberA,
                 Constants.driveRightEncoderDeviceNumberB);
 
         gyro = new IMU(new SerialPort(Constants.imuBaudRate,
@@ -58,10 +58,10 @@ public class DriveSubsystem extends MSubsystem {
         leftTalonB.set(leftTalonA.getDeviceID());
         rightTalonB.set(rightTalonA.getDeviceID());
 
-        enc_l.setDistancePerPulse(-Constants.driveInchesPerPulse);
-        enc_r.setDistancePerPulse(Constants.driveInchesPerPulse);
+        encLeft.setDistancePerPulse(-Constants.driveInchesPerPulse);
+        encRight.setDistancePerPulse(Constants.driveInchesPerPulse);
 
-        enc_l.setReverseDirection(true);
+        encLeft.setReverseDirection(true);
 
         driveMode = DriveMode.TANK;
     }
@@ -134,8 +134,8 @@ public class DriveSubsystem extends MSubsystem {
      * will reset the position back to zero.
      */
     public void resetStraightPIDPosition() {
-        enc_l.reset();
-        enc_r.reset();
+        encLeft.reset();
+        encRight.reset();
     }
 
     /**
@@ -150,8 +150,8 @@ public class DriveSubsystem extends MSubsystem {
         if (driveMode == DriveMode.PIDPIVOT) {
             return Math.abs(getPivotPIDSetpoint() - gyro.getYaw()) <= threshold;
         } else if (driveMode == DriveMode.PIDSTRAIGHT) {
-            return Math.abs(getStraightPIDSetpoint() - enc_l.pidGet()) <= threshold
-                    || Math.abs(getStraightPIDSetpoint() - enc_l.pidGet()) <= threshold;
+            return Math.abs(getStraightPIDSetpoint() - encLeft.pidGet()) <= threshold
+                    || Math.abs(getStraightPIDSetpoint() - encLeft.pidGet()) <= threshold;
         }
         return false;
     }
@@ -172,6 +172,22 @@ public class DriveSubsystem extends MSubsystem {
         
         return m_error;
     }
+    
+    public double getEncPosition() {
+        return (encLeft.getDistance() + encRight.getDistance()) / 2;
+    }
+    
+    private double limit(double val, double lim) {
+        if (Math.abs(val) <= lim) {
+            return val;
+        } else if (val > 0) {
+            return lim;
+        } else if (val < 0) {
+            return -lim;
+        } else {
+            return 0;
+        }
+    }
 
     /**
      * Updates wheel speeds depending on driveMode (which should be set to the
@@ -184,10 +200,20 @@ public class DriveSubsystem extends MSubsystem {
             drive.tankDrive(leftSpeed, rightSpeed, true);
             break;
         case PIDSTRAIGHT:
-            drive.tankDrive(Constants.driveStraightP
-                    * (getStraightPIDSetpoint() - enc_l.pidGet()),
-                    Constants.driveStraightP
-                            * (getStraightPIDSetpoint() - enc_r.pidGet()));
+            double l_error = (getStraightPIDSetpoint() - encLeft.pidGet());
+            double r_error = (getStraightPIDSetpoint() - encRight.pidGet());
+
+            double l = limit(
+                    limit(l_error * Constants.driveStraightP, .8)
+                            + limit(((l_error - r_error) / 2)
+                                    * Constants.driveSteeringP, .2), 1);
+            double r = limit(
+                    limit(r_error * Constants.driveStraightP , .8)
+                            + limit(((r_error - l_error) / 2)
+                                    * Constants.driveSteeringP, .2), 1);
+            
+            drive.tankDrive(l, r);
+            break;
         case PIDPIVOT:
             double m_result = Constants.drivePivotP * pivotPIDError();
 
@@ -197,12 +223,12 @@ public class DriveSubsystem extends MSubsystem {
                 m_result = -1;
             }
 
-            tankDrive(m_result, -m_result);
+            drive.tankDrive(m_result, -m_result);
             break;
         }
 
-        SmartDashboard.putNumber("l dist", enc_l.pidGet());
-        SmartDashboard.putNumber("r dist", enc_r.pidGet());
+        SmartDashboard.putNumber("l dist", encLeft.pidGet());
+        SmartDashboard.putNumber("r dist", encRight.pidGet());
         SmartDashboard.putNumber("gyro", gyro.pidGet());
         SmartDashboard.putString("Drive Mode", driveMode.toString());
     }
