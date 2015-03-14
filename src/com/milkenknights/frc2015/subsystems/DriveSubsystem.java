@@ -200,19 +200,19 @@ public class DriveSubsystem extends MSubsystem {
             drive.tankDrive(leftSpeed, rightSpeed, true);
             break;
         case PIDSTRAIGHT:
-            double l_error = (getStraightPIDSetpoint() - encLeft.pidGet());
-            double r_error = (getStraightPIDSetpoint() - encRight.pidGet());
-
-            double l = limit(
-                    limit(l_error * Constants.driveStraightP, .8)
-                            + limit(((l_error - r_error) / 2)
-                                    * Constants.driveSteeringP, .2), 1);
-            double r = limit(
-                    limit(r_error * Constants.driveStraightP , .8)
-                            + limit(((r_error - l_error) / 2)
-                                    * Constants.driveSteeringP, .2), 1);
+            double outputMagnitude = (getStraightPIDSetpoint() - encLeft.pidGet()) * Constants.driveStraightP;
+            double curve = PIDPivotSetpoint * Constants.drivePivotP;
             
-            drive.tankDrive(l, r);
+            drive.drive(outputMagnitude, curve);
+//            double l_error = (getStraightPIDSetpoint() - encLeft.pidGet());
+//            double r_error = (getStraightPIDSetpoint() - encRight.pidGet());
+//
+//            double l = limit(
+//                    limit(l_error * Constants.driveStraightP, .8) + limit(((l_error - r_error) / 2) * Constants.driveSteeringP, .2), 1);
+//            double r = limit(
+//                    limit(r_error * Constants.driveStraightP, .8) + limit(((r_error - l_error) / 2) * Constants.driveSteeringP, .2), 1);
+//            
+//            drive.tankDrive(l, r);
             break;
         case PIDPIVOT:
             double m_result = Constants.drivePivotP * pivotPIDError();
@@ -230,6 +230,8 @@ public class DriveSubsystem extends MSubsystem {
         SmartDashboard.putNumber("l dist", encLeft.pidGet());
         SmartDashboard.putNumber("r dist", encRight.pidGet());
         SmartDashboard.putNumber("gyro", gyro.pidGet());
+        SmartDashboard.putNumber("pivot setppoint", PIDPivotSetpoint);
         SmartDashboard.putString("Drive Mode", driveMode.toString());
+        System.out.println(gyro.pidGet() + " " + PIDPivotSetpoint);
     }
 }

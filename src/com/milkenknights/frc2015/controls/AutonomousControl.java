@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutonomousControl extends ControlSystem {
 
     private int step = 0;
-    private MTimer timer = new MTimer();
+//    private MTimer timer = new MTimer();
 
     public AutonomousControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator, GroundIntakeSubsystem sGroundIntake,
@@ -36,7 +36,8 @@ public class AutonomousControl extends ControlSystem {
 
     @Override
     public void autonomousPeriodic() {
-        //driveForward(50);
+        //driveForward(81);
+        //threeToteAuto();
     }
     
     private void driveForward(int inches) {
@@ -44,6 +45,7 @@ public class AutonomousControl extends ControlSystem {
         case 0:
             driveSub.resetStraightPIDPosition();
             driveSub.setStraightPIDSetpoint(inches);
+            driveSub.setPivotPIDSetpoint(0);
             driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDSTRAIGHT);
             step++;
             break;
@@ -56,6 +58,7 @@ public class AutonomousControl extends ControlSystem {
         case 0:
             driveSub.resetStraightPIDPosition();
             driveSub.setStraightPIDSetpoint(0);
+            driveSub.setPivotPIDSetpoint(0);
             driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDSTRAIGHT);
             elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
             step++;
@@ -71,7 +74,7 @@ public class AutonomousControl extends ControlSystem {
             driveSub.setStraightPIDSetpoint(81);
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
-            timer.safeStart();
+            //timer.safeStart();
             if (driveSub.getEncPosition() > 40) {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
@@ -100,12 +103,13 @@ public class AutonomousControl extends ControlSystem {
             driveSub.setStraightPIDSetpoint(162);
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
-            timer.safeStart();
+            //timer.safeStart();
             
-            if (elevatorSub.toteLoaded()  || timer.hasPeriodPassed(5)) {
+//            if (elevatorSub.toteLoaded()  || timer.hasPeriodPassed(5)) {
+            if (elevatorSub.toteLoaded()) {
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
-                timer.stop();
+                //timer.stop();
                 step++;
             }
             break;
@@ -131,7 +135,7 @@ public class AutonomousControl extends ControlSystem {
                     if (elevatorSub.getPosition() < elevatorSub.getSetpoint() + Constants.elevatorThreshold) {
                         elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.OPEN);
                         driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDSTRAIGHT);
-                        driveSub.setStraightPIDSetpoint(30);
+                        driveSub.setStraightPIDSetpoint(-30);
                         step++;
                     }
                 }

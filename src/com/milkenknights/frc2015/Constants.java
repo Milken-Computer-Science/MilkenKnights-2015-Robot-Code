@@ -51,9 +51,9 @@ public class Constants {
     public static final double elevatorInchesPerPulse = 1.25 * Math.PI / 360;
     
     // PID constants for driving straight
-    public static final double driveStraightP = 0.012;
-    public static final double driveSteeringP = 0.006;
-    public static final double drivePivotP = 0.015;
+    public static final double driveStraightP = 0.007;
+    public static final double driveSteeringP = 0.002;
+    public static final double drivePivotP = 0.0175;
     
     public static final double minimumWheelSpeed = 0.0069;
 
