@@ -115,10 +115,6 @@ public class TripleATKControl extends ControlSystem {
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
         }
         
-        
-
-        // aux ATK 1 puts us in manual elevator control mode
-        // also aborts a reset if we are in one
         if (atka.getRawButton(8)) {
             elevatorCommand = 0;
             elevatorSub.setPIDMode(false);

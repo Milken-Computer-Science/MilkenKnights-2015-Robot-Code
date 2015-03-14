@@ -36,7 +36,7 @@ public class AutonomousControl extends ControlSystem {
 
     @Override
     public void autonomousPeriodic() {
-        driveForward(50);
+        //driveForward(50);
     }
     
     private void driveForward(int inches) {

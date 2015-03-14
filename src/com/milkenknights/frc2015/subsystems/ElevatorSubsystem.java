@@ -206,30 +206,30 @@ public class ElevatorSubsystem extends MSubsystem {
             }
         }
 
-        if (pidMode) {
-            double l_error = (setpoint - encLeft.pidGet());
-            double r_error = (setpoint - encRight.pidGet());
-            
-            double ff;
-            
-            if (encLeft.getRate() < 0) {
-                ff = Constants.elevatorFF;
-            } else {
-                ff = 0;
-            }
-
-            elevatorTalonLeft.set(limit(
-                    limit(l_error * Constants.elevatorP + ff, .9)
-                            + limit(((l_error - r_error) / 2)
-                                    * Constants.elevatorSteeringP, .1), 1));
-            elevatorTalonRight.set(-limit(
-                    limit(r_error * Constants.elevatorP + ff, .9)
-                            + limit(((r_error - l_error) / 2)
-                                    * Constants.elevatorSteeringP, .1), 1));
-        } else {
+//        if (pidMode) {
+//            double l_error = (setpoint - encLeft.pidGet());
+//            double r_error = (setpoint - encRight.pidGet());
+//            
+//            double ff;
+//            
+//            if (encLeft.getRate() < 0) {
+//                ff = Constants.elevatorFF;
+//            } else {
+//                ff = 0;
+//            }
+//
+//            elevatorTalonLeft.set(limit(
+//                    limit(l_error * Constants.elevatorP + ff, .9)
+//                            + limit(((l_error - r_error) / 2)
+//                                    * Constants.elevatorSteeringP, .1), 1));
+//            elevatorTalonRight.set(-limit(
+//                    limit(r_error * Constants.elevatorP + ff, .9)
+//                            + limit(((r_error - l_error) / 2)
+//                                    * Constants.elevatorSteeringP, .1), 1));
+//        } else {
             elevatorTalonLeft.set(manSpeed);
             elevatorTalonRight.set(-manSpeed);
-        }
+ //       }
 
         flaps.set(flapsState.b);
 
