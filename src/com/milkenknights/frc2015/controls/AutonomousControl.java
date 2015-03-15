@@ -75,7 +75,12 @@ public class AutonomousControl extends ControlSystem {
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             //timer.safeStart();
-            if (driveSub.getEncPosition() > 40) {
+            
+            if (driveSub.getEncPosition() > 70) {
+                groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
+                step++;
+            } else if (driveSub.getEncPosition() > 40) {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             } else if (driveSub.getEncPosition() > 20) {
@@ -84,12 +89,6 @@ public class AutonomousControl extends ControlSystem {
             } else if (driveSub.getEncPosition() > 10) {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.RIGHT);
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-            }
-            
-            if (elevatorSub.toteLoaded()) {
-                groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
-                step++;
             }
             break;
         case 3:
@@ -103,14 +102,20 @@ public class AutonomousControl extends ControlSystem {
             driveSub.setStraightPIDSetpoint(162);
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
-            //timer.safeStart();
-            
-//            if (elevatorSub.toteLoaded()  || timer.hasPeriodPassed(5)) {
-            if (elevatorSub.toteLoaded()) {
+
+            if (driveSub.getEncPosition() > 70 + 81) {
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
-                //timer.stop();
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
                 step++;
+            } else if (driveSub.getEncPosition() > 40 + 81) {
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
+                groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            } else if (driveSub.getEncPosition() > 20 + 81) {
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.RIGHT);
+                groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            } else if (driveSub.getEncPosition() > 10 + 81) {
+                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.RIGHT);
+                groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
             }
             break;
         case 5:
@@ -118,7 +123,7 @@ public class AutonomousControl extends ControlSystem {
             if (elevatorSub.getPosition() < Constants.elevatorMinDistance + Constants.elevatorThreshold) {
                 driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDPIVOT);
                 driveSub.setPivotPIDSetpoint(90);
-                if (driveSub.pidOnTarget(2)) {
+                if (driveSub.pidOnTarget(10)) {
                     driveSub.resetStraightPIDPosition();
                     step++;
                 }     

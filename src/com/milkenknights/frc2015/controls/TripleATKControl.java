@@ -48,11 +48,24 @@ public class TripleATKControl extends ControlSystem {
         driveSub.setDriveMode(DriveSubsystem.DriveMode.TANK);
 
         if (atka.getRawButton(3)) {
-            elevatorCommand = 1;
+            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight - 3);
+            elevatorCommand = 0;
+        }
+        
+        if (atka.getRawButton(10)) {
+            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight + 1);
+            elevatorCommand = 0;
         }
         
         if (atka.getRawButton(2)) {
-            elevatorCommand = 2;
+            elevatorSub.setSetpoint(Constants.elevatorMinDistance);
+            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            elevatorCommand = 0;
         }
 
         if (atka.getRawButton(6)) {

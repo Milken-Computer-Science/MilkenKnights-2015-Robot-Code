@@ -51,7 +51,7 @@ public class Constants {
     public static final double elevatorInchesPerPulse = 1.25 * Math.PI / 360;
     
     // PID constants for driving straight
-    public static final double driveStraightP = 0.007;
+    public static final double driveStraightP = 0.01;
     public static final double driveSteeringP = 0.002;
     public static final double drivePivotP = 0.0175;
     
@@ -77,5 +77,5 @@ public class Constants {
     public static final double elevatorTote2Height = 28;
     
     // autonomous Threshold
-    public static final double elevatorThreshold = 0.25;
+    public static final double elevatorThreshold = 0.5;
 }

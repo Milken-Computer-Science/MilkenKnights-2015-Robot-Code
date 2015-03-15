@@ -174,7 +174,7 @@ public class DriveSubsystem extends MSubsystem {
     }
     
     public double getEncPosition() {
-        return (encLeft.getDistance() + encRight.getDistance()) / 2;
+        return encLeft.getDistance();
     }
     
     private double limit(double val, double lim) {
@@ -201,18 +201,9 @@ public class DriveSubsystem extends MSubsystem {
             break;
         case PIDSTRAIGHT:
             double outputMagnitude = (getStraightPIDSetpoint() - encLeft.pidGet()) * Constants.driveStraightP;
-            double curve = PIDPivotSetpoint * Constants.drivePivotP;
+            double curve = (PIDPivotSetpoint - gyro.pidGet()) * Constants.drivePivotP;
             
             drive.drive(outputMagnitude, curve);
-//            double l_error = (getStraightPIDSetpoint() - encLeft.pidGet());
-//            double r_error = (getStraightPIDSetpoint() - encRight.pidGet());
-//
-//            double l = limit(
-//                    limit(l_error * Constants.driveStraightP, .8) + limit(((l_error - r_error) / 2) * Constants.driveSteeringP, .2), 1);
-//            double r = limit(
-//                    limit(r_error * Constants.driveStraightP, .8) + limit(((r_error - l_error) / 2) * Constants.driveSteeringP, .2), 1);
-//            
-//            drive.tankDrive(l, r);
             break;
         case PIDPIVOT:
             double m_result = Constants.drivePivotP * pivotPIDError();
