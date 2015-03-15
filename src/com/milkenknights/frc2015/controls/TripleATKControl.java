@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TripleATKControl extends ControlSystem {
     Joystick atkr, atkl, atka;
 
-    public boolean isCheesy;
     private int elevatorCommand;
     
     private boolean released4;
@@ -32,7 +31,6 @@ public class TripleATKControl extends ControlSystem {
         atkr = new Joystick(1);
         atka = new Joystick(2);
 
-        isCheesy = false;
         elevatorCommand = 0;
     }
 
