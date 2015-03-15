@@ -43,25 +43,24 @@ public class Constants {
     public static final double transducerScaleFactor = 50;
     public static final double transducerOffset = -25;
     
+    // Gyro
     public static final int imuBaudRate = 57600;
     public static final double gyroMaximumInput = 180;
     public static final double gyroMinimumInput = -180;
     
+    // Drive Constants
     public static final double driveInchesPerPulse = 4 * Math.PI / 360;
     public static final double elevatorInchesPerPulse = 1.25 * Math.PI / 360;
-    
-    // PID constants for driving straight
+
     public static final double driveStraightP = 0.01;
     public static final double driveSteeringP = 0.002;
     public static final double drivePivotP = 0.0175;
-    
-    public static final double minimumWheelSpeed = 0.0069;
 
-    // GroundIntake talon speed
+    // GroundIntake Constants
     public static final double groundIntakeTalonSpeed = 1;
     public static final double groundIntakeTalonSlowSpeed = .5;
     
-    // Elevator PID constants
+    // Elevator Constants
     public static final double elevatorP = 0.205;
     public static final double elevatorSteeringP = 0.1;
     public static final double elevatorFF = 0.1;
@@ -75,7 +74,6 @@ public class Constants {
     public static final double elevatorStepHeight = 12;
     public static final double elevatorTote1Height = 14;
     public static final double elevatorTote2Height = 28;
-    
-    // autonomous Threshold
+
     public static final double elevatorThreshold = 0.5;
 }
