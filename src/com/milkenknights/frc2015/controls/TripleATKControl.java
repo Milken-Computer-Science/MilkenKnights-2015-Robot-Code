@@ -1,9 +1,10 @@
 package com.milkenknights.frc2015.controls;
 
-import com.milkenknights.common.DebugLogger;
-import com.milkenknights.common.MTimer;
 import com.milkenknights.frc2015.Constants;
-import com.milkenknights.frc2015.subsystems.*;
+import com.milkenknights.frc2015.subsystems.BinGrabberSubsystem;
+import com.milkenknights.frc2015.subsystems.DriveSubsystem;
+import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
+import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,8 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class TripleATKControl extends ControlSystem {
     Joystick atkr, atkl, atka;
-    
-    MTimer timer = new MTimer();
 
     public boolean isCheesy;
     private int elevatorCommand;
