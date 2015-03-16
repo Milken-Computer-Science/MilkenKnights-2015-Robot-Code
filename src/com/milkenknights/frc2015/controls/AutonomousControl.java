@@ -18,7 +18,6 @@ public class AutonomousControl extends ControlSystem {
     public AutonomousControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator, GroundIntakeSubsystem sGroundIntake) {
         super(sDrive, sElevator, sGroundIntake);
-        // TODO Auto-generated constructor stub
     }
     
     @Override
