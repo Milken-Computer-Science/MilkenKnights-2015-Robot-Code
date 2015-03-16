@@ -129,7 +129,7 @@ public class TripleATKControl extends ControlSystem {
         if (atka.getRawButton(8)) {
             elevatorCommand = 0;
             elevatorSub.setPIDMode(false);
-            elevatorSub.setManSpeed(atka.getAxis(Joystick.AxisType.kY));
+            elevatorSub.setManualSpeed(atka.getAxis(Joystick.AxisType.kY));
             elevatorSub.setSetpoint(elevatorSub.getPosition());
         } else {
             elevatorSub.setPIDMode(true);

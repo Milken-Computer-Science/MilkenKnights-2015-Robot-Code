@@ -83,9 +83,9 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     /**
-     * Get the elevator encoder position
+     * Get the average elevator encoder position
      * 
-     * @return the elevator encoder position.
+     * @return the average elevator encoder position.
      */
     public double getPosition() {
         return (encLeft.getDistance() + encRight.getDistance()) / 2;
@@ -113,8 +113,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * Set the setpoint of the elevator. This is bounded by the maximum and
      * minimum values of the elevator.
      * 
-     * @param setpoint
-     *            The desired setpoint of the elevator.
+     * @param setpoint The desired setpoint of the elevator.
      */
     public void setSetpoint(double setpoint) {
         if (setpoint >= Constants.elevatorMaxDistance) {
@@ -126,6 +125,11 @@ public class ElevatorSubsystem extends MSubsystem {
         }
     }
 
+    /**
+     * Returns if the elevator is at its lowest point by using the hall effect sensor
+     * 
+     * @return If the elevator is zeroed
+     */
     public boolean isElevatorZero() {
         return !hallEffectSensor.get();
     }
@@ -139,6 +143,13 @@ public class ElevatorSubsystem extends MSubsystem {
         return bannerSensor.get();
     }
 
+    /**
+     * Bounds a value to a certain number
+     * 
+     * @param val The value to bound
+     * @param lim The bound
+     * @return The bounded number
+     */
     private double limit(double val, double lim) {
         if (Math.abs(val) <= lim) {
             return val;
@@ -151,24 +162,35 @@ public class ElevatorSubsystem extends MSubsystem {
         }
     }
 
+    /**
+     * Set if PID is enabled or not
+     * 
+     * @param b If PID should be enabled
+     */
     public void setPIDMode(boolean b) {
         pidMode = b;
     }
 
+    /**
+     * Gets if the elevator is in PID mode
+     * 
+     * @return the current mode of the elevator
+     */
     public boolean getPIDMode() {
         return pidMode;
     }
 
-    public void setManSpeed(double d) {
-        manSpeed = d;
+    /**
+     * Set the manual speed of the elevator
+     * @param speed The speed
+     */
+    public void setManualSpeed(double speed) {
+        manSpeed = speed;
     }
 
     public void update() {
         if (isElevatorZero()) {
             resetEncoder();
-            if (setpoint < 0) {
-                setSetpoint(0);
-            }
         }
 
         if (pidMode) {
