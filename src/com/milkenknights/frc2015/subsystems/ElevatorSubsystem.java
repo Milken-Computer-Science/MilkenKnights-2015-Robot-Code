@@ -46,16 +46,21 @@ public class ElevatorSubsystem extends MSubsystem {
     ActuatorsState flapsState;
 
     public ElevatorSubsystem() {
-        elevatorTalonLeft = new CANTalon(Constants.leftElevatorTalonDeviceNumber);
-        elevatorTalonRight = new CANTalon(Constants.rightElevatorTalonDeviceNumber);
+        elevatorTalonLeft = new CANTalon(
+                Constants.leftElevatorTalonDeviceNumber);
+        elevatorTalonRight = new CANTalon(
+                Constants.rightElevatorTalonDeviceNumber);
 
         flaps = new Solenoid(Constants.elevatorActuatorDeviceNumber);
 
-        encLeft = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA, Constants.elevatorLeftEncoderDeviceNumberB);
-        encRight = new Encoder(Constants.elevatorRightEncoderDeviceNumberA, Constants.elevatorRightEncoderDeviceNumberB);
-        
+        encLeft = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
+                Constants.elevatorLeftEncoderDeviceNumberB);
+        encRight = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
+                Constants.elevatorRightEncoderDeviceNumberB);
+
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
-        hallEffectSensor = new DigitalInput(Constants.hallEffectSensorDeviceNumber);
+        hallEffectSensor = new DigitalInput(
+                Constants.hallEffectSensorDeviceNumber);
 
         encLeft.setDistancePerPulse(Constants.elevatorInchesPerPulse);
         encRight.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
@@ -113,7 +118,8 @@ public class ElevatorSubsystem extends MSubsystem {
      * Set the setpoint of the elevator. This is bounded by the maximum and
      * minimum values of the elevator.
      * 
-     * @param setpoint The desired setpoint of the elevator.
+     * @param setpoint
+     *            The desired setpoint of the elevator.
      */
     public void setSetpoint(double setpoint) {
         if (setpoint >= Constants.elevatorMaxDistance) {
@@ -126,7 +132,8 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     /**
-     * Returns if the elevator is at its lowest point by using the hall effect sensor
+     * Returns if the elevator is at its lowest point by using the hall effect
+     * sensor
      * 
      * @return If the elevator is zeroed
      */
@@ -146,8 +153,10 @@ public class ElevatorSubsystem extends MSubsystem {
     /**
      * Bounds a value to a certain number
      * 
-     * @param val The value to bound
-     * @param lim The bound
+     * @param val
+     *            The value to bound
+     * @param lim
+     *            The bound
      * @return The bounded number
      */
     private double limit(double val, double lim) {
@@ -165,7 +174,8 @@ public class ElevatorSubsystem extends MSubsystem {
     /**
      * Set if PID is enabled or not
      * 
-     * @param b If PID should be enabled
+     * @param b
+     *            If PID should be enabled
      */
     public void setPIDMode(boolean b) {
         pidMode = b;
@@ -182,7 +192,9 @@ public class ElevatorSubsystem extends MSubsystem {
 
     /**
      * Set the manual speed of the elevator
-     * @param speed The speed
+     * 
+     * @param speed
+     *            The speed
      */
     public void setManualSpeed(double speed) {
         manSpeed = speed;
