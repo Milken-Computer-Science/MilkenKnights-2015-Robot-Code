@@ -34,8 +34,6 @@ public class TripleATKControl extends ControlSystem {
     }
 
     public void teleopPeriodic() {
-        SmartDashboard.putNumber("Elevator Command", elevatorCommand);
-
         // TANK DRIVE
         // controlled by left and right ATK y axes
         driveSub.setDriveMode(DriveSubsystem.DriveMode.TANK);
@@ -161,6 +159,8 @@ public class TripleATKControl extends ControlSystem {
         default:
             break;
         }
+        
+        SmartDashboard.putNumber("Elevator Command", elevatorCommand);
     }
 
     @Override
