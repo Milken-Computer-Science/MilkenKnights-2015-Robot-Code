@@ -19,7 +19,8 @@ public class DriveSubsystem extends MSubsystem {
     RobotDrive drive;
 
     Encoder encLeft;
-    Encoder encRight;
+    // Removed encRight because it is physically broken.
+    //Encoder encRight;
 
     IMU gyro;
 
@@ -44,13 +45,10 @@ public class DriveSubsystem extends MSubsystem {
 
         drive = new RobotDrive(leftTalonA, rightTalonA);
 
-        encLeft = new Encoder(Constants.driveLeftEncoderDeviceNumberA,
-                Constants.driveLeftEncoderDeviceNumberB);
-        encRight = new Encoder(Constants.driveRightEncoderDeviceNumberA,
-                Constants.driveRightEncoderDeviceNumberB);
+        encLeft = new Encoder(Constants.driveLeftEncoderDeviceNumberA, Constants.driveLeftEncoderDeviceNumberB);
+        //encRight = new Encoder(Constants.driveRightEncoderDeviceNumberA, Constants.driveRightEncoderDeviceNumberB);
 
-        gyro = new IMU(new SerialPort(Constants.imuBaudRate,
-                SerialPort.Port.kMXP));
+        gyro = new IMU(new SerialPort(Constants.imuBaudRate, SerialPort.Port.kMXP));
 
         leftTalonB.changeControlMode(ControlMode.Follower);
         rightTalonB.changeControlMode(ControlMode.Follower);
@@ -58,10 +56,8 @@ public class DriveSubsystem extends MSubsystem {
         leftTalonB.set(leftTalonA.getDeviceID());
         rightTalonB.set(rightTalonA.getDeviceID());
 
-        encLeft.setDistancePerPulse(-Constants.driveInchesPerPulse);
-        encRight.setDistancePerPulse(Constants.driveInchesPerPulse);
-
-        encLeft.setReverseDirection(true);
+        encLeft.setDistancePerPulse(Constants.driveInchesPerPulse);
+        //encRight.setDistancePerPulse(Constants.driveInchesPerPulse);
 
         driveMode = DriveMode.TANK;
     }
@@ -113,8 +109,7 @@ public class DriveSubsystem extends MSubsystem {
      * Set the setpoint for PID pivot mode. This should be the angle you want
      * the robot to be facing.
      *
-     * @param setpoint
-     *            The desired PID angle setpoint, between -180 and 180.
+     * @param setpoint The desired PID angle setpoint, between -180 and 180.
      */
     public void setPivotPIDSetpoint(double setpoint) {
         PIDPivotSetpoint = setpoint;
@@ -135,58 +130,49 @@ public class DriveSubsystem extends MSubsystem {
      */
     public void resetStraightPIDPosition() {
         encLeft.reset();
-        encRight.reset();
+        //encRight.reset();
     }
 
     /**
      * Find out if we have reached our straight PID target.
      *
-     * @param threshold
-     *            How close/precise we want to be
+     * @param threshold How close/precise we want to be
      * @return true if we have reached the target. false if we are not in a PID
      *         mode at all
      */
     public boolean pidOnTarget(double threshold) {
         if (driveMode == DriveMode.PIDPIVOT) {
-            return Math.abs(getPivotPIDSetpoint() - gyro.getYaw()) <= threshold;
+            return Math.abs(pivotPIDError()) <= threshold;
         } else if (driveMode == DriveMode.PIDSTRAIGHT) {
-            return Math.abs(getStraightPIDSetpoint() - encLeft.pidGet()) <= threshold
-                    || Math.abs(getStraightPIDSetpoint() - encLeft.pidGet()) <= threshold;
+            return Math.abs(getStraightPIDSetpoint() - encLeft.pidGet()) <= threshold;
         }
         return false;
     }
-    
-    double m_error;
+
+    /**
+     * Gets the current error of the pivot PID controller.  This has direction
+     * @return The number of degrees of error
+     */
     public double pivotPIDError() {
-        m_error = PIDPivotSetpoint - gyro.pidGet();
+        double m_error = PIDPivotSetpoint - gyro.pidGet();
 
         if (Math.abs(m_error) > (Constants.gyroMaximumInput - Constants.gyroMinimumInput) / 2) {
             if (m_error > 0) {
-                m_error = m_error - Constants.gyroMaximumInput
-                        + Constants.gyroMinimumInput;
+                m_error = m_error - Constants.gyroMaximumInput + Constants.gyroMinimumInput;
             } else {
-                m_error = m_error + Constants.gyroMaximumInput
-                        - Constants.gyroMinimumInput;
+                m_error = m_error + Constants.gyroMaximumInput - Constants.gyroMinimumInput;
             }
         }
-        
+
         return m_error;
     }
-    
+
+    /**
+     * Return the encoder position
+     * @return the encoder distance
+     */
     public double getEncPosition() {
         return encLeft.getDistance();
-    }
-    
-    private double limit(double val, double lim) {
-        if (Math.abs(val) <= lim) {
-            return val;
-        } else if (val > 0) {
-            return lim;
-        } else if (val < 0) {
-            return -lim;
-        } else {
-            return 0;
-        }
     }
 
     /**
@@ -201,7 +187,7 @@ public class DriveSubsystem extends MSubsystem {
             break;
         case PIDSTRAIGHT:
             double outputMagnitude = (getStraightPIDSetpoint() - encLeft.pidGet()) * Constants.driveStraightP;
-            double curve = (PIDPivotSetpoint - gyro.pidGet()) * Constants.drivePivotP;
+            double curve = pivotPIDError() * Constants.drivePivotP;
             
             drive.drive(outputMagnitude, curve);
             break;
@@ -218,11 +204,10 @@ public class DriveSubsystem extends MSubsystem {
             break;
         }
 
-        SmartDashboard.putNumber("l dist", encLeft.pidGet());
-        SmartDashboard.putNumber("r dist", encRight.pidGet());
+        SmartDashboard.putNumber("Drive Distance", encLeft.pidGet());
+        //SmartDashboard.putNumber("r dist", encRight.pidGet());
         SmartDashboard.putNumber("gyro", gyro.pidGet());
-        SmartDashboard.putNumber("pivot setppoint", PIDPivotSetpoint);
+        SmartDashboard.putNumber("pivot setpoint", PIDPivotSetpoint);
         SmartDashboard.putString("Drive Mode", driveMode.toString());
-        System.out.println(gyro.pidGet() + " " + PIDPivotSetpoint);
     }
 }
