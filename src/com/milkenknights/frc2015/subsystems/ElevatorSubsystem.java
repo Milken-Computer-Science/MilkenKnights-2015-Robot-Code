@@ -47,22 +47,16 @@ public class ElevatorSubsystem extends MSubsystem {
     ActuatorsState flapsState;
 
     public ElevatorSubsystem() {
-        elevatorTalonLeft = new CANTalon(
-                Constants.leftElevatorTalonDeviceNumber);
-        elevatorTalonRight = new CANTalon(
-                Constants.rightElevatorTalonDeviceNumber);
+        elevatorTalonLeft = new CANTalon(Constants.leftElevatorTalonDeviceNumber);
+        elevatorTalonRight = new CANTalon(Constants.rightElevatorTalonDeviceNumber);
 
         flaps = new Solenoid(Constants.elevatorActuatorDeviceNumber);
 
-        encLeft = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
-                Constants.elevatorLeftEncoderDeviceNumberB);
-        encRight = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
-                Constants.elevatorRightEncoderDeviceNumberB);
-
+        encLeft = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA, Constants.elevatorLeftEncoderDeviceNumberB);
+        encRight = new Encoder(Constants.elevatorRightEncoderDeviceNumberA, Constants.elevatorRightEncoderDeviceNumberB);
+        
         bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
-
-        hallEffectSensor = new DigitalInput(
-                Constants.hallEffectSensorDeviceNumber);
+        hallEffectSensor = new DigitalInput(Constants.hallEffectSensorDeviceNumber);
 
         encLeft.setDistancePerPulse(Constants.elevatorInchesPerPulse);
         encRight.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
