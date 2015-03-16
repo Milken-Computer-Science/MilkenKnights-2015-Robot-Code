@@ -129,7 +129,7 @@ public class AutonomousControl extends ControlSystem {
             if (driveSub.pidOnTarget(2)) {
                 driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDPIVOT);
                 driveSub.setPivotPIDSetpoint(180);
-                if (driveSub.pidOnTarget(2)) {
+                if (driveSub.pidOnTarget(10)) {
                     elevatorSub.setSetpoint(Constants.elevatorMinDistance);
                     if (elevatorSub.getPosition() < elevatorSub.getSetpoint() + Constants.elevatorThreshold) {
                         elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.OPEN);
