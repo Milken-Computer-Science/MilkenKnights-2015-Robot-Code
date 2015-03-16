@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutonomousControl extends ControlSystem {
 
     private int step = 0;
-//    private MTimer timer = new MTimer();
 
     public AutonomousControl(DriveSubsystem sDrive,
             ElevatorSubsystem sElevator, GroundIntakeSubsystem sGroundIntake,
