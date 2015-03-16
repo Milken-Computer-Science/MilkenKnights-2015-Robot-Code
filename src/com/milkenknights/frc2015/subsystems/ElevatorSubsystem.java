@@ -183,11 +183,11 @@ public class ElevatorSubsystem extends MSubsystem {
     public void setPIDMode(boolean b) {
         pidMode = b;
     }
-    
+
     public boolean getPIDMode() {
         return pidMode;
     }
-    
+
     public void setManSpeed(double d) {
         manSpeed = d;
     }
@@ -208,9 +208,9 @@ public class ElevatorSubsystem extends MSubsystem {
         if (pidMode) {
             double l_error = (setpoint - encLeft.pidGet());
             double r_error = (setpoint - encRight.pidGet());
-            
+
             double ff;
-            
+
             if (encLeft.getRate() < 0) {
                 ff = Constants.elevatorFF;
             } else {
@@ -228,7 +228,7 @@ public class ElevatorSubsystem extends MSubsystem {
         } else {
             elevatorTalonLeft.set(manSpeed);
             elevatorTalonRight.set(-manSpeed);
-       }
+        }
 
         flaps.set(flapsState.b);
 
