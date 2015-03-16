@@ -32,10 +32,7 @@ public class GroundIntakeSubsystem extends MSubsystem {
     public GroundIntakeSubsystem() {
         leftTalon = new CANTalon(Constants.groundIntakeLeftTalonDeviceNumber);
         rightTalon = new CANTalon(Constants.groundIntakeRightTalonDeviceNumber);
-        actuators = new SolenoidPair(
-                Constants.groundIntakeLeftActuatorDeviceNumber,
-                Constants.groundIntakeRightActuatorDeviceNumber,
-                false);
+        actuators = new SolenoidPair(Constants.groundIntakeLeftActuatorDeviceNumber, Constants.groundIntakeRightActuatorDeviceNumber, false);
         
         actuatorsState = ActuatorsState.CLOSED;
         wheelsState = WheelsState.STOPPED;
@@ -63,15 +60,6 @@ public class GroundIntakeSubsystem extends MSubsystem {
      */
     public void setActuators(ActuatorsState s) {
         actuatorsState = s;
-    }
-    
-    /** Toggle the state of the actuators */
-    public void toggleActuators() {
-        if (getActuatorsState() == ActuatorsState.CLOSED) {
-            setActuators(ActuatorsState.OPEN);
-        } else {
-            setActuators(ActuatorsState.CLOSED);
-        }
     }
     
     /**
@@ -105,6 +93,7 @@ public class GroundIntakeSubsystem extends MSubsystem {
             rightTalon.set(0);
             break;
         }
+        
         actuators.set(actuatorsState.b);
     }
 }
