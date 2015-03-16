@@ -19,7 +19,6 @@ public class TripleATKControl extends ControlSystem {
     Joystick atkr, atkl, atka;
 
     private int elevatorCommand;
-    
     private boolean released4;
     private boolean released5;
     private boolean released9;
@@ -39,9 +38,8 @@ public class TripleATKControl extends ControlSystem {
 
         // TANK DRIVE
         // controlled by left and right ATK y axes
-        driveSub.tankDrive(-atkl.getAxis(Joystick.AxisType.kY), -atkr.getAxis(Joystick.AxisType.kY));
-        
         driveSub.setDriveMode(DriveSubsystem.DriveMode.TANK);
+        driveSub.tankDrive(-atkl.getAxis(Joystick.AxisType.kY), -atkr.getAxis(Joystick.AxisType.kY));
 
         if (atka.getRawButton(3)) {
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
@@ -183,19 +181,16 @@ public class TripleATKControl extends ControlSystem {
 
     @Override
     public void autonomousPeriodic() {
-        // TODO Auto-generated method stub
         DebugLogger.log(DebugLogger.LVL_STREAM, this, "This is not an Autonomous Control System");
     }
 
     @Override
     public void autonomousInit() {
-        // TODO Auto-generated method stub
         DebugLogger.log(DebugLogger.LVL_WARN, this, "This is not an Autonomous Control System");
     }
 
     @Override
     public void teleopInit() {
-        // TODO Auto-generated method stub
         DebugLogger.log(DebugLogger.LVL_INFO, this, "Teleop Init");
     }
 }
