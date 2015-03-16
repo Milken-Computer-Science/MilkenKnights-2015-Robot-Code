@@ -24,6 +24,7 @@ public abstract class ControlSystem {
         groundIntakeSub = sGroundIntake;
     }
 
+    public abstract void robotInit();
     /**
      * This function is run at the start of the teleop period.
      */

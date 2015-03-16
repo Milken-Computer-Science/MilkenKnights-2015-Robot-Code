@@ -33,6 +33,11 @@ public class TripleATKControl extends ControlSystem {
         elevatorCommand = 0;
     }
 
+    @Override
+    public void robotInit() {
+        
+    }
+    
     public void teleopPeriodic() {
         // TANK DRIVE
         // controlled by left and right ATK y axes

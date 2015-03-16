@@ -43,6 +43,9 @@ public class Robot extends IterativeRobot {
         subsystems.add(driveSubsystem);
         subsystems.add(elevatorSubsystem);
         subsystems.add(groundIntakeSubsystem);
+        
+        teleControlSystem.robotInit();
+        autoControlSystem.robotInit();
     }
 
     public void autonomousInit() {

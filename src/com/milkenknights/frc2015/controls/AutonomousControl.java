@@ -6,10 +6,13 @@ import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonomousControl extends ControlSystem {
 
+    private SendableChooser autoChooser;
+    private int autoMode = 0;
     private int step = 0;
 
     public AutonomousControl(DriveSubsystem sDrive,
@@ -17,21 +20,40 @@ public class AutonomousControl extends ControlSystem {
         super(sDrive, sElevator, sGroundIntake);
         // TODO Auto-generated constructor stub
     }
+    
+    @Override
+    public void robotInit() {
+        autoChooser = new SendableChooser();
+        autoChooser.addDefault("Do Nothing", 0);
+        autoChooser.addObject("Drive Forward 50\"", 1);
+        autoChooser.addObject("Three Tote Auto!", 2);
+        SmartDashboard.putData("Autonomous Selector", autoChooser);
+    }
 
     @Override
     public void teleopPeriodic() {
-        // TODO Auto-generated method stub
         DebugLogger.log(DebugLogger.LVL_STREAM, this, "This is not a Teleop Control System");
     }
     
     public void autonomousInit() {
+        autoMode = (int) autoChooser.getSelected();
+        DebugLogger.log(DebugLogger.LVL_INFO, this, "Auto Mode " + autoMode + "started");
+        
         step = 0;
     }
 
     @Override
     public void autonomousPeriodic() {
-        //driveForward(81);
-        //threeToteAuto();
+        switch (autoMode) {
+            case 0:
+                break;
+            case 1:
+                driveForward(50);
+                break;
+            case 2:
+                threeToteAuto();
+                break;
+        }
     }
     
     private void driveForward(int inches) {
