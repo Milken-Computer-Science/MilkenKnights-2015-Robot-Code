@@ -2,7 +2,6 @@ package com.milkenknights.frc2015.controls;
 
 import com.milkenknights.common.DebugLogger;
 import com.milkenknights.frc2015.Constants;
-import com.milkenknights.frc2015.subsystems.BinGrabberSubsystem;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
@@ -26,8 +25,8 @@ public class TripleATKControl extends ControlSystem {
     private boolean released9;
 
     public TripleATKControl(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
-            GroundIntakeSubsystem sGroundIntake, BinGrabberSubsystem sBinGrabber) {
-        super(sDrive, sElevator, sGroundIntake, sBinGrabber);
+            GroundIntakeSubsystem sGroundIntake) {
+        super(sDrive, sElevator, sGroundIntake);
         atkl = new Joystick(0);
         atkr = new Joystick(1);
         atka = new Joystick(2);

@@ -3,7 +3,6 @@ package com.milkenknights.frc2015.controls;
 import com.milkenknights.common.DebugLogger;
 import com.milkenknights.common.MTimer;
 import com.milkenknights.frc2015.Constants;
-import com.milkenknights.frc2015.subsystems.BinGrabberSubsystem;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
@@ -17,9 +16,8 @@ public class AutonomousControl extends ControlSystem {
     private int step = 0;
 
     public AutonomousControl(DriveSubsystem sDrive,
-            ElevatorSubsystem sElevator, GroundIntakeSubsystem sGroundIntake,
-            BinGrabberSubsystem sBinGrabber) {
-        super(sDrive, sElevator, sGroundIntake, sBinGrabber);
+            ElevatorSubsystem sElevator, GroundIntakeSubsystem sGroundIntake) {
+        super(sDrive, sElevator, sGroundIntake);
         // TODO Auto-generated constructor stub
     }
 
