@@ -53,6 +53,10 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
         autoControlSystem.autonomousInit();
+        
+        for (MSubsystem s : subsystems) {
+            s.update();
+        }
     }
 
     public void autonomousPeriodic() {
