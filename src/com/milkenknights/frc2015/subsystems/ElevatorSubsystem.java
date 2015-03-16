@@ -29,7 +29,6 @@ public class ElevatorSubsystem extends MSubsystem {
 
     Solenoid flaps;
 
-    boolean resetMode = false;
     boolean pidMode = true;
     double setpoint = 0;
     double manSpeed = 0;
@@ -84,13 +83,6 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     /**
-     * If the robot is in reset mode, this will prematurely end the reset.
-     */
-    public void abortReset() {
-        resetMode = false;
-    }
-
-    /**
      * Get the elevator encoder position
      * 
      * @return the elevator encoder position.
@@ -118,21 +110,6 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     /**
-     * Triggers the robot to go in reset mode. In reset mode, the elevator will
-     * slowly decrease the setpoint thus lowering the elevator. When the robot
-     * is in reset mode, it will not react to any other controls until it is
-     * either finished, or if the reset is manually halted by calling
-     * abortReset().
-     */
-    public void resetPosition() {
-        resetMode = true;
-    }
-
-    public boolean hallEffectSensor() {
-        return hallEffectSensor.get();
-    }
-
-    /**
      * Set the setpoint of the elevator. This is bounded by the maximum and
      * minimum values of the elevator.
      * 
@@ -149,7 +126,7 @@ public class ElevatorSubsystem extends MSubsystem {
         }
     }
 
-    public boolean elevatorZero() {
+    public boolean isElevatorZero() {
         return !hallEffectSensor.get();
     }
 
@@ -187,13 +164,8 @@ public class ElevatorSubsystem extends MSubsystem {
     }
 
     public void update() {
-        if (resetMode) {
-            setpoint -= Constants.elevatorResetDistance;
-        }
-
-        if (!hallEffectSensor.get()) {
+        if (isElevatorZero()) {
             resetEncoder();
-            resetMode = false;
             if (setpoint < 0) {
                 setSetpoint(0);
             }
@@ -226,7 +198,7 @@ public class ElevatorSubsystem extends MSubsystem {
 
         flaps.set(flapsState.b);
 
-        SmartDashboard.putBoolean("Elevator Reset Mode", resetMode);
+        SmartDashboard.putBoolean("Elevator Zeroed", isElevatorZero());
         SmartDashboard.putBoolean("Tote Loaded", toteLoaded());
         SmartDashboard.putNumber("elevator left dist", encLeft.getDistance());
         SmartDashboard.putNumber("elevator right dist", encRight.getDistance());
