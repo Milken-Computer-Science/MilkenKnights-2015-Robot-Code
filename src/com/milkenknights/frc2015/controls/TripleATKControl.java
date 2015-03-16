@@ -39,8 +39,7 @@ public class TripleATKControl extends ControlSystem {
 
         // TANK DRIVE
         // controlled by left and right ATK y axes
-        driveSub.tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
-                -atkr.getAxis(Joystick.AxisType.kY));
+        driveSub.tankDrive(-atkl.getAxis(Joystick.AxisType.kY), -atkr.getAxis(Joystick.AxisType.kY));
         
         driveSub.setDriveMode(DriveSubsystem.DriveMode.TANK);
 
