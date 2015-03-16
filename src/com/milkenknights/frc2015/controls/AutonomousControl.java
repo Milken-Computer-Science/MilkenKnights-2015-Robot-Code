@@ -1,14 +1,11 @@
 package com.milkenknights.frc2015.controls;
 
 import com.milkenknights.common.DebugLogger;
-import com.milkenknights.common.MTimer;
 import com.milkenknights.frc2015.Constants;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Utility;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonomousControl extends ControlSystem {
