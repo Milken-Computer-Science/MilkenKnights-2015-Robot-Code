@@ -70,7 +70,7 @@ public class Constants {
     public static final double elevatorMinDistance = 0;
     
     public static final double elevatorScoringPlatformHeight = 3;
-    public static final double elevatorReadyToIntakeHeight = 24;
+    public static final double elevatorReadyToIntakeHeight = 21;
     public static final double elevatorStepHeight = 12;
     public static final double elevatorTote1Height = 14;
     public static final double elevatorTote2Height = 28;

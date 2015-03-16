@@ -56,7 +56,7 @@ public class TripleATKControl extends ControlSystem {
         if (atka.getRawButton(3)) {
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight - 3);
+            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
             elevatorCommand = 0;
         }
         
@@ -125,7 +125,7 @@ public class TripleATKControl extends ControlSystem {
         if (atka.getRawButton(10)) {
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight + 1);
+            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight + 4);
             elevatorCommand = 0;
         }
  
