@@ -27,7 +27,7 @@ public class AutonomousControl extends ControlSystem {
     @Override
     public void teleopPeriodic() {
         // TODO Auto-generated method stub
-
+        DebugLogger.log(DebugLogger.LVL_STREAM, this, "This is not a Teleop Control System");
     }
     
     public void autonomousInit() {
@@ -150,5 +150,11 @@ public class AutonomousControl extends ControlSystem {
             elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
             break;
         }
+    }
+
+    @Override
+    public void teleopInit() {
+        // TODO Auto-generated method stub
+        DebugLogger.log(DebugLogger.LVL_WARN, this, "This is not a Teleop Control System");
     }
 }

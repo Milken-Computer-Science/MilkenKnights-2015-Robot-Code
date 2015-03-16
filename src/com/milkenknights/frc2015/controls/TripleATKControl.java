@@ -1,5 +1,6 @@
 package com.milkenknights.frc2015.controls;
 
+import com.milkenknights.common.DebugLogger;
 import com.milkenknights.frc2015.Constants;
 import com.milkenknights.frc2015.subsystems.BinGrabberSubsystem;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
@@ -186,12 +187,18 @@ public class TripleATKControl extends ControlSystem {
     @Override
     public void autonomousPeriodic() {
         // TODO Auto-generated method stub
-        
+        DebugLogger.log(DebugLogger.LVL_STREAM, this, "This is not an Autonomous Control System");
     }
 
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
-        
+        DebugLogger.log(DebugLogger.LVL_WARN, this, "This is not an Autonomous Control System");
+    }
+
+    @Override
+    public void teleopInit() {
+        // TODO Auto-generated method stub
+        DebugLogger.log(DebugLogger.LVL_INFO, this, "Teleop Init");
     }
 }

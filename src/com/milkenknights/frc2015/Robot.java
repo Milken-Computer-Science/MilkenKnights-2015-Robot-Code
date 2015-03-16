@@ -64,6 +64,8 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+        teleControlSystem.teleopInit();
+        
         for (MSubsystem s : subsystems) {
             s.teleopInit();
         }
