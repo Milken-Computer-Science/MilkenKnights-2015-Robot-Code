@@ -4,14 +4,21 @@ import java.util.LinkedList;
 
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.RestrictedSolenoid;
+import com.milkenknights.frc2015.controls.DoNothing;
+import com.milkenknights.frc2015.controls.Move50Auto;
 import com.milkenknights.frc2015.controls.ThreeToteAutoA;
 import com.milkenknights.frc2015.controls.ControlSystem;
+import com.milkenknights.frc2015.controls.ThreeToteAutoB;
+import com.milkenknights.frc2015.controls.ThreeToteAutoC;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class Robot extends IterativeRobot {
     LinkedList<MSubsystem> subsystems;
@@ -22,6 +29,8 @@ public class Robot extends IterativeRobot {
 
     ControlSystem teleControlSystem;
     ControlSystem autoControlSystem;
+    
+    SendableChooser autoChooser;
 
     public void robotInit() {
         RestrictedSolenoid.initPressureSensor(Constants.pressureTransducerChannel, 
@@ -34,10 +43,25 @@ public class Robot extends IterativeRobot {
         teleControlSystem = new TripleATKControl(driveSubsystem,
                 elevatorSubsystem,
                 groundIntakeSubsystem);
-        autoControlSystem = new ThreeToteAutoA(driveSubsystem,
-                elevatorSubsystem,
-                groundIntakeSubsystem);
         
+        autoChooser = new SendableChooser();
+        autoChooser.addDefault("Do Nothing",
+                new DoNothing(driveSubsystem,
+                        elevatorSubsystem,
+                        groundIntakeSubsystem));
+        autoChooser.addObject("Drive Forward 50\"",
+                new Move50Auto(driveSubsystem,
+                        elevatorSubsystem,
+                        groundIntakeSubsystem));
+        autoChooser.addObject("Three Tote Auto",
+                new ThreeToteAutoB(driveSubsystem,
+                        elevatorSubsystem,
+                        groundIntakeSubsystem));
+        autoChooser.addObject("Rag 3 Tote",
+                new ThreeToteAutoC(driveSubsystem,
+                        elevatorSubsystem,
+                        groundIntakeSubsystem));
+        SmartDashboard.putData("Autonomous Selector", autoChooser);
 
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
@@ -46,19 +70,17 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
+        autoControlSystem = (ControlSystem) autoChooser.getSelected();
+        
         autoControlSystem.init();
         
-        for (MSubsystem s : subsystems) {
-            s.update();
-        }
+        subsystems.stream().forEach(s -> s.update());
     }
 
     public void autonomousPeriodic() {
         autoControlSystem.periodic();
         
-        for (MSubsystem s : subsystems) {
-            s.update();
-        }
+        subsystems.stream().forEach(s -> s.update());
     }
 
     public void teleopInit() {
@@ -72,15 +94,11 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         teleControlSystem.periodic();
         
-        for (MSubsystem s : subsystems) {
-            s.update();
-        }
+        subsystems.stream().forEach(s -> s.update());
     }
     
     public void disabledPeriodic() {
-        for (MSubsystem s : subsystems) {
-            s.update();
-        }
+        subsystems.stream().forEach(s -> s.update());
     }
 
     public void testPeriodic() {
