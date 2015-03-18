@@ -4,7 +4,9 @@ import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem.DriveMode;
 
-/** An action that will pivot the robot to a certain angle using PID and Gyro */
+/**
+ * An action that will pivot the robot to an absolute angle using PID and Gyro
+ */
 public class PIDPivotAction extends AutonomousAction {
     DriveSubsystem driveSubsystem;
     double setpoint;
