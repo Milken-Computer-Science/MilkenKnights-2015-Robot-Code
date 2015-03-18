@@ -36,7 +36,7 @@ public class MTimer {
      * @param i The period in seconds
      * @return if the period has passed
      */
-    public boolean hasPeriodPassed(long i) {
+    public boolean hasPeriodPassed(double i) {
         if (running) {
             return startTime + (i * 1000000) <= Utility.getFPGATime();
         } else {

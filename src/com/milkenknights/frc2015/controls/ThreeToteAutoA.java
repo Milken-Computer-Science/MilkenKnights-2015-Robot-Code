@@ -33,7 +33,7 @@ public class ThreeToteAutoA extends ControlSystem {
             step++;
             break;
         case 1:
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+            elevatorSub.setSetpoint(Constants.elevatorTote2Height);
             
             if (elevatorSub.getPosition() > elevatorSub.getSetpoint() - Constants.elevatorThreshold) {
                 step++;
@@ -52,7 +52,7 @@ public class ThreeToteAutoA extends ControlSystem {
             } else if (driveSub.getEncPosition() > 40) {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-            } else if (driveSub.getEncPosition() > 20) {
+            } else if (driveSub.getEncPosition() > 12) {
                 groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.RIGHT);
                 groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             } else if (driveSub.getEncPosition() > 10) {
@@ -63,8 +63,8 @@ public class ThreeToteAutoA extends ControlSystem {
         case 3:
             elevatorSub.setSetpoint(Constants.elevatorMinDistance);
             if (elevatorSub.getPosition() < Constants.elevatorMinDistance + Constants.elevatorThreshold) {
-                elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
-                step++;
+                //elevatorSub.setSetpoint(Constants.elevatorTote2Height);
+                //step++;
             }
             break;
         case 4:
@@ -88,14 +88,14 @@ public class ThreeToteAutoA extends ControlSystem {
             }
             break;
         case 5:
-            elevatorSub.setSetpoint(Constants.elevatorMinDistance);
+            elevatorSub.setSetpoint(Constants.elevatorTote2Height);
             if (elevatorSub.getPosition() < Constants.elevatorMinDistance + Constants.elevatorThreshold) {
                 driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDPIVOT);
                 driveSub.setPivotPIDSetpoint(90);
                 if (driveSub.pidOnTarget(10)) {
                     driveSub.resetStraightPIDPosition();
                     step++;
-                }
+                }     
             }
             break;
         case 6:

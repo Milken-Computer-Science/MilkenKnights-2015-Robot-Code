@@ -45,7 +45,7 @@ public class DriveSubsystem extends MSubsystem {
 
         drive = new RobotDrive(leftTalonA, rightTalonA);
 
-        encLeft = new Encoder(Constants.driveLeftEncoderDeviceNumberA, Constants.driveLeftEncoderDeviceNumberB);
+        encLeft = new Encoder(-Constants.driveLeftEncoderDeviceNumberA, Constants.driveLeftEncoderDeviceNumberB);
         //encRight = new Encoder(Constants.driveRightEncoderDeviceNumberA, Constants.driveRightEncoderDeviceNumberB);
 
         gyro = new IMU(new SerialPort(Constants.imuBaudRate, SerialPort.Port.kMXP));
@@ -206,8 +206,9 @@ public class DriveSubsystem extends MSubsystem {
 
         SmartDashboard.putNumber("Drive Distance", encLeft.pidGet());
         //SmartDashboard.putNumber("r dist", encRight.pidGet());
-        SmartDashboard.putNumber("gyro", gyro.pidGet());
-        SmartDashboard.putNumber("pivot setpoint", PIDPivotSetpoint);
+        SmartDashboard.putNumber("Gyro Yaw", gyro.pidGet());
+        SmartDashboard.putNumber("Pivot Setpoint", PIDPivotSetpoint);
         SmartDashboard.putString("Drive Mode", driveMode.toString());
+        SmartDashboard.putNumber("Drive Straight Setpoint", getStraightPIDSetpoint());
     }
 }

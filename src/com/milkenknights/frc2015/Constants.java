@@ -61,7 +61,7 @@ public class Constants {
     public static final double groundIntakeTalonSlowSpeed = .5;
     
     // Elevator Constants
-    public static final double elevatorP = 0.205;
+    public static final double elevatorP = 0.21;
     public static final double elevatorSteeringP = 0.1;
     public static final double elevatorFF = 0.1;
     
@@ -73,7 +73,7 @@ public class Constants {
     public static final double elevatorReadyToIntakeHeight = 21;
     public static final double elevatorStepHeight = 12;
     public static final double elevatorTote1Height = 14;
-    public static final double elevatorTote2Height = 28;
+    public static final double elevatorTote2Height = 33;
 
     public static final double elevatorThreshold = 0.5;
 }

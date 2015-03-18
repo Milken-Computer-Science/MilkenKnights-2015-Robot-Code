@@ -228,8 +228,8 @@ public class ElevatorSubsystem extends MSubsystem {
 
         SmartDashboard.putBoolean("Elevator Zeroed", isElevatorZero());
         SmartDashboard.putBoolean("Tote Loaded", toteLoaded());
-        SmartDashboard.putNumber("elevator left dist", encLeft.getDistance());
-        SmartDashboard.putNumber("elevator right dist", encRight.getDistance());
-        SmartDashboard.putNumber("elevator setpoint", setpoint);
+        SmartDashboard.putNumber("Elevator Left Distance", encLeft.getDistance());
+        SmartDashboard.putNumber("Elevator Right Distance", encRight.getDistance());
+        SmartDashboard.putNumber("Elevator Setpoint", setpoint);
     }
 }
