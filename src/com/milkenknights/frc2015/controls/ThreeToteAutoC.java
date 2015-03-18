@@ -12,17 +12,11 @@ import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.ActuatorsState
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.WheelsState;
 import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
 import com.milkenknights.frc2015.subsystems.autonomous.ElevatorMoveAction;
-import com.milkenknights.frc2015.subsystems.autonomous.FakeUltrasonic;
 import com.milkenknights.frc2015.subsystems.autonomous.FlapsAction;
 import com.milkenknights.frc2015.subsystems.autonomous.IntakeActuatorsSet;
 import com.milkenknights.frc2015.subsystems.autonomous.IntakeWheelsSet;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDPivotAction;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
-import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightBackground;
-import com.milkenknights.frc2015.subsystems.autonomous.PrintAction;
-import com.milkenknights.frc2015.subsystems.autonomous.WaitForAndLoadTote;
-import com.milkenknights.frc2015.subsystems.autonomous.WaitForDriveDistance;
-import com.milkenknights.frc2015.subsystems.autonomous.WaitForToteLoad;
 
 /**
  * A three tote autonomous that attempts to grab knocked down bins and toss them
@@ -34,6 +28,9 @@ public class ThreeToteAutoC extends AutonomousList {
     public ThreeToteAutoC(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
             GroundIntakeSubsystem sGroundIntake) {
         super(sDrive, sElevator, sGroundIntake);
+        
+        actions = new LinkedList<AutonomousAction>();
+
         for (int i = 0; i < 1; i++) {
             actions.add(new FlapsAction(elevatorSub, true));
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
@@ -50,7 +47,7 @@ public class ThreeToteAutoC extends AutonomousList {
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     ActuatorsState.CLOSED));
             
-            actions.add(new PIDPivotAction(driveSub, 90, 5));
+            actions.add(new PIDPivotAction(driveSub, 45, 5));
             
             actions.add(new IntakeWheelsSet(groundIntakeSub,
                     WheelsState.OUTPUT));

@@ -6,7 +6,6 @@ import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.RestrictedSolenoid;
 import com.milkenknights.frc2015.controls.DoNothing;
 import com.milkenknights.frc2015.controls.Move50Auto;
-import com.milkenknights.frc2015.controls.ThreeToteAutoA;
 import com.milkenknights.frc2015.controls.ControlSystem;
 import com.milkenknights.frc2015.controls.ThreeToteAutoB;
 import com.milkenknights.frc2015.controls.ThreeToteAutoC;
@@ -86,9 +85,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         teleControlSystem.init();
         
-        for (MSubsystem s : subsystems) {
-            s.teleopInit();
-        }
+        subsystems.stream().forEach(s -> s.teleopInit());
     }
 
     public void teleopPeriodic() {

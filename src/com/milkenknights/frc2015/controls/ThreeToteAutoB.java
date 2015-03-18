@@ -32,6 +32,8 @@ public class ThreeToteAutoB extends AutonomousList {
             GroundIntakeSubsystem sGroundIntake) {
         super(sDrive, sElevator, sGroundIntake);
         
+        actions = new LinkedList<AutonomousAction>();
+        
         for (int i = 0; i < 2; i++) {
             actions.add(new FlapsAction(elevatorSub, true));
             actions.add(new ElevatorMoveAction(elevatorSub,
