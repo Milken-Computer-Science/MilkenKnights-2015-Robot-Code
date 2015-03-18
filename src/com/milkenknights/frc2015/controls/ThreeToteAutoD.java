@@ -10,6 +10,10 @@ import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.WheelsState;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * A three tote autonomous that attempts to grab upright bins and toss them to
+ * the side.  Does not use AutonomousList.
+ */
 public class ThreeToteAutoD extends ControlSystem {
     private MTimer timer;
 

@@ -22,6 +22,9 @@ import com.milkenknights.frc2015.subsystems.autonomous.WaitForAndLoadTote;
 import com.milkenknights.frc2015.subsystems.autonomous.WaitForDriveDistance;
 import com.milkenknights.frc2015.subsystems.autonomous.WaitForToteLoad;
 
+/**
+ * A three tote autonomous that uses AutonomousList
+ */
 public class ThreeToteAutoB extends AutonomousList {
     LinkedList<AutonomousAction> actions;
     

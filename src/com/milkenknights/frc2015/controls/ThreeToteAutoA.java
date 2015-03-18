@@ -7,8 +7,10 @@ import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * A three tote autonomous that does not use AutonomousList.
+ */
 public class ThreeToteAutoA extends ControlSystem {
-
     private int step = 0;
 
     public ThreeToteAutoA(DriveSubsystem sDrive,
