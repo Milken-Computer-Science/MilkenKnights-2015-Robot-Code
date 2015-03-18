@@ -45,7 +45,7 @@ public class DriveSubsystem extends MSubsystem {
 
         drive = new RobotDrive(leftTalonA, rightTalonA);
 
-        encLeft = new Encoder(-Constants.driveLeftEncoderDeviceNumberA, Constants.driveLeftEncoderDeviceNumberB);
+        encLeft = new Encoder(Constants.driveLeftEncoderDeviceNumberA, Constants.driveLeftEncoderDeviceNumberB);
         //encRight = new Encoder(Constants.driveRightEncoderDeviceNumberA, Constants.driveRightEncoderDeviceNumberB);
 
         gyro = new IMU(new SerialPort(Constants.imuBaudRate, SerialPort.Port.kMXP));
@@ -56,7 +56,7 @@ public class DriveSubsystem extends MSubsystem {
         leftTalonB.set(leftTalonA.getDeviceID());
         rightTalonB.set(rightTalonA.getDeviceID());
 
-        encLeft.setDistancePerPulse(Constants.driveInchesPerPulse);
+        encLeft.setDistancePerPulse(-Constants.driveInchesPerPulse);
         //encRight.setDistancePerPulse(Constants.driveInchesPerPulse);
 
         driveMode = DriveMode.TANK;
