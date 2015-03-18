@@ -27,8 +27,8 @@ public class DriveSubsystem extends MSubsystem {
     double leftSpeed;
     double rightSpeed;
 
-    double PIDStraightSetpoint;
-    double PIDPivotSetpoint;
+    double pidStraightSetpoint;
+    double pidPivotSetpoint;
 
     public enum DriveMode {
         TANK, PIDSTRAIGHT, PIDPIVOT
@@ -45,7 +45,8 @@ public class DriveSubsystem extends MSubsystem {
 
         drive = new RobotDrive(leftTalonA, rightTalonA);
 
-        encLeft = new Encoder(Constants.driveLeftEncoderDeviceNumberA, Constants.driveLeftEncoderDeviceNumberB);
+        encLeft = new Encoder(Constants.driveLeftEncoderDeviceNumberA,
+                Constants.driveLeftEncoderDeviceNumberB);
         //encRight = new Encoder(Constants.driveRightEncoderDeviceNumberA, Constants.driveRightEncoderDeviceNumberB);
 
         gyro = new IMU(new SerialPort(Constants.imuBaudRate, SerialPort.Port.kMXP));
@@ -93,7 +94,7 @@ public class DriveSubsystem extends MSubsystem {
      *            The desired PID straight setpoint.
      */
     public void setStraightPIDSetpoint(double setpoint) {
-        PIDStraightSetpoint = setpoint;
+        pidStraightSetpoint = setpoint;
     }
 
     /**
@@ -102,7 +103,7 @@ public class DriveSubsystem extends MSubsystem {
      * @return The last set PID straight setpoint.
      */
     public double getStraightPIDSetpoint() {
-        return PIDStraightSetpoint;
+        return pidStraightSetpoint;
     }
 
     /**
@@ -112,7 +113,7 @@ public class DriveSubsystem extends MSubsystem {
      * @param setpoint The desired PID angle setpoint, between -180 and 180.
      */
     public void setPivotPIDSetpoint(double setpoint) {
-        PIDPivotSetpoint = setpoint;
+        pidPivotSetpoint = ((setpoint + 180) % 360) - 180;
     }
 
     /**
@@ -121,7 +122,7 @@ public class DriveSubsystem extends MSubsystem {
      * @return The last set PID pivot setpoint.
      */
     public double getPivotPIDSetpoint() {
-        return PIDPivotSetpoint;
+        return pidPivotSetpoint;
     }
 
     /**
@@ -134,7 +135,7 @@ public class DriveSubsystem extends MSubsystem {
     }
 
     /**
-     * Find out if we have reached our straight PID target.
+     * Find out if we have reached our PID target.
      *
      * @param threshold How close/precise we want to be
      * @return true if we have reached the target. false if we are not in a PID
@@ -154,17 +155,15 @@ public class DriveSubsystem extends MSubsystem {
      * @return The number of degrees of error
      */
     public double pivotPIDError() {
-        double m_error = PIDPivotSetpoint - gyro.pidGet();
-
-        if (Math.abs(m_error) > (Constants.gyroMaximumInput - Constants.gyroMinimumInput) / 2) {
-            if (m_error > 0) {
-                m_error = m_error - Constants.gyroMaximumInput + Constants.gyroMinimumInput;
-            } else {
-                m_error = m_error + Constants.gyroMaximumInput - Constants.gyroMinimumInput;
-            }
-        }
-
-        return m_error;
+        return ((pidPivotSetpoint - gyro.pidGet() + 180) % 360) - 180;
+    }
+    
+    /**
+     * Gets the angle that the robot is facing relative to the floor.
+     * @return The angle that the robot is facing relative to the floor.
+     */
+    public double getYaw() {
+        return gyro.getYaw();
     }
 
     /**
@@ -207,7 +206,7 @@ public class DriveSubsystem extends MSubsystem {
         SmartDashboard.putNumber("Drive Distance", encLeft.pidGet());
         //SmartDashboard.putNumber("r dist", encRight.pidGet());
         SmartDashboard.putNumber("Gyro Yaw", gyro.pidGet());
-        SmartDashboard.putNumber("Pivot Setpoint", PIDPivotSetpoint);
+        SmartDashboard.putNumber("Pivot Setpoint", pidPivotSetpoint);
         SmartDashboard.putString("Drive Mode", driveMode.toString());
         SmartDashboard.putNumber("Drive Straight Setpoint", getStraightPIDSetpoint());
     }

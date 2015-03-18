@@ -20,7 +20,7 @@ import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
 
 /**
  * A three tote autonomous that attempts to grab knocked down bins and toss them
- * to the side.  Does not use AutonomousList.
+ * to the side.  Uses AutonomousList.
  */
 public class ThreeToteAutoC extends AutonomousList {
     LinkedList<AutonomousAction> actions;
