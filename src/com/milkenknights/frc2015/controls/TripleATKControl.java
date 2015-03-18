@@ -32,13 +32,8 @@ public class TripleATKControl extends ControlSystem {
 
         elevatorCommand = 0;
     }
-
-    @Override
-    public void robotInit() {
-        
-    }
     
-    public void teleopPeriodic() {
+    public void periodic() {
         // TANK DRIVE
         // controlled by left and right ATK y axes
         driveSub.setDriveMode(DriveSubsystem.DriveMode.TANK);
@@ -169,17 +164,7 @@ public class TripleATKControl extends ControlSystem {
     }
 
     @Override
-    public void autonomousPeriodic() {
-        DebugLogger.log(DebugLogger.LVL_STREAM, this, "This is not an Autonomous Control System");
-    }
-
-    @Override
-    public void autonomousInit() {
-        DebugLogger.log(DebugLogger.LVL_WARN, this, "This is not an Autonomous Control System");
-    }
-
-    @Override
-    public void teleopInit() {
+    public void init() {
         DebugLogger.log(DebugLogger.LVL_INFO, this, "Teleop Init");
     }
 }

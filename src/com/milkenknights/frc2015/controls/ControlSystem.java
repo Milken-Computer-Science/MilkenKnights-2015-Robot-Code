@@ -24,15 +24,13 @@ public abstract class ControlSystem {
         groundIntakeSub = sGroundIntake;
     }
 
-    public abstract void robotInit();
     /**
      * This function is run at the start of the teleop period.
      */
-    public abstract void teleopInit();
+    public abstract void init();
+    
     /**
      * This function is run periodically during the teleop period.
      */
-    public abstract void teleopPeriodic();
-    public abstract void autonomousInit();
-    public abstract void autonomousPeriodic();
+    public abstract void periodic();
 }

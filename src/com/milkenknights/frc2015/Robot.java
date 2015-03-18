@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.common.RestrictedSolenoid;
-import com.milkenknights.frc2015.controls.AutonomousControl;
+import com.milkenknights.frc2015.controls.ThreeToteAutoA;
 import com.milkenknights.frc2015.controls.ControlSystem;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot {
         teleControlSystem = new TripleATKControl(driveSubsystem,
                 elevatorSubsystem,
                 groundIntakeSubsystem);
-        autoControlSystem = new AutonomousControl(driveSubsystem,
+        autoControlSystem = new ThreeToteAutoA(driveSubsystem,
                 elevatorSubsystem,
                 groundIntakeSubsystem);
         
@@ -43,13 +43,10 @@ public class Robot extends IterativeRobot {
         subsystems.add(driveSubsystem);
         subsystems.add(elevatorSubsystem);
         subsystems.add(groundIntakeSubsystem);
-        
-        teleControlSystem.robotInit();
-        autoControlSystem.robotInit();
     }
 
     public void autonomousInit() {
-        autoControlSystem.autonomousInit();
+        autoControlSystem.init();
         
         for (MSubsystem s : subsystems) {
             s.update();
@@ -57,7 +54,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousPeriodic() {
-        autoControlSystem.autonomousPeriodic();
+        autoControlSystem.periodic();
         
         for (MSubsystem s : subsystems) {
             s.update();
@@ -65,7 +62,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-        teleControlSystem.teleopInit();
+        teleControlSystem.init();
         
         for (MSubsystem s : subsystems) {
             s.teleopInit();
@@ -73,7 +70,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        teleControlSystem.teleopPeriodic();
+        teleControlSystem.periodic();
         
         for (MSubsystem s : subsystems) {
             s.update();
