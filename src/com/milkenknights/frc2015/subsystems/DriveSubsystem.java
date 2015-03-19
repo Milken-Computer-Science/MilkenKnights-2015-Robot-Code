@@ -145,7 +145,7 @@ public class DriveSubsystem extends MSubsystem {
         if (driveMode == DriveMode.PIDPIVOT) {
             return Math.abs(pivotPIDError()) <= threshold;
         } else if (driveMode == DriveMode.PIDSTRAIGHT) {
-            return Math.abs(getStraightPIDSetpoint() - encLeft.pidGet()) <= threshold;
+            return Math.abs(getStraightPIDSetpoint() - getEncPosition()) <= threshold;
         }
         return false;
     }
@@ -173,6 +173,13 @@ public class DriveSubsystem extends MSubsystem {
     public double getEncPosition() {
         return encLeft.getDistance();
     }
+    
+    /**
+     * Zeroes the yaw of the gyro.
+     */
+    public void zeroGyroYaw() {
+        gyro.zeroYaw();
+    }
 
     /**
      * Updates wheel speeds depending on driveMode (which should be set to the
@@ -188,7 +195,14 @@ public class DriveSubsystem extends MSubsystem {
             double outputMagnitude = (getStraightPIDSetpoint() - encLeft.pidGet()) * Constants.driveStraightP;
             double curve = pivotPIDError() * Constants.drivePivotP;
             
-            drive.drive(outputMagnitude, curve);
+            double ff = 0;
+            if (encLeft.getRate() >= 0) {
+                ff = Constants.driveStraightF;
+            } else if (encLeft.getRate() < 0) {
+                ff = -Constants.driveStraightF;
+            }
+            
+            drive.drive(outputMagnitude + ff, curve);
             break;
         case PIDPIVOT:
             double m_result = Constants.drivePivotP * pivotPIDError();

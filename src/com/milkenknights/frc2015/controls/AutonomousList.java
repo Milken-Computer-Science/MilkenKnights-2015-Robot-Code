@@ -29,6 +29,7 @@ public abstract class AutonomousList extends ControlSystem {
     private LinkedList<AutonomousAction> runningActions;
 
     public void init() {
+        runningActions = new LinkedList<AutonomousAction>();
         autonomousSequence = getAutonomousIterator();
     }
     

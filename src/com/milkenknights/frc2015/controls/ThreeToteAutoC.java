@@ -17,6 +17,9 @@ import com.milkenknights.frc2015.subsystems.autonomous.IntakeActuatorsSet;
 import com.milkenknights.frc2015.subsystems.autonomous.IntakeWheelsSet;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDPivotAction;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
+import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightBackground;
+import com.milkenknights.frc2015.subsystems.autonomous.WaitForDriveDistance;
+import com.milkenknights.frc2015.subsystems.autonomous.ZeroGyroAction;
 
 /**
  * A three tote autonomous that attempts to grab knocked down bins and toss them
@@ -31,16 +34,18 @@ public class ThreeToteAutoC extends AutonomousList {
         
         actions = new LinkedList<AutonomousAction>();
 
+        actions.add(new ZeroGyroAction(driveSub));
+
         for (int i = 0; i < 1; i++) {
             actions.add(new FlapsAction(elevatorSub, true));
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     ActuatorsState.OPEN));
 
             actions.add(new ElevatorMoveAction(elevatorSub,
-                    Constants.elevatorReadyToIntakeHeight,
+                    Constants.elevatorTote2Height,
                     Constants.elevatorThreshold));
             
-            actions.add(new PIDStraightAction(driveSub, 35, 1.3));
+            actions.add(new PIDStraightAction(driveSub, 37, 1.3));
             
             actions.add(new IntakeWheelsSet(groundIntakeSub,
                     WheelsState.SLOW_INTAKE));
@@ -58,6 +63,19 @@ public class ThreeToteAutoC extends AutonomousList {
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     ActuatorsState.OPEN));
             actions.add(new PIDPivotAction(driveSub, 0, 5));
+            /*
+            actions.add(new PIDStraightBackground(driveSub, 80, 1.3));
+            actions.add(new WaitForDriveDistance(driveSub, 70, true));
+            
+            actions.add(new IntakeActuatorsSet(groundIntakeSub,
+                    GroundIntakeSubsystem.ActuatorsState.CLOSED));
+            actions.add(new IntakeWheelsSet(groundIntakeSub,
+                    WheelsState.SLOW_INTAKE));
+            
+            actions.add(new ElevatorMoveAction(elevatorSub,
+                    Constants.elevatorMinDistance,
+                    Constants.elevatorThreshold));
+            */
         }
         
         /*
