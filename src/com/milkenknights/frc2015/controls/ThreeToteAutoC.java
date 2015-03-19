@@ -18,6 +18,7 @@ import com.milkenknights.frc2015.subsystems.autonomous.IntakeWheelsSet;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDPivotAction;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightBackground;
+import com.milkenknights.frc2015.subsystems.autonomous.ResetDriveEncoders;
 import com.milkenknights.frc2015.subsystems.autonomous.WaitForDriveDistance;
 import com.milkenknights.frc2015.subsystems.autonomous.ZeroGyroAction;
 
@@ -35,8 +36,9 @@ public class ThreeToteAutoC extends AutonomousList {
         actions = new LinkedList<AutonomousAction>();
 
         actions.add(new ZeroGyroAction(driveSub));
-
-        for (int i = 0; i < 1; i++) {
+        
+        int i = 0;
+        for (; i < 2; i++) {
             actions.add(new FlapsAction(elevatorSub, true));
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     ActuatorsState.OPEN));
@@ -45,7 +47,7 @@ public class ThreeToteAutoC extends AutonomousList {
                     Constants.elevatorTote2Height,
                     Constants.elevatorThreshold));
             
-            actions.add(new PIDStraightAction(driveSub, 37, 1.3));
+            actions.add(new PIDStraightAction(driveSub, (i*81)+37, 1.3));
             
             actions.add(new IntakeWheelsSet(groundIntakeSub,
                     WheelsState.SLOW_INTAKE));
@@ -62,10 +64,10 @@ public class ThreeToteAutoC extends AutonomousList {
                     WheelsState.STOPPED));
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     ActuatorsState.OPEN));
-            actions.add(new PIDPivotAction(driveSub, 0, 5));
-            /*
-            actions.add(new PIDStraightBackground(driveSub, 80, 1.3));
-            actions.add(new WaitForDriveDistance(driveSub, 70, true));
+            actions.add(new PIDPivotAction(driveSub, 0, 2.5));
+
+            actions.add(new PIDStraightBackground(driveSub, (i*81)+80, 1.3));
+            actions.add(new WaitForDriveDistance(driveSub, (i*81)+73, true));
             
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     GroundIntakeSubsystem.ActuatorsState.CLOSED));
@@ -75,12 +77,10 @@ public class ThreeToteAutoC extends AutonomousList {
             actions.add(new ElevatorMoveAction(elevatorSub,
                     Constants.elevatorMinDistance,
                     Constants.elevatorThreshold));
-            */
         }
         
-        /*
         actions.add(new ElevatorMoveAction(elevatorSub,
-                Constants.elevatorReadyToIntakeHeight+1.5,
+                Constants.elevatorReadyToIntakeHeight,
                 Constants.elevatorThreshold));
         
         actions.add(new IntakeWheelsSet(groundIntakeSub,
@@ -88,7 +88,7 @@ public class ThreeToteAutoC extends AutonomousList {
         
         actions.add(new PIDPivotAction(driveSub, 90, 0.35));
         
-        actions.add(new PIDStraightAction(driveSub, 50, 0.35));
+        actions.add(new PIDStraightAction(driveSub, (i*81)+50, 0.35));
         
         actions.add(new PIDPivotAction(driveSub, 90, 0.35));
         
@@ -97,8 +97,9 @@ public class ThreeToteAutoC extends AutonomousList {
         
         actions.add(new FlapsAction(elevatorSub, false));
         
+        actions.add(new ResetDriveEncoders(driveSub));
+        
         actions.add(new PIDStraightAction(driveSub, 30, 0.35));
-        */
     }
 
     @Override

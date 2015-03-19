@@ -55,7 +55,7 @@ public class Constants {
     public static final double driveStraightP = 0.015;
     public static final double driveStraightF = 0.18;
     public static final double driveSteeringP = 0.002;
-    public static final double drivePivotP = 0.03;
+    public static final double drivePivotP = 0.0285;
 
     // GroundIntake Constants
     public static final double groundIntakeTalonSpeed = 1;
@@ -74,7 +74,7 @@ public class Constants {
     public static final double elevatorReadyToIntakeHeight = 21;
     public static final double elevatorStepHeight = 12;
     public static final double elevatorTote1Height = 14;
-    public static final double elevatorTote2Height = 30;
+    public static final double elevatorTote2Height = 29;
 
     public static final double elevatorThreshold = 0.5;
 }

@@ -30,7 +30,6 @@ public class PIDStraightBackground extends AutonomousAction {
     
     @Override
     protected void startCode() {
-        driveSubsystem.resetStraightPIDPosition();
         driveSubsystem.setStraightPIDSetpoint(setpoint);
         driveSubsystem.setDriveMode(DriveMode.PIDSTRAIGHT);
         firstLoop = true;
