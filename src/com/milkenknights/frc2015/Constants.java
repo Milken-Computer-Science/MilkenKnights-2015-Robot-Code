@@ -7,6 +7,9 @@ public class Constants {
     public static final int     DEBUGLOG_INFO_DISPLAYFREQ = 100; //Controls how often the DebugLog displays diagnostic information
     public static boolean       INTRO_MESSAGE = true; //Whether to display the welcome message
     
+    // I2C
+    public static final int I2C_ARDUINO_ADDRESS = 40;
+    
     // CAN Device Numbers
     public static final int groundIntakeLeftTalonDeviceNumber = 1;
     public static final int leftElevatorTalonDeviceNumber = 2;
