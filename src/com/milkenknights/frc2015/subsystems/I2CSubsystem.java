@@ -10,5 +10,10 @@ import com.milkenknights.common.MSubsystem;
  *
  */
 public class I2CSubsystem extends MSubsystem {
-
+    /**
+     * This function will be run periodically
+     */
+    public void update() {
+        
+    }
 }
