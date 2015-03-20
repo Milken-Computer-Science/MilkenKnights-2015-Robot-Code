@@ -175,6 +175,13 @@ public class DriveSubsystem extends MSubsystem {
     }
     
     /**
+     * Get the (absolute value) speed of the left encoder, in inches per second.
+     */
+    public double getEncSpeed() {
+        return Math.abs(encLeft.getRate());
+    }
+    
+    /**
      * Zeroes the yaw of the gyro.
      */
     public void zeroGyroYaw() {
@@ -218,6 +225,7 @@ public class DriveSubsystem extends MSubsystem {
         }
 
         SmartDashboard.putNumber("Drive Distance", encLeft.pidGet());
+        SmartDashboard.putNumber("Drive Speed", encLeft.getRate());
         //SmartDashboard.putNumber("r dist", encRight.pidGet());
         SmartDashboard.putNumber("Gyro Yaw", gyro.pidGet());
         SmartDashboard.putNumber("Pivot Setpoint", pidPivotSetpoint);

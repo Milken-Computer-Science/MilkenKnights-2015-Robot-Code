@@ -47,7 +47,7 @@ public class ThreeToteAutoC extends AutonomousList {
                     Constants.elevatorTote2Height,
                     Constants.elevatorThreshold));
             
-            actions.add(new PIDStraightAction(driveSub, (i*81)+37, 1.3));
+            actions.add(new PIDStraightAction(driveSub, (i*77)+37-i, 1.3));
             
             actions.add(new IntakeWheelsSet(groundIntakeSub,
                     WheelsState.SLOW_INTAKE));
@@ -65,9 +65,11 @@ public class ThreeToteAutoC extends AutonomousList {
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     ActuatorsState.OPEN));
             actions.add(new PIDPivotAction(driveSub, 0, 2.5));
+            
+            actions.add(new AutonWait(0.15));
 
-            actions.add(new PIDStraightBackground(driveSub, (i*81)+80, 1.3));
-            actions.add(new WaitForDriveDistance(driveSub, (i*81)+73, true));
+            actions.add(new PIDStraightBackground(driveSub, (i*77)+80, 1.3));
+            actions.add(new WaitForDriveDistance(driveSub, (i*77)+73, true));
             
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     GroundIntakeSubsystem.ActuatorsState.CLOSED));
@@ -79,27 +81,20 @@ public class ThreeToteAutoC extends AutonomousList {
                     Constants.elevatorThreshold));
         }
         
-        actions.add(new ElevatorMoveAction(elevatorSub,
-                Constants.elevatorReadyToIntakeHeight,
-                Constants.elevatorThreshold));
-        
         actions.add(new IntakeWheelsSet(groundIntakeSub,
                 GroundIntakeSubsystem.WheelsState.STOPPED));
         
-        actions.add(new PIDPivotAction(driveSub, 90, 0.35));
+        actions.add(new PIDPivotAction(driveSub, 90, 5));
         
-        actions.add(new PIDStraightAction(driveSub, (i*81)+50, 0.35));
+        actions.add(new ResetDriveEncoders(driveSub));
         
-        actions.add(new PIDPivotAction(driveSub, 90, 0.35));
-        
-        actions.add(new ElevatorMoveAction(elevatorSub,
-                0, Constants.elevatorThreshold));
+        actions.add(new PIDStraightAction(driveSub, 80, 0.35));
         
         actions.add(new FlapsAction(elevatorSub, false));
         
         actions.add(new ResetDriveEncoders(driveSub));
         
-        actions.add(new PIDStraightAction(driveSub, 30, 0.35));
+        actions.add(new PIDStraightAction(driveSub, 0, 0.35));
     }
 
     @Override
