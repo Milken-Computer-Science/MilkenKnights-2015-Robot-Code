@@ -2,8 +2,6 @@ package com.milkenknights.common;
 
 import com.milkenknights.frc2015.Constants;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class DebugLogger {
 
     public static final int LVL_STREAM = 5;
