@@ -47,7 +47,7 @@ public class TripleATKControl extends ControlSystem {
         }
         
         if (atka.getRawButton(2)) {
-            elevatorSub.setSetpoint(Constants.elevatorMinDistance);
+            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
             elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             elevatorCommand = 0;
@@ -56,7 +56,7 @@ public class TripleATKControl extends ControlSystem {
         if (atka.getRawButton(3)) {
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
             elevatorCommand = 0;
         }
         
@@ -89,7 +89,7 @@ public class TripleATKControl extends ControlSystem {
         }
         
         if (atka.getRawButton(6)) {
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
             groundIntakeSub
                     .setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
@@ -97,7 +97,7 @@ public class TripleATKControl extends ControlSystem {
         }
         
         if (atka.getRawButton(7)) {
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
             groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             elevatorCommand = 2;
@@ -125,7 +125,7 @@ public class TripleATKControl extends ControlSystem {
         if (atka.getRawButton(10)) {
             groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight + 4);
+            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE + 4);
             elevatorCommand = 0;
         }
  
@@ -134,21 +134,21 @@ public class TripleATKControl extends ControlSystem {
             break;
         case 1:
             if (elevatorSub.toteLoaded()) {
-                if (elevatorSub.getPosition() > Constants.elevatorMinDistance + Constants.elevatorThreshold) {
-                    elevatorSub.setSetpoint(Constants.elevatorMinDistance);
+                if (elevatorSub.getPosition() > Constants.ELEVATOR.HEIGHTS.MIN + Constants.ELEVATOR.ACCURACY_THRESHOLD) {
+                    elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
                     groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
                 } else {
                     elevatorCommand = 0;
                     groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-                    elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+                    elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
                     groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
                 }
             }
             break;
         case 2:
             if (elevatorSub.toteLoaded()) {
-                if (elevatorSub.getPosition() > Constants.elevatorMinDistance + Constants.elevatorThreshold) {
-                    elevatorSub.setSetpoint(Constants.elevatorMinDistance);
+                if (elevatorSub.getPosition() > Constants.ELEVATOR.HEIGHTS.MIN + Constants.ELEVATOR.ACCURACY_THRESHOLD) {
+                    elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
                     groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
                 } else {
                     elevatorCommand = 0;

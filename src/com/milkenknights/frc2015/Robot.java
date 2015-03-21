@@ -32,8 +32,9 @@ public class Robot extends IterativeRobot {
     SendableChooser autoChooser;
 
     public void robotInit() {
-        RestrictedSolenoid.initPressureSensor(Constants.pressureTransducerChannel, 
-                Constants.transducerScaleFactor, Constants.transducerOffset);
+        RestrictedSolenoid.initPressureSensor(Constants.ANALOG.PRESSURE_TRANSDUCER, 
+                Constants.PRESSURE_TRANSDUCER.SCALE_FACTOR,
+                Constants.PRESSURE_TRANSDUCER.OFFSET);
         
         driveSubsystem = new DriveSubsystem();
         elevatorSubsystem = new ElevatorSubsystem();

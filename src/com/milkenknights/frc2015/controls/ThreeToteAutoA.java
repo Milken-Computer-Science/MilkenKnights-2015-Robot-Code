@@ -35,9 +35,9 @@ public class ThreeToteAutoA extends ControlSystem {
             step++;
             break;
         case 1:
-            elevatorSub.setSetpoint(Constants.elevatorTote2Height);
+            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.TWO_TOTE);
             
-            if (elevatorSub.getPosition() > elevatorSub.getSetpoint() - Constants.elevatorThreshold) {
+            if (elevatorSub.getPosition() > elevatorSub.getSetpoint() - Constants.ELEVATOR.ACCURACY_THRESHOLD) {
                 step++;
             }
             break;
@@ -63,8 +63,8 @@ public class ThreeToteAutoA extends ControlSystem {
             }
             break;
         case 3:
-            elevatorSub.setSetpoint(Constants.elevatorMinDistance);
-            if (elevatorSub.getPosition() < Constants.elevatorMinDistance + Constants.elevatorThreshold) {
+            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
+            if (elevatorSub.getPosition() < Constants.ELEVATOR.HEIGHTS.MIN + Constants.ELEVATOR.ACCURACY_THRESHOLD) {
                 //elevatorSub.setSetpoint(Constants.elevatorTote2Height);
                 //step++;
             }
@@ -90,8 +90,8 @@ public class ThreeToteAutoA extends ControlSystem {
             }
             break;
         case 5:
-            elevatorSub.setSetpoint(Constants.elevatorTote2Height);
-            if (elevatorSub.getPosition() < Constants.elevatorMinDistance + Constants.elevatorThreshold) {
+            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.TWO_TOTE);
+            if (elevatorSub.getPosition() < Constants.ELEVATOR.HEIGHTS.MIN + Constants.ELEVATOR.ACCURACY_THRESHOLD) {
                 driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDPIVOT);
                 driveSub.setPivotPIDSetpoint(90);
                 if (driveSub.pidOnTarget(10)) {
@@ -107,8 +107,8 @@ public class ThreeToteAutoA extends ControlSystem {
                 driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDPIVOT);
                 driveSub.setPivotPIDSetpoint(180);
                 if (driveSub.pidOnTarget(10)) {
-                    elevatorSub.setSetpoint(Constants.elevatorMinDistance);
-                    if (elevatorSub.getPosition() < elevatorSub.getSetpoint() + Constants.elevatorThreshold) {
+                    elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
+                    if (elevatorSub.getPosition() < elevatorSub.getSetpoint() + Constants.ELEVATOR.ACCURACY_THRESHOLD) {
                         elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.OPEN);
                         driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDSTRAIGHT);
                         driveSub.setStraightPIDSetpoint(-30);

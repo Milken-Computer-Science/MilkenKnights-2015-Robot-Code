@@ -30,9 +30,10 @@ public class GroundIntakeSubsystem extends MSubsystem {
     private WheelsState wheelsState;
     
     public GroundIntakeSubsystem() {
-        leftTalon = new CANTalon(Constants.groundIntakeLeftTalonDeviceNumber);
-        rightTalon = new CANTalon(Constants.groundIntakeRightTalonDeviceNumber);
-        actuators = new SolenoidPair(Constants.groundIntakeLeftActuatorDeviceNumber, Constants.groundIntakeRightActuatorDeviceNumber, false);
+        leftTalon = new CANTalon(Constants.CAN.GROUNDINTAKE_LEFT_TALON);
+        rightTalon = new CANTalon(Constants.CAN.GROUNDINTAKE_RIGHT_TALON);
+        actuators = new SolenoidPair(Constants.SOLENOID.GROUNDINTAKE_LEFT, 
+                Constants.SOLENOID.GROUNDINTAKE_RIGHT, false);
         
         actuatorsState = ActuatorsState.CLOSED;
         wheelsState = WheelsState.STOPPED;
@@ -73,20 +74,20 @@ public class GroundIntakeSubsystem extends MSubsystem {
     public void update() {
         switch (wheelsState) {
         case INTAKE:
-            leftTalon.set(-Constants.groundIntakeTalonSpeed);
-            rightTalon.set(Constants.groundIntakeTalonSpeed);
+            leftTalon.set(-Constants.GROUND_INTAKE.INTAKE_SPEED);
+            rightTalon.set(Constants.GROUND_INTAKE.INTAKE_SPEED);
             break;
         case OUTPUT:
-            leftTalon.set(Constants.groundIntakeTalonSpeed);
-            rightTalon.set(-Constants.groundIntakeTalonSpeed);
+            leftTalon.set(Constants.GROUND_INTAKE.INTAKE_SPEED);
+            rightTalon.set(-Constants.GROUND_INTAKE.INTAKE_SPEED);
             break;
         case SLOW_INTAKE:
-            leftTalon.set(-Constants.groundIntakeTalonSlowSpeed);
-            rightTalon.set(Constants.groundIntakeTalonSlowSpeed);
+            leftTalon.set(-Constants.GROUND_INTAKE.INTAKE_SLOW_SPEED);
+            rightTalon.set(Constants.GROUND_INTAKE.INTAKE_SLOW_SPEED);
             break;
         case RIGHT:
-            leftTalon.set(-Constants.groundIntakeTalonSpeed);
-            rightTalon.set(-Constants.groundIntakeTalonSpeed);
+            leftTalon.set(-Constants.GROUND_INTAKE.INTAKE_SPEED);
+            rightTalon.set(-Constants.GROUND_INTAKE.INTAKE_SPEED);
             break;
         default:
             leftTalon.set(0);

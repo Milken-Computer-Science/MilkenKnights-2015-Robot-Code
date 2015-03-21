@@ -37,8 +37,8 @@ public class ThreeToteAutoB extends AutonomousList {
         for (int i = 0; i < 2; i++) {
             actions.add(new FlapsAction(elevatorSub, true));
             actions.add(new ElevatorMoveAction(elevatorSub,
-                    Constants.elevatorReadyToIntakeHeight+1.5,
-                    Constants.elevatorThreshold));
+                    Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE+1.5,
+                    Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     GroundIntakeSubsystem.ActuatorsState.CLOSED));
@@ -63,15 +63,15 @@ public class ThreeToteAutoB extends AutonomousList {
 
             actions.add(new WaitForToteLoad(elevatorSub));
             actions.add(new ElevatorMoveAction(elevatorSub, 0,
-                    Constants.elevatorThreshold));
+                    Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
             actions.add(new IntakeWheelsSet(groundIntakeSub,
                     GroundIntakeSubsystem.WheelsState.STOPPED));
         }
         
         actions.add(new ElevatorMoveAction(elevatorSub,
-                Constants.elevatorReadyToIntakeHeight+1.5,
-                Constants.elevatorThreshold));
+                Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE+1.5,
+                Constants.ELEVATOR.ACCURACY_THRESHOLD));
         
         actions.add(new IntakeWheelsSet(groundIntakeSub,
                 GroundIntakeSubsystem.WheelsState.STOPPED));
@@ -83,7 +83,7 @@ public class ThreeToteAutoB extends AutonomousList {
         actions.add(new PIDPivotAction(driveSub, 90, 0.35));
         
         actions.add(new ElevatorMoveAction(elevatorSub,
-                0, Constants.elevatorThreshold));
+                0, Constants.ELEVATOR.ACCURACY_THRESHOLD));
         
         actions.add(new FlapsAction(elevatorSub, false));
         
