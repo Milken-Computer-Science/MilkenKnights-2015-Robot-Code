@@ -13,7 +13,7 @@ public class Move50Auto extends ControlSystem {
     @Override
     public void init() {
         driveSub.resetStraightPIDPosition();
-        driveSub.setStraightPIDSetpoint(35);
+        driveSub.setStraightPIDSetpoint(50);
         driveSub.setPivotPIDSetpoint(driveSub.getYaw());
         driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDSTRAIGHT);
     }
