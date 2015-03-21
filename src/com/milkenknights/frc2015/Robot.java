@@ -20,16 +20,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Robot extends IterativeRobot {
-    LinkedList<MSubsystem> subsystems;
+    private LinkedList<MSubsystem> subsystems;
     
-    DriveSubsystem driveSubsystem;
-    ElevatorSubsystem elevatorSubsystem;
-    GroundIntakeSubsystem groundIntakeSubsystem;
+    private DriveSubsystem driveSubsystem;
+    private ElevatorSubsystem elevatorSubsystem;
+    private GroundIntakeSubsystem groundIntakeSubsystem;
 
-    ControlSystem teleControlSystem;
-    ControlSystem autoControlSystem;
+    private ControlSystem teleControlSystem;
+    private ControlSystem autoControlSystem;
     
-    SendableChooser autoChooser;
+    private SendableChooser autoChooser;
 
     public void robotInit() {
         RestrictedSolenoid.initPressureSensor(Constants.pressureTransducerChannel, 
@@ -71,6 +71,11 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         autoControlSystem = (ControlSystem) autoChooser.getSelected();
         
+        if (autoControlSystem == null) {
+            autoControlSystem = new DoNothing(driveSubsystem,
+                        elevatorSubsystem,
+                        groundIntakeSubsystem);
+        }
         autoControlSystem.init();
         
         subsystems.stream().forEach(s -> s.update());
