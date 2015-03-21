@@ -72,10 +72,10 @@ public class WaitForAndLoadTote extends AutonomousAction {
             if (elevatorSubsystem.getPosition() < 14) {
                 elevatorSubsystem.setFlapsState(ActuatorsState.OPEN);
             }
-            if (elevatorSubsystem.getPosition() < Constants.elevatorThreshold) {
+            if (elevatorSubsystem.getPosition() < Constants.ELEVATOR.ACCURACY_THRESHOLD) {
                 groundIntakeSubsystem.setActuators(
                         GroundIntakeSubsystem.ActuatorsState.OPEN);
-                elevatorSubsystem.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+                elevatorSubsystem.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
                 elevatorSubsystem.setFlapsState(ActuatorsState.CLOSED);
                 System.out.println("done");
                 return EndState.END;

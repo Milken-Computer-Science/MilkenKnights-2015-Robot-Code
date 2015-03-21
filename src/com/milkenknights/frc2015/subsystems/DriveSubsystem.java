@@ -37,19 +37,19 @@ public class DriveSubsystem extends MSubsystem {
     DriveMode driveMode;
 
     public DriveSubsystem() {
-        CANTalon leftTalonA = new CANTalon(Constants.leftTalonDeviceNumberA);
-        CANTalon leftTalonB = new CANTalon(Constants.leftTalonDeviceNumberB);
+        CANTalon leftTalonA = new CANTalon(Constants.CAN.DRIVE_LEFT_A_TALON);
+        CANTalon leftTalonB = new CANTalon(Constants.CAN.DRIVE_LEFT_B_TALON);
 
-        CANTalon rightTalonA = new CANTalon(Constants.rightTalonDeviceNumberA);
-        CANTalon rightTalonB = new CANTalon(Constants.rightTalonDeviceNumberB);
+        CANTalon rightTalonA = new CANTalon(Constants.CAN.DRIVE_RIGHT_A_TALON);
+        CANTalon rightTalonB = new CANTalon(Constants.CAN.DRIVE_RIGHT_B_TALON);
 
         drive = new RobotDrive(leftTalonA, rightTalonA);
 
-        encLeft = new Encoder(Constants.driveLeftEncoderDeviceNumberA,
-                Constants.driveLeftEncoderDeviceNumberB);
+        encLeft = new Encoder(Constants.DIO.DRIVE_LEFT_ENCODER_A,
+                Constants.DIO.DRIVE_LEFT_ENCODER_B);
         //encRight = new Encoder(Constants.driveRightEncoderDeviceNumberA, Constants.driveRightEncoderDeviceNumberB);
 
-        gyro = new IMU(new SerialPort(Constants.imuBaudRate, SerialPort.Port.kMXP));
+        gyro = new IMU(new SerialPort(Constants.GYRO.IMU_BAUD_RATE, SerialPort.Port.kMXP));
 
         leftTalonB.changeControlMode(ControlMode.Follower);
         rightTalonB.changeControlMode(ControlMode.Follower);
@@ -57,8 +57,8 @@ public class DriveSubsystem extends MSubsystem {
         leftTalonB.set(leftTalonA.getDeviceID());
         rightTalonB.set(rightTalonA.getDeviceID());
 
-        encLeft.setDistancePerPulse(-Constants.driveInchesPerPulse);
-        //encRight.setDistancePerPulse(Constants.driveInchesPerPulse);
+        encLeft.setDistancePerPulse(-Constants.DRIVE.INCHES_PER_PULSE);
+        //encRight.setDistancePerPulse(Constants.DRIVE.INCHES_PER_PULSE);
 
         driveMode = DriveMode.TANK;
     }
@@ -199,20 +199,20 @@ public class DriveSubsystem extends MSubsystem {
             drive.tankDrive(leftSpeed, rightSpeed, true);
             break;
         case PIDSTRAIGHT:
-            double outputMagnitude = (getStraightPIDSetpoint() - encLeft.pidGet()) * Constants.driveStraightP;
-            double curve = pivotPIDError() * Constants.drivePivotP;
+            double outputMagnitude = (getStraightPIDSetpoint() - encLeft.pidGet()) * Constants.DRIVE.STRAIGHT_P;
+            double curve = pivotPIDError() * Constants.DRIVE.PIVOT_P;
             
             double ff = 0;
             if (encLeft.getRate() >= 0) {
-                ff = Constants.driveStraightF;
+                ff = Constants.DRIVE.STRAIGHT_F;
             } else if (encLeft.getRate() < 0) {
-                ff = -Constants.driveStraightF;
+                ff = -Constants.DRIVE.STRAIGHT_F;
             }
             
             drive.drive(outputMagnitude + ff, curve);
             break;
         case PIDPIVOT:
-            double m_result = Constants.drivePivotP * pivotPIDError();
+            double m_result = Constants.DRIVE.PIVOT_P * pivotPIDError();
 
             if (m_result > 1) {
                 m_result = 1;

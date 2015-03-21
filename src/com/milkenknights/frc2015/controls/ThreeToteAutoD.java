@@ -45,9 +45,9 @@ public class ThreeToteAutoD extends ControlSystem {
             step++;
             break;
         case 1:
-            elevatorSub.setSetpoint(Constants.elevatorReadyToIntakeHeight);
+            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
             
-            if (elevatorSub.getPosition() > elevatorSub.getSetpoint() - Constants.elevatorThreshold) {
+            if (elevatorSub.getPosition() > elevatorSub.getSetpoint() - Constants.ELEVATOR.ACCURACY_THRESHOLD) {
                 step++;
             }
             break;

@@ -44,8 +44,8 @@ public class ThreeToteAutoC extends AutonomousList {
                     ActuatorsState.OPEN));
 
             actions.add(new ElevatorMoveAction(elevatorSub,
-                    Constants.elevatorTote2Height,
-                    Constants.elevatorThreshold));
+                    Constants.ELEVATOR.HEIGHTS.TWO_TOTE,
+                    Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
             actions.add(new PIDStraightAction(driveSub, (i*77)+37-i, 1.3));
             
@@ -77,8 +77,8 @@ public class ThreeToteAutoC extends AutonomousList {
                     WheelsState.SLOW_INTAKE));
             
             actions.add(new ElevatorMoveAction(elevatorSub,
-                    Constants.elevatorMinDistance,
-                    Constants.elevatorThreshold));
+                    Constants.ELEVATOR.HEIGHTS.MIN,
+                    Constants.ELEVATOR.ACCURACY_THRESHOLD));
         }
         
         actions.add(new IntakeWheelsSet(groundIntakeSub,

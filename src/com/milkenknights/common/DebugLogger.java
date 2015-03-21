@@ -11,7 +11,7 @@ public class DebugLogger {
     public static final int LVL_SEVERE = 1;
     public static final int LVL_ERROR = 0;
     public static final String SMARTDASHBOARD_KEY = "DebugLogger Log Level";
-    private static int logDetail = Constants.DEBUGLOG_DEFAULT_LOGLEVEL;
+    private static int logDetail = Constants.DEBUG_LOGGER.DEFAULT_LOGLEVEL;
     private static int maxTagLength = 0;
     private static final int initTagLength = 32;
     private static int skippedItems = 0;
@@ -51,7 +51,7 @@ public class DebugLogger {
      *            the message to be logged.
      */
     public static void log(int level, Object obj, String text) {
-        if (!Constants.DEBUGLOG_ENABLED)
+        if (!Constants.DEBUG_LOGGER.ENABLED)
             return;
 
         long logStartTime = System.currentTimeMillis(); // Diagnostic
@@ -96,7 +96,7 @@ public class DebugLogger {
         DebugLogger.totalItems++;
         DebugLogger.totalItemsType[level]++;
 
-        if (DebugLogger.totalItems % Constants.DEBUGLOG_INFO_DISPLAYFREQ == 0) {
+        if (DebugLogger.totalItems % Constants.DEBUG_LOGGER.INFO_DISPLAYFREQ == 0) {
             int currLogLevel = DebugLogger.logDetail;
             DebugLogger.logDetail = 3;
             DebugLogger

@@ -45,24 +45,21 @@ public class ElevatorSubsystem extends MSubsystem {
     ActuatorsState flapsState;
 
     public ElevatorSubsystem() {
-        elevatorTalonLeft = new CANTalon(
-                Constants.leftElevatorTalonDeviceNumber);
-        elevatorTalonRight = new CANTalon(
-                Constants.rightElevatorTalonDeviceNumber);
+        elevatorTalonLeft = new CANTalon(Constants.CAN.ELEVATOR_LEFT_TALON);
+        elevatorTalonRight = new CANTalon(Constants.CAN.ELEVATOR_RIGHT_TALON);
 
-        flaps = new Solenoid(Constants.elevatorActuatorDeviceNumber);
+        flaps = new Solenoid(Constants.SOLENOID.ELEVATOR_FLAPS);
 
-        encLeft = new Encoder(Constants.elevatorLeftEncoderDeviceNumberA,
-                Constants.elevatorLeftEncoderDeviceNumberB);
-        encRight = new Encoder(Constants.elevatorRightEncoderDeviceNumberA,
-                Constants.elevatorRightEncoderDeviceNumberB);
+        encLeft = new Encoder(Constants.DIO.ELEVATOR_LEFT_ENCODER_A,
+                Constants.DIO.ELEVATOR_LEFT_ENCODER_B);
+        encRight = new Encoder(Constants.DIO.ELEVATOR_RIGHT_ENCODER_A,
+                Constants.DIO.ELEVATOR_RIGHT_ENCODER_B);
 
-        bannerSensor = new DigitalInput(Constants.bannerSensorBlackDeviceNumber);
-        hallEffectSensor = new DigitalInput(
-                Constants.hallEffectSensorDeviceNumber);
+        bannerSensor = new DigitalInput(Constants.DIO.ELEVATOR_BANNER_BLACK);
+        hallEffectSensor = new DigitalInput(Constants.DIO.ELEVATOR_HALL_EFFECT);
 
-        encLeft.setDistancePerPulse(Constants.elevatorInchesPerPulse);
-        encRight.setDistancePerPulse(-Constants.elevatorInchesPerPulse);
+        encLeft.setDistancePerPulse(Constants.ELEVATOR.INCHES_PER_PULSE);
+        encRight.setDistancePerPulse(-Constants.ELEVATOR.INCHES_PER_PULSE);
 
         flapsState = ActuatorsState.CLOSED;
     }
@@ -121,10 +118,10 @@ public class ElevatorSubsystem extends MSubsystem {
      *            The desired setpoint of the elevator.
      */
     public void setSetpoint(double setpoint) {
-        if (setpoint >= Constants.elevatorMaxDistance) {
-            this.setpoint = Constants.elevatorMaxDistance;
-        } else if (setpoint <= Constants.elevatorMinDistance) {
-            this.setpoint = Constants.elevatorMinDistance;
+        if (setpoint >= Constants.ELEVATOR.HEIGHTS.MAX) {
+            this.setpoint = Constants.ELEVATOR.HEIGHTS.MAX;
+        } else if (setpoint <= Constants.ELEVATOR.HEIGHTS.MIN) {
+            this.setpoint = Constants.ELEVATOR.HEIGHTS.MIN;
         } else {
             this.setpoint = setpoint;
         }
@@ -211,13 +208,13 @@ public class ElevatorSubsystem extends MSubsystem {
             double ff;
 
             if (encLeft.getRate() < 0) {
-                ff = Constants.elevatorFF;
+                ff = Constants.ELEVATOR.F;
             } else {
                 ff = 0;
             }
 
-            elevatorTalonLeft.set(limit(limit(l_error * Constants.elevatorP + ff, .9) + limit(((l_error - r_error) / 2) * Constants.elevatorSteeringP, .1), 1));
-            elevatorTalonRight.set(-limit(limit(r_error * Constants.elevatorP + ff, .9) + limit(((r_error - l_error) / 2) * Constants.elevatorSteeringP, .1), 1));
+            elevatorTalonLeft.set(limit(limit(l_error * Constants.ELEVATOR.P + ff, .9) + limit(((l_error - r_error) / 2) * Constants.ELEVATOR.STEERING_P, .1), 1));
+            elevatorTalonRight.set(-limit(limit(r_error * Constants.ELEVATOR.P + ff, .9) + limit(((r_error - l_error) / 2) * Constants.ELEVATOR.STEERING_P, .1), 1));
         } else {
             elevatorTalonLeft.set(manSpeed);
             elevatorTalonRight.set(-manSpeed);
