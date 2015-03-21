@@ -17,7 +17,7 @@ public class I2CSubsystem extends MSubsystem {
     private I2C arduino;
     
     public I2CSubsystem() {
-        arduino = new I2C(I2C.Port.kOnboard, Constants.I2C_ARDUINO_ADDRESS);
+        arduino = new I2C(I2C.Port.kOnboard, Constants.I2C.ARDUINO);
     }
     /**
      * This function will be run periodically
