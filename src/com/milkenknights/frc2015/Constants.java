@@ -13,15 +13,28 @@ public class Constants {
         public static final int     GROUNDINTAKE_LEFT_TALON = 1;
         public static final int     ELEVATOR_LEFT_TALON = 2;
         public static final int     DRIVE_LEFT_A_TALON = 3;
-        public static final int     DRIVE_LEFT_B_TALON = 4;        
+        public static final int     DRIVE_LEFT_B_TALON = 4;
+        public static final int     UNUSED_TALON_5 = 5;
+        public static final int     UNUSED_TALON_6 = 6;
         public static final int     DRIVE_RIGHT_B_TALON = 7;
         public static final int     DRIVE_RIGHT_A_TALON = 8;
         public static final int     ELEVATOR_RIGHT_TALON = 9;
         public static final int     GROUNDINTAKE_RIGHT_TALON = 10;
     }
     
+    public class I2C {
+        public static final byte    NAVX = 0x32;
+    }
+    
     public class ANALOG {
         public static final int     PRESSURE_TRANSDUCER = 0;
+        public static final int     ROBOTRIO_1 = 1;
+        public static final int     ROBOTRIO_2 = 2;
+        public static final int     ROBOTRIO_3 = 3;
+        public static final int     NAVX_AI0 = 4;
+        public static final int     NAVX_AI1 = 5;
+        public static final int     NAVX_AI2 = 6;
+        public static final int     NAVX_AI3 = 7;
     }
     
     public class DIO {
@@ -35,6 +48,16 @@ public class Constants {
         public static final int     ELEVATOR_RIGHT_ENCODER_B = 7;
         public static final int     ELEVATOR_BANNER_BLACK = 8;
         public static final int     ELEVATOR_HALL_EFFECT = 9;
+        public static final int     NAVX_DIO0 = 10;
+        public static final int     NAVX_DIO1 = 11;
+        public static final int     NAVX_DIO2 = 12;
+        public static final int     NAVX_DIO3 = 13;
+        public static final int     NAVX_DIO4 = 18;
+        public static final int     NAVX_DIO5 = 19;
+        public static final int     NAVX_DIO6 = 20;
+        public static final int     NAVX_DIO7 = 21;
+        public static final int     NAVX_DIO8 = 22;
+        public static final int     NAVX_DIO9 = 23;
     }
     
     public class SOLENOID {
@@ -83,7 +106,7 @@ public class Constants {
 
     public class GROUND_INTAKE {
         public static final double  INTAKE_SPEED = 1;
-        public static final double  INTAKE_SLOW_SPEED = 0.5;
-        
+        public static final double  INTAKE_SLOW_SPEED = 0.5; 
     }
+    
 }
