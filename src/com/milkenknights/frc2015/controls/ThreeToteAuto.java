@@ -37,8 +37,7 @@ public class ThreeToteAuto extends AutonomousList {
 
         actions.add(new ZeroGyroAction(driveSub));
         
-        int i = 0;
-        for (; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             actions.add(new FlapsAction(elevatorSub, true));
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     ActuatorsState.OPEN));
