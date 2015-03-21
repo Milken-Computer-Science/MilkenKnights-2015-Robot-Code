@@ -7,8 +7,7 @@ import com.milkenknights.common.RestrictedSolenoid;
 import com.milkenknights.frc2015.controls.DoNothing;
 import com.milkenknights.frc2015.controls.Move50Auto;
 import com.milkenknights.frc2015.controls.ControlSystem;
-import com.milkenknights.frc2015.controls.ThreeToteAutoB;
-import com.milkenknights.frc2015.controls.ThreeToteAutoC;
+import com.milkenknights.frc2015.controls.ThreeToteAuto;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
@@ -20,20 +19,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Robot extends IterativeRobot {
-    LinkedList<MSubsystem> subsystems;
+    private LinkedList<MSubsystem> subsystems;
     
-    DriveSubsystem driveSubsystem;
-    ElevatorSubsystem elevatorSubsystem;
-    GroundIntakeSubsystem groundIntakeSubsystem;
+    private DriveSubsystem driveSubsystem;
+    private ElevatorSubsystem elevatorSubsystem;
+    private GroundIntakeSubsystem groundIntakeSubsystem;
 
-    ControlSystem teleControlSystem;
-    ControlSystem autoControlSystem;
+    private ControlSystem teleControlSystem;
+    private ControlSystem autoControlSystem;
     
-    SendableChooser autoChooser;
+    private SendableChooser autoChooser;
 
     public void robotInit() {
-        RestrictedSolenoid.initPressureSensor(Constants.pressureTransducerChannel, 
-                Constants.transducerScaleFactor, Constants.transducerOffset);
+        RestrictedSolenoid.initPressureSensor(Constants.ANALOG.PRESSURE_TRANSDUCER, 
+                Constants.PRESSURE_TRANSDUCER.SCALE_FACTOR,
+                Constants.PRESSURE_TRANSDUCER.OFFSET);
         
         driveSubsystem = new DriveSubsystem();
         elevatorSubsystem = new ElevatorSubsystem();
@@ -53,11 +53,7 @@ public class Robot extends IterativeRobot {
                         elevatorSubsystem,
                         groundIntakeSubsystem));
         autoChooser.addObject("Three Tote Auto",
-                new ThreeToteAutoB(driveSubsystem,
-                        elevatorSubsystem,
-                        groundIntakeSubsystem));
-        autoChooser.addObject("Rag 3 Tote",
-                new ThreeToteAutoC(driveSubsystem,
+                new ThreeToteAuto(driveSubsystem,
                         elevatorSubsystem,
                         groundIntakeSubsystem));
         SmartDashboard.putData("Autonomous Selector", autoChooser);
@@ -71,6 +67,11 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         autoControlSystem = (ControlSystem) autoChooser.getSelected();
         
+        if (autoControlSystem == null) {
+            autoControlSystem = new DoNothing(driveSubsystem,
+                        elevatorSubsystem,
+                        groundIntakeSubsystem);
+        }
         autoControlSystem.init();
         
         subsystems.stream().forEach(s -> s.update());

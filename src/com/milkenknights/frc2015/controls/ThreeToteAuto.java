@@ -26,10 +26,10 @@ import com.milkenknights.frc2015.subsystems.autonomous.ZeroGyroAction;
  * A three tote autonomous that attempts to grab knocked down bins and toss them
  * to the side.  Uses AutonomousList.
  */
-public class ThreeToteAutoC extends AutonomousList {
+public class ThreeToteAuto extends AutonomousList {
     LinkedList<AutonomousAction> actions;
     
-    public ThreeToteAutoC(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
+    public ThreeToteAuto(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
             GroundIntakeSubsystem sGroundIntake) {
         super(sDrive, sElevator, sGroundIntake);
         
@@ -37,15 +37,14 @@ public class ThreeToteAutoC extends AutonomousList {
 
         actions.add(new ZeroGyroAction(driveSub));
         
-        int i = 0;
-        for (; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             actions.add(new FlapsAction(elevatorSub, true));
             actions.add(new IntakeActuatorsSet(groundIntakeSub,
                     ActuatorsState.OPEN));
 
             actions.add(new ElevatorMoveAction(elevatorSub,
-                    Constants.elevatorTote2Height,
-                    Constants.elevatorThreshold));
+                    Constants.ELEVATOR.HEIGHTS.TWO_TOTE,
+                    Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
             actions.add(new PIDStraightAction(driveSub, (i*77)+37-i, 1.3));
             
@@ -77,8 +76,8 @@ public class ThreeToteAutoC extends AutonomousList {
                     WheelsState.SLOW_INTAKE));
             
             actions.add(new ElevatorMoveAction(elevatorSub,
-                    Constants.elevatorMinDistance,
-                    Constants.elevatorThreshold));
+                    Constants.ELEVATOR.HEIGHTS.MIN,
+                    Constants.ELEVATOR.ACCURACY_THRESHOLD));
         }
         
         actions.add(new IntakeWheelsSet(groundIntakeSub,
