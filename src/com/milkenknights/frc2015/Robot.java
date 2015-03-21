@@ -7,8 +7,7 @@ import com.milkenknights.common.RestrictedSolenoid;
 import com.milkenknights.frc2015.controls.DoNothing;
 import com.milkenknights.frc2015.controls.Move50Auto;
 import com.milkenknights.frc2015.controls.ControlSystem;
-import com.milkenknights.frc2015.controls.ThreeToteAutoB;
-import com.milkenknights.frc2015.controls.ThreeToteAutoC;
+import com.milkenknights.frc2015.controls.ThreeToteAuto;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
@@ -54,11 +53,7 @@ public class Robot extends IterativeRobot {
                         elevatorSubsystem,
                         groundIntakeSubsystem));
         autoChooser.addObject("Three Tote Auto",
-                new ThreeToteAutoB(driveSubsystem,
-                        elevatorSubsystem,
-                        groundIntakeSubsystem));
-        autoChooser.addObject("Rag 3 Tote",
-                new ThreeToteAutoC(driveSubsystem,
+                new ThreeToteAuto(driveSubsystem,
                         elevatorSubsystem,
                         groundIntakeSubsystem));
         SmartDashboard.putData("Autonomous Selector", autoChooser);

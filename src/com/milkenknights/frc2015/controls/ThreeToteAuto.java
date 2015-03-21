@@ -26,10 +26,10 @@ import com.milkenknights.frc2015.subsystems.autonomous.ZeroGyroAction;
  * A three tote autonomous that attempts to grab knocked down bins and toss them
  * to the side.  Uses AutonomousList.
  */
-public class ThreeToteAutoC extends AutonomousList {
+public class ThreeToteAuto extends AutonomousList {
     LinkedList<AutonomousAction> actions;
     
-    public ThreeToteAutoC(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
+    public ThreeToteAuto(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
             GroundIntakeSubsystem sGroundIntake) {
         super(sDrive, sElevator, sGroundIntake);
         
