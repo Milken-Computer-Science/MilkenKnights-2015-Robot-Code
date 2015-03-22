@@ -211,8 +211,6 @@ public class ElevatorSubsystem extends MSubsystem {
             
             double l_steer = limit((r_error - l_error) * Constants.ELEVATOR.STEERING_P, .1);
             double r_steer = limit((l_error - r_error) * Constants.ELEVATOR.STEERING_P, .1);
-            
-            DebugLogger.log(DebugLogger.LVL_STREAM, this, l_steer + "\t" + r_steer);
 
             elevatorTalonLeft.set(l_speed + l_steer);
             elevatorTalonRight.set(-(r_speed + r_steer));

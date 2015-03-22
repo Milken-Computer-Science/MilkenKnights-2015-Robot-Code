@@ -131,6 +131,11 @@ public class TripleATKControl extends ControlSystem {
  
         switch (elevatorCommand) {
         case 0:
+            if (subsystems.elevator().getPosition() >= Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE - Constants.ELEVATOR.ACCURACY_THRESHOLD) {
+                subsystems.serial().setReadyHumanPlayer(true);
+            } else {
+                subsystems.serial().setReadyHumanPlayer(false);
+            }
             break;
         case 1:
             if (subsystems.elevator().toteLoaded()) {

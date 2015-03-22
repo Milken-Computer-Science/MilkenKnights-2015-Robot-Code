@@ -11,19 +11,19 @@ public class Subsystems {
     DriveSubsystem driveSubsystem;
     ElevatorSubsystem elevatorSubsystem;
     GroundIntakeSubsystem groundIntakeSubsystem;
-    I2CSubsystem i2cSubsystem;
+    SerialSubsystem serialSubsystem;
 
     public Subsystems() {
         driveSubsystem = new DriveSubsystem();
         elevatorSubsystem = new ElevatorSubsystem();
         groundIntakeSubsystem = new GroundIntakeSubsystem();
-        i2cSubsystem = new I2CSubsystem();
+        serialSubsystem = new SerialSubsystem();
         
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
         subsystems.add(elevatorSubsystem);
         subsystems.add(groundIntakeSubsystem);
-        subsystems.add(i2cSubsystem);
+        subsystems.add(serialSubsystem);
     }
     
     public void update() {
@@ -53,5 +53,12 @@ public class Subsystems {
      */
     public GroundIntakeSubsystem groundIntake() {
         return groundIntakeSubsystem;
+    }
+    
+    /**
+     * @return the serialSubsystem
+     */
+    public SerialSubsystem serial() {
+        return serialSubsystem;
     }
 }
