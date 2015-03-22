@@ -33,17 +33,17 @@ public class ElevatorSubsystem extends MSubsystem {
     double setpoint = 0;
     double manSpeed = 0;
 
-    public enum ActuatorsState {
+    public enum FlapsState {
         CLOSED(false), OPEN(true);
 
         public final boolean b;
 
-        private ActuatorsState(boolean b) {
+        private FlapsState(boolean b) {
             this.b = b;
         }
     }
 
-    ActuatorsState flapsState;
+    FlapsState flapsState;
 
     public ElevatorSubsystem() {
         elevatorTalonLeft = new CANTalon(Constants.CAN.ELEVATOR_LEFT_TALON);
@@ -62,7 +62,7 @@ public class ElevatorSubsystem extends MSubsystem {
         encLeft.setDistancePerPulse(Constants.ELEVATOR.INCHES_PER_PULSE);
         encRight.setDistancePerPulse(-Constants.ELEVATOR.INCHES_PER_PULSE);
 
-        flapsState = ActuatorsState.CLOSED;
+        flapsState = FlapsState.CLOSED;
     }
 
     /**
@@ -71,7 +71,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * @param s
      *            The status of the flaps
      */
-    public void setFlapsState(ActuatorsState s) {
+    public void setFlapsState(FlapsState s) {
         flapsState = s;
     }
 
@@ -80,7 +80,7 @@ public class ElevatorSubsystem extends MSubsystem {
      * 
      * @return The state of the flaps
      */
-    public ActuatorsState getFlapsState() {
+    public FlapsState getFlapsState() {
         return flapsState;
     }
 
@@ -215,13 +215,16 @@ public class ElevatorSubsystem extends MSubsystem {
             double l_speed = limit(l_error * Constants.ELEVATOR.P + ff, .9);
             double r_speed = limit(r_error * Constants.ELEVATOR.P + ff, .9);
             
-            double l_steer = limit((r_error - l_error) * Constants.ELEVATOR.STEERING_P, .1);
-            double r_steer = limit((l_error - r_error) * Constants.ELEVATOR.STEERING_P, .1);
+            double l_steer = limit(
+                    (r_error - l_error) * Constants.ELEVATOR.STEERING_P, .1);
+            double r_steer = limit(
+                    (l_error - r_error) * Constants.ELEVATOR.STEERING_P, .1);
             
-            DebugLogger.log(DebugLogger.LVL_STREAM, this, "Left: \t" + r_speed + "\t" + r_steer);
-            DebugLogger.log(DebugLogger.LVL_STREAM, this, "Right: \t" + r_speed + "\t" + r_steer);
+            DebugLogger.log(DebugLogger.LVL_STREAM, this, "Left: \t" + r_speed +
+                    "\t" + r_steer);
+            DebugLogger.log(DebugLogger.LVL_STREAM, this, "Right: \t" + r_speed +
+                    "\t" + r_steer);
             
-
             elevatorTalonLeft.set(l_speed + l_steer);
             elevatorTalonRight.set(-(r_speed + r_steer));
         } else {

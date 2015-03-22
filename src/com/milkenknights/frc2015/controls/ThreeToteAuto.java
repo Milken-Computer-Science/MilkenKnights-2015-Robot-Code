@@ -41,7 +41,7 @@ public class ThreeToteAuto extends AutonomousList {
                     ActuatorsState.OPEN));
 
             actions.add(new ElevatorMoveAction(subsystems,
-                    Constants.ELEVATOR.HEIGHTS.TWO_TOTE,
+                    Constants.ELEVATOR.HEIGHTS.KNOCK_BIN,
                     Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
             actions.add(new PIDStraightAction(subsystems, (i*77)+37-i, 1.3));

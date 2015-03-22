@@ -8,7 +8,7 @@ import com.milkenknights.frc2015.subsystems.Subsystems;
  * A quick AutonomousAction that calls the setActuators method and immediately
  * ends.
  * 
- * @see GroundIntakeSubsystem#setActuators(ActuatorsState)
+ * @see GroundIntakeSubsystem#setActuators(FlapsState)
  */
 public class IntakeActuatorsSet extends AutonomousAction {
     GroundIntakeSubsystem groundIntakeSubsystem;

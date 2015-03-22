@@ -18,7 +18,7 @@ public class DoNothing extends ControlSystem {
         subsystems.drive().tankDrive(0, 0);
         
         subsystems.elevator().setSetpoint(subsystems.elevator().getPosition());
-        subsystems.elevator().setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+        subsystems.elevator().setFlapsState(ElevatorSubsystem.FlapsState.CLOSED);
         
         subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
         subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);

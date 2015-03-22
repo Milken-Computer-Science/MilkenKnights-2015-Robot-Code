@@ -3,13 +3,13 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.Subsystems;
-import com.milkenknights.frc2015.subsystems.ElevatorSubsystem.ActuatorsState;
+import com.milkenknights.frc2015.subsystems.ElevatorSubsystem.FlapsState;
 
 /** A quick autonomous action that sets the state of the elevator flaps. */
 public class FlapsAction extends AutonomousAction {
     ElevatorSubsystem elevatorSubsystem;
     
-    ActuatorsState flapsState;
+    FlapsState flapsState;
     /**
      * Make a new FlapsAction.
      * @param elevatorSubsystem The elevatorSubsystem to use
@@ -18,7 +18,7 @@ public class FlapsAction extends AutonomousAction {
     public FlapsAction(Subsystems subsystems, boolean isClosed) {
         this.elevatorSubsystem = subsystems.elevator();
         
-        this.flapsState = isClosed ? ActuatorsState.CLOSED : ActuatorsState.OPEN;
+        this.flapsState = isClosed ? FlapsState.CLOSED : FlapsState.OPEN;
     }
     
     @Override
