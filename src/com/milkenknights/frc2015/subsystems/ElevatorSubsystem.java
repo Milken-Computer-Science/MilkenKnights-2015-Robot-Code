@@ -206,13 +206,11 @@ public class ElevatorSubsystem extends MSubsystem {
             double l_error = (setpoint - encLeft.pidGet());
             double r_error = (setpoint - encRight.pidGet());
             
-            double l_speed = limit(l_error * Constants.ELEVATOR.P, .9);
-            double r_speed = limit(r_error * Constants.ELEVATOR.P, .9);
+            double l_speed = limit(l_error * Constants.ELEVATOR.P, .85);
+            double r_speed = limit(r_error * Constants.ELEVATOR.P, .85);
             
-            double l_steer = limit((r_error - l_error) * Constants.ELEVATOR.STEERING_P, .1);
-            double r_steer = limit((l_error - r_error) * Constants.ELEVATOR.STEERING_P, .1);
-            
-            DebugLogger.log(DebugLogger.LVL_STREAM, this, l_steer + "\t" + r_steer);
+            double l_steer = limit((r_error - l_error) * Constants.ELEVATOR.STEERING_P, .15);
+            double r_steer = limit((l_error - r_error) * Constants.ELEVATOR.STEERING_P, .15);
 
             elevatorTalonLeft.set(l_speed + l_steer);
             elevatorTalonRight.set(-(r_speed + r_steer));

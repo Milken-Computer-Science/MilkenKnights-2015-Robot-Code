@@ -3,6 +3,8 @@
  */
 package com.milkenknights.frc2015.subsystems;
 
+import java.util.Arrays;
+
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
@@ -52,9 +54,9 @@ public class I2CSubsystem extends MSubsystem {
             data[0] = 0;
         }
         
-        if (RobotState.isOperatorControl()) {
+        if (RobotState.isOperatorControl() && RobotState.isEnabled()) {
             data[1] = 2;
-        } else if (RobotState.isAutonomous()) {
+        } else if (RobotState.isAutonomous() && RobotState.isEnabled()) {
             data[1] = 1;
         } else {
             data[1] = 0;
@@ -65,6 +67,6 @@ public class I2CSubsystem extends MSubsystem {
         
         arduino.writeBulk(data);
         
-        SmartDashboard.putString("I2C Data", data.toString());
+        SmartDashboard.putString("I2C Data", Arrays.toString(data));
     }
 }
