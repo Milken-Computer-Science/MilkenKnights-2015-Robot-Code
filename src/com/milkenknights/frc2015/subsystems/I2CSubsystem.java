@@ -9,6 +9,7 @@ import com.milkenknights.frc2015.Constants;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Data is structured as follows:
@@ -63,5 +64,7 @@ public class I2CSubsystem extends MSubsystem {
         data[3] = (byte) (readyForHumanPlayer ? 1 : 0);
         
         arduino.writeBulk(data);
+        
+        SmartDashboard.putString("I2C Data", data.toString());
     }
 }
