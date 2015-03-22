@@ -3,6 +3,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem.DriveMode;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 import edu.wpi.first.wpilibj.Timer;
 
@@ -32,11 +33,11 @@ public class PIDTrapezoidal extends AutonomousAction {
      * The robot will travel a distance of
      *   (maxVelocity/2)(2*coastTime + rampUpTime + rampDownTime)
      */
-    public PIDTrapezoidal(DriveSubsystem driveSubsystem,
+    public PIDTrapezoidal(Subsystems subsystems,
             double rampUpTime, double rampDownTime,
             double coastTime, double maxVelocity,
             double tolerance) {
-        this.driveSubsystem = driveSubsystem;
+        this.driveSubsystem = subsystems.drive();
         
         this.rampUpTime = rampUpTime;
         this.rampDownTime = rampDownTime;

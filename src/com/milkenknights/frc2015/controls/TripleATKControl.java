@@ -5,6 +5,7 @@ import com.milkenknights.frc2015.Constants;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,9 +24,8 @@ public class TripleATKControl extends ControlSystem {
     private boolean released5;
     private boolean released9;
 
-    public TripleATKControl(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
-            GroundIntakeSubsystem sGroundIntake) {
-        super(sDrive, sElevator, sGroundIntake);
+    public TripleATKControl(Subsystems subsystems) {
+        super(subsystems);
         atkl = new Joystick(0);
         atkr = new Joystick(1);
         atka = new Joystick(2);
@@ -36,96 +36,95 @@ public class TripleATKControl extends ControlSystem {
     public void periodic() {
         // TANK DRIVE
         // controlled by left and right ATK y axes
-        driveSub.setDriveMode(DriveSubsystem.DriveMode.TANK);
-        driveSub.tankDrive(-atkl.getAxis(Joystick.AxisType.kY), -atkr.getAxis(Joystick.AxisType.kY));
+        subsystems.drive().setDriveMode(DriveSubsystem.DriveMode.TANK);
+        subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY), -atkr.getAxis(Joystick.AxisType.kY));
         
         if (atka.getRawButton(1)) {
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
-            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.OPEN);
+            subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            subsystems.elevator().setFlapsState(ElevatorSubsystem.ActuatorsState.OPEN);
             elevatorCommand = 0;
         }
         
         if (atka.getRawButton(2)) {
-            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
-            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
+            subsystems.elevator().setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+            subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
             elevatorCommand = 0;
         }
 
         if (atka.getRawButton(3)) {
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
-            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
+            subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            subsystems.elevator().setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
             elevatorCommand = 0;
         }
         
         if (atka.getRawButton(4)) {
             elevatorCommand = 0;
             released4 = true;
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-            if (!elevatorSub.toteLoaded()) {
-                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
+            subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            if (!subsystems.elevator().toteLoaded()) {
+                subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             } else {
-                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
+                subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
             }
         } else if (released4) {
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
             released4 = false;
         }
         
         if (atka.getRawButton(5)) {
             elevatorCommand = 0;
             released5 = true;
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-            if (!elevatorSub.toteLoaded()) {
-                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
+            subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
+            if (!subsystems.elevator().toteLoaded()) {
+                subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             } else {
-                groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
+                subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
             }
         } else if (released5) {
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
             released5 = false;
         }
         
         if (atka.getRawButton(6)) {
-            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
-            groundIntakeSub
-                    .setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
+            subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
+            subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             elevatorCommand = 1;
         }
         
         if (atka.getRawButton(7)) {
-            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
+            subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
+            subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.INTAKE);
             elevatorCommand = 2;
         }
         
         if (atka.getRawButton(8)) {
             elevatorCommand = 0;
-            elevatorSub.setPIDMode(false);
-            elevatorSub.setManualSpeed(atka.getAxis(Joystick.AxisType.kY));
-            elevatorSub.setSetpoint(elevatorSub.getPosition());
+            subsystems.elevator().setPIDMode(false);
+            subsystems.elevator().setManualSpeed(atka.getAxis(Joystick.AxisType.kY));
+            subsystems.elevator().setSetpoint(subsystems.elevator().getPosition());
         } else {
-            elevatorSub.setPIDMode(true);
+            subsystems.elevator().setPIDMode(true);
         }
         
         if (atka.getRawButton(9)) {
             elevatorCommand = 0;
             released9 = true;
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.OUTPUT);
+            subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
+            subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.OUTPUT);
         } else if (released9) {
             released9 = false;
-            groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+            subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
         }
         
         if (atka.getRawButton(10)) {
-            groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-            elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
-            elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE + 4);
+            subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+            subsystems.elevator().setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE + 4);
             elevatorCommand = 0;
         }
  
@@ -133,26 +132,26 @@ public class TripleATKControl extends ControlSystem {
         case 0:
             break;
         case 1:
-            if (elevatorSub.toteLoaded()) {
-                if (elevatorSub.getPosition() > Constants.ELEVATOR.HEIGHTS.MIN + Constants.ELEVATOR.ACCURACY_THRESHOLD) {
-                    elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
-                    groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
+            if (subsystems.elevator().toteLoaded()) {
+                if (subsystems.elevator().getPosition() > Constants.ELEVATOR.HEIGHTS.MIN + Constants.ELEVATOR.ACCURACY_THRESHOLD) {
+                    subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
+                    subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
                 } else {
                     elevatorCommand = 0;
-                    groundIntakeSub.setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
-                    elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
-                    groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+                    subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.OPEN);
+                    subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
+                    subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
                 }
             }
             break;
         case 2:
-            if (elevatorSub.toteLoaded()) {
-                if (elevatorSub.getPosition() > Constants.ELEVATOR.HEIGHTS.MIN + Constants.ELEVATOR.ACCURACY_THRESHOLD) {
-                    elevatorSub.setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
-                    groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
+            if (subsystems.elevator().toteLoaded()) {
+                if (subsystems.elevator().getPosition() > Constants.ELEVATOR.HEIGHTS.MIN + Constants.ELEVATOR.ACCURACY_THRESHOLD) {
+                    subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
+                    subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.SLOW_INTAKE);
                 } else {
                     elevatorCommand = 0;
-                    groundIntakeSub.setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
+                    subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.STOPPED);
                 }
             }
             break;

@@ -2,6 +2,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 /** Waits until we are moving at a certain speed. */
 public class WaitForDriveSpeed extends AutonomousAction {
@@ -18,9 +19,9 @@ public class WaitForDriveSpeed extends AutonomousAction {
      *                       the speed. False if we should wait until we are
      *                       less than the speed.
      */
-    public WaitForDriveSpeed(DriveSubsystem driveSubsystem, double speed,
+    public WaitForDriveSpeed(Subsystems subsystems, double speed,
             boolean waitForGreater) {
-        this.driveSubsystem = driveSubsystem;
+        this.driveSubsystem = subsystems.drive();
         
         this.speed = speed;
         this.waitForGreater = waitForGreater;

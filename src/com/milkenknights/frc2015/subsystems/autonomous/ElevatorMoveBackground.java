@@ -2,6 +2,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 /**
  * The same as ElevatorMoveAction, but backgrounds immediately after starting
@@ -21,9 +22,9 @@ public class ElevatorMoveBackground extends AutonomousAction {
      * @param setpoint where the elevator should be
      * @param tolerance how close to the desired position we need to be
      */
-    public ElevatorMoveBackground(ElevatorSubsystem elevatorSubsystem,
+    public ElevatorMoveBackground(Subsystems subsystems,
             double setpoint, double tolerance) {
-        this.elevatorSubsystem = elevatorSubsystem;
+        this.elevatorSubsystem = subsystems.elevator();
         this.setpoint = setpoint;
         this.tolerance = tolerance;
     }

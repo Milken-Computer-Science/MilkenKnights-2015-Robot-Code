@@ -2,6 +2,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 /**
  * Wait until ElevatorSubsystem.toteLoaded() returns true.
@@ -9,8 +10,8 @@ import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 public class WaitForToteLoad extends AutonomousAction {
     ElevatorSubsystem elevatorSubsystem;
     
-    public WaitForToteLoad(ElevatorSubsystem elevatorSubsystem) {
-        this.elevatorSubsystem = elevatorSubsystem;
+    public WaitForToteLoad(Subsystems subsystems) {
+        this.elevatorSubsystem = subsystems.elevator();
     }
 
     @Override

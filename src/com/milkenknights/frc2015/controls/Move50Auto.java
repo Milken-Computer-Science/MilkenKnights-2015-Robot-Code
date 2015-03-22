@@ -3,19 +3,19 @@ package com.milkenknights.frc2015.controls;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 public class Move50Auto extends ControlSystem {
-    public Move50Auto(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
-            GroundIntakeSubsystem sGroundIntake) {
-        super(sDrive, sElevator, sGroundIntake);
+    public Move50Auto(Subsystems subsystems) {
+        super(subsystems);
     }
     
     @Override
     public void init() {
-        driveSub.resetStraightPIDPosition();
-        driveSub.setStraightPIDSetpoint(50);
-        driveSub.setPivotPIDSetpoint(driveSub.getYaw());
-        driveSub.setDriveMode(DriveSubsystem.DriveMode.PIDSTRAIGHT);
+        subsystems.drive().resetStraightPIDPosition();
+        subsystems.drive().setStraightPIDSetpoint(50);
+        subsystems.drive().setPivotPIDSetpoint(subsystems.drive().getYaw());
+        subsystems.drive().setDriveMode(DriveSubsystem.DriveMode.PIDSTRAIGHT);
     }
     
     @Override

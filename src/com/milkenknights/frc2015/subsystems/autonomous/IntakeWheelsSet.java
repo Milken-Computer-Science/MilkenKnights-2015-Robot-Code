@@ -2,6 +2,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 /**
  * A quick autonomous action that sets the state of the ground intake wheels.
@@ -13,9 +14,9 @@ public class IntakeWheelsSet extends AutonomousAction {
 
     GroundIntakeSubsystem.WheelsState s;
 
-    public IntakeWheelsSet(GroundIntakeSubsystem groundIntakeSubsystem,
+    public IntakeWheelsSet(Subsystems subsystems,
             GroundIntakeSubsystem.WheelsState s) {
-        this.groundIntakeSubsystem = groundIntakeSubsystem;
+        this.groundIntakeSubsystem = subsystems.groundIntake();
 
         this.s = s;
     }

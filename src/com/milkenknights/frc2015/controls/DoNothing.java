@@ -4,25 +4,24 @@ import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.WheelsState;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 public class DoNothing extends ControlSystem {
 
-    public DoNothing(DriveSubsystem sDrive, ElevatorSubsystem sElevator,
-            GroundIntakeSubsystem sGroundIntake) {
-        super(sDrive, sElevator, sGroundIntake);
+    public DoNothing(Subsystems subsystems) {
+        super(subsystems);
     }
 
     @Override
     public void init() {
-        driveSub.setDriveMode(DriveSubsystem.DriveMode.TANK);
-        driveSub.tankDrive(0, 0);
+        subsystems.drive().setDriveMode(DriveSubsystem.DriveMode.TANK);
+        subsystems.drive().tankDrive(0, 0);
         
-        elevatorSub.setSetpoint(elevatorSub.getPosition());
-        elevatorSub.setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
+        subsystems.elevator().setSetpoint(subsystems.elevator().getPosition());
+        subsystems.elevator().setFlapsState(ElevatorSubsystem.ActuatorsState.CLOSED);
         
-        groundIntakeSub.setWheelsState(WheelsState.STOPPED);
-        groundIntakeSub.setActuators(
-                GroundIntakeSubsystem.ActuatorsState.CLOSED);
+        subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
+        subsystems.groundIntake().setActuators(GroundIntakeSubsystem.ActuatorsState.CLOSED);
     }
 
     @Override

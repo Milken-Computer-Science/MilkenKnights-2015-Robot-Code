@@ -2,6 +2,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 /**
  * Waits until we have drove past a certain distance. A good complement to
@@ -21,9 +22,9 @@ public class WaitForDriveDistance extends AutonomousAction {
      *                       the distance. False if we should wait until we are
      *                       less than the distance.
      */
-    public WaitForDriveDistance(DriveSubsystem driveSubsystem, double dist,
+    public WaitForDriveDistance(Subsystems subsystems, double dist,
             boolean waitForGreater) {
-        this.driveSubsystem = driveSubsystem;
+        this.driveSubsystem = subsystems.drive();
         
         this.dist = dist;
         this.waitForGreater = waitForGreater;

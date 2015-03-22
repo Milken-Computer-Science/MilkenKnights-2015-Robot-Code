@@ -3,6 +3,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem.DriveMode;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 /**
  * An action that will move the robot straight using PID
@@ -18,9 +19,9 @@ public class PIDStraightAction extends AutonomousAction {
      * @param setpoint the distance to travel
      * @param tolerance how close to the desired distance we need to be
      */
-    public PIDStraightAction(DriveSubsystem driveSubsystem, double setpoint,
+    public PIDStraightAction(Subsystems subsystems, double setpoint,
             double tolerance) {
-        this.driveSubsystem = driveSubsystem;
+        this.driveSubsystem = subsystems.drive();
         this.setpoint = setpoint;
         this.tolerance = tolerance;
     }

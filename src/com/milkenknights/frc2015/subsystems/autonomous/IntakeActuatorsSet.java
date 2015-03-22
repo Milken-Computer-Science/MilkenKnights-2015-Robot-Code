@@ -2,6 +2,7 @@ package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 /**
  * A quick AutonomousAction that calls the setActuators method and immediately
@@ -14,9 +15,9 @@ public class IntakeActuatorsSet extends AutonomousAction {
 
     GroundIntakeSubsystem.ActuatorsState s;
 
-    public IntakeActuatorsSet(GroundIntakeSubsystem groundIntakeSubsystem,
+    public IntakeActuatorsSet(Subsystems subsystems,
             GroundIntakeSubsystem.ActuatorsState s) {
-        this.groundIntakeSubsystem = groundIntakeSubsystem;
+        this.groundIntakeSubsystem = subsystems.groundIntake();
 
         this.s = s;
     }

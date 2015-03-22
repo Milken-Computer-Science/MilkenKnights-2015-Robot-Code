@@ -4,14 +4,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.milkenknights.common.AutonomousAction;
-import com.milkenknights.frc2015.subsystems.DriveSubsystem;
-import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
-import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
+import com.milkenknights.frc2015.subsystems.Subsystems;
 
 public abstract class AutonomousList extends ControlSystem {
-    protected AutonomousList(DriveSubsystem sDrive,
-            ElevatorSubsystem sElevator, GroundIntakeSubsystem sGroundIntake) {
-        super(sDrive, sElevator, sGroundIntake);
+    protected AutonomousList(Subsystems subsystems) {
+        super(subsystems);
     }
 
     /**
