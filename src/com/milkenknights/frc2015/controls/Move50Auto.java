@@ -1,21 +1,27 @@
 package com.milkenknights.frc2015.controls;
 
+import com.milkenknights.common.AutonomousAction.CurrentState;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.Subsystems;
+import com.milkenknights.frc2015.subsystems.autonomous.PIDTrapezoidal;
 
 public class Move50Auto extends ControlSystem {
+    PIDTrapezoidal trapezoid;
     public Move50Auto(Subsystems subsystems) {
         super(subsystems);
+        
+        trapezoid = new PIDTrapezoidal(subsystems, 1, 1, 1.5, 10, 1);
     }
     
     @Override
     public void init() {
-        subsystems.drive().resetStraightPIDPosition();
-        subsystems.drive().setStraightPIDSetpoint(50);
-        subsystems.drive().setPivotPIDSetpoint(subsystems.drive().getYaw());
-        subsystems.drive().setDriveMode(DriveSubsystem.DriveMode.PIDSTRAIGHT);
+        trapezoid.start();
     }
     
     @Override
-    public void periodic() {}
+    public void periodic() {
+        if(trapezoid.getCurrentState() != CurrentState.ENDED) {
+            trapezoid.periodicRun();
+        }
+    }
 }
