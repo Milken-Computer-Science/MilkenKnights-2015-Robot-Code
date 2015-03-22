@@ -24,6 +24,7 @@ public class Constants {
     
     public class I2C {
         public static final byte    NAVX = 0x32;
+        public static final byte    ARDUINO = 0x4;
     }
     
     public class ANALOG {
