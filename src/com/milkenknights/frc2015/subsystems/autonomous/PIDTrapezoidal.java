@@ -25,6 +25,7 @@ public class PIDTrapezoidal extends AutonomousAction {
     double tolerance;
     
     double startTime;
+    double startDist;
     
     /**
      * Makes a trapezoidal motion controller. The trapezoid will be on a
@@ -69,9 +70,8 @@ public class PIDTrapezoidal extends AutonomousAction {
     @Override
     public void startCode() {
         startTime = Timer.getFPGATimestamp();
+        startDist = driveSubsystem.getEncPosition();
         
-        driveSubsystem.resetStraightPIDPosition();
-        driveSubsystem.setStraightPIDSetpoint(0);
         driveSubsystem.setDriveMode(DriveMode.PIDSTRAIGHT);
     }
 
@@ -79,8 +79,7 @@ public class PIDTrapezoidal extends AutonomousAction {
     public EndState periodicCode() {
         double currentTime = Timer.getFPGATimestamp() - startTime;
         
-        driveSubsystem.setStraightPIDSetpoint(
-                distanceFunction(currentTime));
+        driveSubsystem.setStraightPIDSetpoint(distanceFunction(currentTime) + startDist);
         
         if (currentTime >= rampUpTime + coastTime + rampDownTime &&
                 driveSubsystem.pidOnTarget(tolerance)) {
