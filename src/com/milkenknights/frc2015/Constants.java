@@ -87,7 +87,7 @@ public class Constants {
     public class ELEVATOR {
         public static final double  INCHES_PER_PULSE = 1.25 * Math.PI / 360;
         public static final double  P = 0.277;
-        public static final double  STEERING_P = 1;
+        public static final double  STEERING_P = 0.1;
         public static final double  F = 0.12;
         
         public static final double  RESET_DISTANCE = 0.2;
