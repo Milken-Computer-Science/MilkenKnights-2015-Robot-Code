@@ -5,8 +5,6 @@ import java.util.LinkedList;
 
 import com.milkenknights.common.AutonomousAction;
 import com.milkenknights.frc2015.Constants;
-import com.milkenknights.frc2015.subsystems.DriveSubsystem;
-import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.ActuatorsState;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.WheelsState;

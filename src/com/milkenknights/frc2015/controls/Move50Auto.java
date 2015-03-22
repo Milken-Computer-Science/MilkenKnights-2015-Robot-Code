@@ -1,8 +1,6 @@
 package com.milkenknights.frc2015.controls;
 
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
-import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
-import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 import com.milkenknights.frc2015.subsystems.Subsystems;
 
 public class Move50Auto extends ControlSystem {

@@ -1,5 +1,6 @@
 package com.milkenknights.frc2015.subsystems;
 
+import com.milkenknights.common.DebugLogger;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
@@ -205,16 +206,24 @@ public class ElevatorSubsystem extends MSubsystem {
             double l_error = (setpoint - encLeft.pidGet());
             double r_error = (setpoint - encRight.pidGet());
 
-            double ff;
+            double ff = 0;
 
             if (encLeft.getRate() < 0) {
                 ff = Constants.ELEVATOR.F;
-            } else {
-                ff = 0;
             }
+            
+            double l_speed = limit(l_error * Constants.ELEVATOR.P + ff, .9);
+            double r_speed = limit(r_error * Constants.ELEVATOR.P + ff, .9);
+            
+            double l_steer = limit((r_error - l_error) * Constants.ELEVATOR.STEERING_P, .1);
+            double r_steer = limit((l_error - r_error) * Constants.ELEVATOR.STEERING_P, .1);
+            
+            DebugLogger.log(DebugLogger.LVL_STREAM, this, "Left: \t" + r_speed + "\t" + r_steer);
+            DebugLogger.log(DebugLogger.LVL_STREAM, this, "Right: \t" + r_speed + "\t" + r_steer);
+            
 
-            elevatorTalonLeft.set(limit(limit(l_error * Constants.ELEVATOR.P + ff, .9) + limit(((l_error - r_error) / 2) * Constants.ELEVATOR.STEERING_P, .1), 1));
-            elevatorTalonRight.set(-limit(limit(r_error * Constants.ELEVATOR.P + ff, .9) + limit(((r_error - l_error) / 2) * Constants.ELEVATOR.STEERING_P, .1), 1));
+            elevatorTalonLeft.set(l_speed + l_steer);
+            elevatorTalonRight.set(-(r_speed + r_steer));
         } else {
             elevatorTalonLeft.set(manSpeed);
             elevatorTalonRight.set(-manSpeed);
