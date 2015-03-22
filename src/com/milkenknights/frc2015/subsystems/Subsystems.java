@@ -11,16 +11,19 @@ public class Subsystems {
     DriveSubsystem driveSubsystem;
     ElevatorSubsystem elevatorSubsystem;
     GroundIntakeSubsystem groundIntakeSubsystem;
+    I2CSubsystem i2cSubsystem;
 
     public Subsystems() {
         driveSubsystem = new DriveSubsystem();
         elevatorSubsystem = new ElevatorSubsystem();
         groundIntakeSubsystem = new GroundIntakeSubsystem();
+        i2cSubsystem = new I2CSubsystem();
         
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
         subsystems.add(elevatorSubsystem);
         subsystems.add(groundIntakeSubsystem);
+        subsystems.add(i2cSubsystem);
     }
     
     public void update() {
