@@ -35,16 +35,18 @@ public class ThreeToteAuto extends AutonomousList {
 
         actions.add(new ZeroGyroAction(subsystems));
         
+        /** The distance between totes */
+        double cycle_dist = 77;
+        
         for (int i = 0; i < 2; i++) {
             actions.add(new FlapsAction(subsystems, true));
-            actions.add(new IntakeActuatorsSet(subsystems,
-                    ActuatorsState.OPEN));
+            actions.add(new IntakeActuatorsSet(subsystems, ActuatorsState.OPEN));
 
             actions.add(new ElevatorMoveAction(subsystems,
                     Constants.ELEVATOR.HEIGHTS.KNOCK_BIN,
                     Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
-            actions.add(new PIDStraightAction(subsystems, (i*77)+37-i, 1.3));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+37-i, 1.3));
             
             actions.add(new IntakeWheelsSet(subsystems,
                     WheelsState.SLOW_INTAKE));
@@ -62,8 +64,8 @@ public class ThreeToteAuto extends AutonomousList {
             
             actions.add(new AutonWait(0.15));
 
-            actions.add(new PIDStraightBackground(subsystems, (i*77)+80, 1.3));
-            actions.add(new WaitForDriveDistance(subsystems, (i*77)+73, true));
+            actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+80, 1.3));
+            actions.add(new WaitForDriveDistance(subsystems, (i*cycle_dist)+73, true));
             
             actions.add(new IntakeActuatorsSet(subsystems,
                     GroundIntakeSubsystem.ActuatorsState.CLOSED));
@@ -75,8 +77,7 @@ public class ThreeToteAuto extends AutonomousList {
                     Constants.ELEVATOR.ACCURACY_THRESHOLD));
         }
         
-        actions.add(new IntakeWheelsSet(subsystems,
-                GroundIntakeSubsystem.WheelsState.STOPPED));
+        actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
         
         actions.add(new PIDPivotAction(subsystems, 90, 5));
         
