@@ -85,7 +85,7 @@ public class Constants {
         public static final double  INCHES_PER_PULSE = 4 * Math.PI / 360;
         public static final double  STRAIGHT_P = 0.015;
         public static final double  STRAIGHT_F = 0.18;
-        public static final double  PIVOT_P = 0.041;
+        public static final double  PIVOT_P = 0.035;
     }
     
     public class ELEVATOR {
@@ -103,7 +103,7 @@ public class Constants {
             public static final double  SCORING_PLATFORM = 3;
             public static final double  READY_TO_INTAKE = 21;
             public static final double  STEP = 12;
-            public static final double  ONE_TOTE = 14;
+            public static final double  ONE_TOTE = 12;
             public static final double  KNOCK_BIN = 28.65;
         }
     }

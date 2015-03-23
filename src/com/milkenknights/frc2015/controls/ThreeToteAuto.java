@@ -12,6 +12,7 @@ import com.milkenknights.frc2015.subsystems.Subsystems;
 import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
 import com.milkenknights.frc2015.subsystems.autonomous.DebugAction;
 import com.milkenknights.frc2015.subsystems.autonomous.ElevatorMoveAction;
+import com.milkenknights.frc2015.subsystems.autonomous.ElevatorMoveBackground;
 import com.milkenknights.frc2015.subsystems.autonomous.FlapsAction;
 import com.milkenknights.frc2015.subsystems.autonomous.IntakeActuatorsSet;
 import com.milkenknights.frc2015.subsystems.autonomous.IntakeWheelsSet;
@@ -79,6 +80,10 @@ public class ThreeToteAuto extends AutonomousList {
                     WheelsState.SLOW_INTAKE));
         }
         
+        actions.add(new ElevatorMoveBackground(subsystems, 
+                Constants.ELEVATOR.HEIGHTS.ONE_TOTE, 
+                Constants.ELEVATOR.ACCURACY_THRESHOLD));
+        
         actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
 
         actions.add(new PIDPivotAction(subsystems, 90, 1));
@@ -87,11 +92,9 @@ public class ThreeToteAuto extends AutonomousList {
 
         actions.add(new PIDStraightAction(subsystems, 80, 0.35));
 
-        actions.add(new ElevatorMoveAction(subsystems,
-                Constants.ELEVATOR.HEIGHTS.MIN,
-                Constants.ELEVATOR.ACCURACY_THRESHOLD));
-
         actions.add(new FlapsAction(subsystems, false));
+        actions.add(new IntakeActuatorsSet(subsystems,
+                GroundIntakeSubsystem.ActuatorsState.OPEN));
 
         actions.add(new PIDStraightAction(subsystems, 40, 0.35));
 
