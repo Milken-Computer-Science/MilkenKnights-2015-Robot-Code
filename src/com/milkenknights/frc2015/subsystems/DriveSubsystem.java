@@ -200,7 +200,11 @@ public class DriveSubsystem extends MSubsystem {
             break;
         case PIDSTRAIGHT:
             double outputMagnitude = (getStraightPIDSetpoint() - encLeft.pidGet()) * Constants.DRIVE.STRAIGHT_P;
+            
             double curve = pivotPIDError() * Constants.DRIVE.PIVOT_P;
+            if (outputMagnitude < 0) {
+                curve = -curve;
+            }
             
             double ff = 0;
             if (encLeft.getRate() >= 0) {
