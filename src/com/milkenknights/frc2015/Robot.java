@@ -57,7 +57,6 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
         teleControlSystem.init();
-        teleControlSystem.periodic();
         
         subsystems.teleopInit();
     }
