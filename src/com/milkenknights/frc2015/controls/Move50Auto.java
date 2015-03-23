@@ -10,7 +10,7 @@ public class Move50Auto extends ControlSystem {
     public Move50Auto(Subsystems subsystems) {
         super(subsystems);
         
-        trapezoid = new PIDTrapezoidal(subsystems, 1, 1, 1.5, 10, 1);
+        trapezoid = new PIDTrapezoidal(subsystems, 0.25, 0.25, 1, 40, 1);
     }
     
     @Override
