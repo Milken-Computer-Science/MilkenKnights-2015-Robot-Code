@@ -10,6 +10,7 @@ import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.ActuatorsState
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.WheelsState;
 import com.milkenknights.frc2015.subsystems.Subsystems;
 import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
+import com.milkenknights.frc2015.subsystems.autonomous.DebugAction;
 import com.milkenknights.frc2015.subsystems.autonomous.ElevatorMoveAction;
 import com.milkenknights.frc2015.subsystems.autonomous.FlapsAction;
 import com.milkenknights.frc2015.subsystems.autonomous.IntakeActuatorsSet;
@@ -34,11 +35,16 @@ public class ThreeToteAuto extends AutonomousList {
         actions = new LinkedList<AutonomousAction>();
 
         actions.add(new ZeroGyroAction(subsystems));
+        actions.add(new ResetDriveEncoders(subsystems));
         
         /** The distance between totes */
-        double cycle_dist = 73.5;
+        double cycle_dist = 81;
         
         for (int i = 0; i < 2; i++) {
+            actions.add(new ElevatorMoveAction(subsystems,
+                    Constants.ELEVATOR.HEIGHTS.MIN,
+                    Constants.ELEVATOR.ACCURACY_THRESHOLD));
+
             actions.add(new FlapsAction(subsystems, true));
             actions.add(new IntakeActuatorsSet(subsystems, ActuatorsState.OPEN));
 
@@ -46,7 +52,7 @@ public class ThreeToteAuto extends AutonomousList {
                     Constants.ELEVATOR.HEIGHTS.KNOCK_BIN,
                     Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
-            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+37, 1.3));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+36, 1.3));
             
             actions.add(new IntakeWheelsSet(subsystems,
                     WheelsState.SLOW_INTAKE));
@@ -62,34 +68,33 @@ public class ThreeToteAuto extends AutonomousList {
             actions.add(new IntakeActuatorsSet(subsystems, ActuatorsState.OPEN));
             actions.add(new PIDPivotAction(subsystems, 0, 2.5));
             
-            actions.add(new AutonWait(0.15));
+            actions.add(new AutonWait(0.05));
 
-            actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+80, 1.3));
-            actions.add(new WaitForDriveDistance(subsystems, (i*cycle_dist)+73, true));
+            actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+71, 1.3));
+            actions.add(new WaitForDriveDistance(subsystems, (i*cycle_dist)+68, true));
             
             actions.add(new IntakeActuatorsSet(subsystems,
                     GroundIntakeSubsystem.ActuatorsState.CLOSED));
             actions.add(new IntakeWheelsSet(subsystems,
                     WheelsState.SLOW_INTAKE));
-            
-            actions.add(new ElevatorMoveAction(subsystems,
-                    Constants.ELEVATOR.HEIGHTS.MIN,
-                    Constants.ELEVATOR.ACCURACY_THRESHOLD));
         }
         
         actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
-        
-        actions.add(new PIDPivotAction(subsystems, 90, 5));
-        
+
+        actions.add(new PIDPivotAction(subsystems, 90, 1));
+
         actions.add(new ResetDriveEncoders(subsystems));
-        
+
         actions.add(new PIDStraightAction(subsystems, 80, 0.35));
-        
+
+        actions.add(new ElevatorMoveAction(subsystems,
+                Constants.ELEVATOR.HEIGHTS.MIN,
+                Constants.ELEVATOR.ACCURACY_THRESHOLD));
+
         actions.add(new FlapsAction(subsystems, false));
-        
-        actions.add(new ResetDriveEncoders(subsystems));
-        
-        actions.add(new PIDStraightAction(subsystems, 0, 0.35));
+
+        actions.add(new PIDStraightAction(subsystems, 40, 0.35));
+
     }
 
     @Override
