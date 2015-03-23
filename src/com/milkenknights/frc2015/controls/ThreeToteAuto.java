@@ -36,7 +36,7 @@ public class ThreeToteAuto extends AutonomousList {
         actions.add(new ZeroGyroAction(subsystems));
         
         /** The distance between totes */
-        double cycle_dist = 77;
+        double cycle_dist = 73.5;
         
         for (int i = 0; i < 2; i++) {
             actions.add(new FlapsAction(subsystems, true));
@@ -46,7 +46,7 @@ public class ThreeToteAuto extends AutonomousList {
                     Constants.ELEVATOR.HEIGHTS.KNOCK_BIN,
                     Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
-            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+37-i, 1.3));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+37, 1.3));
             
             actions.add(new IntakeWheelsSet(subsystems,
                     WheelsState.SLOW_INTAKE));

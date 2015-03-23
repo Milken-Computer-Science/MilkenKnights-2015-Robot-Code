@@ -76,7 +76,6 @@ public class SerialSubsystem extends MSubsystem {
 
             try {
                 arduino.writeString(Arrays.toString(data) + "\n");
-                System.out.println(arduino.readString());
                 SmartDashboard.putBoolean("Arduino Connected", true);
             } catch (Exception e) {
                 DebugLogger.log(DebugLogger.LVL_WARN, this, "Arduino not connected!");
