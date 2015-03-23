@@ -59,15 +59,16 @@ public class ThreeToteAuto extends AutonomousList {
                     WheelsState.SLOW_INTAKE));
             actions.add(new IntakeActuatorsSet(subsystems,
                     ActuatorsState.CLOSED));
+            actions.add(new AutonWait(0.15));
             
-            actions.add(new PIDPivotAction(subsystems, 45, 5));
+            actions.add(new PIDPivotAction(subsystems, 50, 7.5));
             
             actions.add(new IntakeWheelsSet(subsystems, WheelsState.OUTPUT));
             actions.add(new AutonWait(0.3));
             
             actions.add(new IntakeWheelsSet(subsystems, WheelsState.STOPPED));
             actions.add(new IntakeActuatorsSet(subsystems, ActuatorsState.OPEN));
-            actions.add(new PIDPivotAction(subsystems, 0, 3));
+            actions.add(new PIDPivotAction(subsystems, 0, 5));
             
             actions.add(new AutonWait(0.05));
 
@@ -86,17 +87,18 @@ public class ThreeToteAuto extends AutonomousList {
         
         actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
 
-        actions.add(new PIDPivotAction(subsystems, 90, 40));
+        actions.add(new PIDPivotAction(subsystems, 50, 5));
 
         actions.add(new ResetDriveEncoders(subsystems));
 
-        actions.add(new PIDStraightAction(subsystems, 80, 0.35));
+        actions.add(new PIDStraightAction(subsystems, 82, 5));
 
         actions.add(new FlapsAction(subsystems, false));
         actions.add(new IntakeActuatorsSet(subsystems,
                 GroundIntakeSubsystem.ActuatorsState.OPEN));
+        actions.add(new AutonWait(0.25));
 
-        actions.add(new PIDStraightAction(subsystems, 40, 0.35));
+        actions.add(new PIDStraightAction(subsystems, 40, 4));
 
     }
 
