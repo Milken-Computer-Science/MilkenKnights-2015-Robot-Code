@@ -89,6 +89,7 @@ public class TripleATKControl extends ControlSystem {
             released5 = false;
         }
         
+        /*
         if (atka.getRawButton(6)) {
             subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
             subsystems.groundIntake().setActuators(ActuatorsState.CLOSED);
@@ -101,6 +102,18 @@ public class TripleATKControl extends ControlSystem {
             subsystems.groundIntake().setActuators(ActuatorsState.CLOSED);
             subsystems.groundIntake().setWheelsState(WheelsState.INTAKE);
             elevatorCommand = 2;
+        }
+        */
+        
+        if (atka.getRawButton(6)) {
+            subsystems.elevator().setFlapsState(FlapsState.OPEN);
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
+            elevatorCommand = 3;
+        }
+        
+        if (atka.getRawButton(7)) {
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE+8);
+            elevatorCommand = 0;
         }
         
         if (atka.getRawButton(8)) {
@@ -161,6 +174,13 @@ public class TripleATKControl extends ControlSystem {
                     elevatorCommand = 0;
                     subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
                 }
+            }
+            break;
+        case 3:
+            if (Math.abs(subsystems.elevator().getSetpoint() - subsystems.elevator().getPosition()) <
+                    Constants.ELEVATOR.ACCURACY_THRESHOLD) {
+                subsystems.elevator().setFlapsState(FlapsState.CLOSED);
+                subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE+3);
             }
             break;
         default:
