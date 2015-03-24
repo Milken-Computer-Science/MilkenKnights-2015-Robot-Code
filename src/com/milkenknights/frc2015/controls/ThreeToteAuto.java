@@ -71,6 +71,8 @@ public class ThreeToteAuto extends AutonomousList {
             actions.add(new PIDPivotAction(subsystems, 0, 5));
             
             actions.add(new AutonWait(0.05));
+            
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+35, 1.3));
 
             actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+71, 1.3));
             actions.add(new WaitForDriveDistance(subsystems, (i*cycle_dist)+68, true));
