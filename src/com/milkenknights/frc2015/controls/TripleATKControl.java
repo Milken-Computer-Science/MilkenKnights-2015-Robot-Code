@@ -180,7 +180,7 @@ public class TripleATKControl extends ControlSystem {
             if (Math.abs(subsystems.elevator().getSetpoint() - subsystems.elevator().getPosition()) <
                     Constants.ELEVATOR.ACCURACY_THRESHOLD) {
                 subsystems.elevator().setFlapsState(FlapsState.CLOSED);
-                subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE+3);
+                subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE+8);
             }
             break;
         default:
