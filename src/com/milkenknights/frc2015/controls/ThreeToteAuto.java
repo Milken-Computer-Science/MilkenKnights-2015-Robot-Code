@@ -89,19 +89,19 @@ public class ThreeToteAuto extends AutonomousList {
         
         actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
 
-        actions.add(new PIDPivotAction(subsystems, 50, 5));
+        actions.add(new PIDPivotAction(subsystems, 65, 5));
 
         actions.add(new ResetDriveEncoders(subsystems));
-
+        
+        actions.add(new FlapsAction(subsystems, false));
         actions.add(new PIDStraightAction(subsystems, 82, 5));
 
-        actions.add(new FlapsAction(subsystems, false));
-        actions.add(new IntakeActuatorsSet(subsystems,
-                GroundIntakeSubsystem.ActuatorsState.OPEN));
-        actions.add(new AutonWait(0.25));
+        actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.OUTPUT));
+        actions.add(new AutonWait(1));
+
+        actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
 
         actions.add(new PIDStraightAction(subsystems, 40, 4));
-
     }
 
     @Override

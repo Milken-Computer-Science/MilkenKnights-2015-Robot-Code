@@ -1,6 +1,7 @@
 package com.milkenknights.frc2015.subsystems;
 
 import com.kauailabs.nav6.frc.IMU;
+import com.milkenknights.common.DebugLogger;
 import com.milkenknights.common.MSubsystem;
 import com.milkenknights.frc2015.Constants;
 
