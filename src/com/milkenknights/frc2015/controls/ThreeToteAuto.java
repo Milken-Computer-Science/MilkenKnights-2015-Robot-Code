@@ -76,11 +76,16 @@ public class ThreeToteAuto extends AutonomousList {
             
             actions.add(new IntakeWheelsSet(subsystems, WheelsState.STOPPED));
             actions.add(new IntakeActuatorsSet(subsystems, ActuatorsState.OPEN));
+            
+            actions.add(new ElevatorMoveBackground(subsystems,
+                    17,
+                    Constants.ELEVATOR.ACCURACY_THRESHOLD));
+            
             actions.add(new PIDPivotAction(subsystems, 0, 5));
             
             actions.add(new AutonWait(0.05));
             
-            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+36, 1.3));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+38, 1.3));
 
             actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+71, 1.3));
             actions.add(new WaitForDriveDistance(subsystems, (i*cycle_dist)+68, true));
@@ -109,11 +114,10 @@ public class ThreeToteAuto extends AutonomousList {
         actions.add(new PIDStraightAction(subsystems, 82, 5));
 
         actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.OUTPUT));
-        actions.add(new AutonWait(1));
+        
+        actions.add(new PIDStraightAction(subsystems, 40, 4));
 
         actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
-
-        actions.add(new PIDStraightAction(subsystems, 40, 4));
     }
 
     @Override
