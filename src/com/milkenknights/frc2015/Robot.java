@@ -33,9 +33,11 @@ public class Robot extends IterativeRobot {
         autoChooser = new SendableChooser();
         autoChooser.addDefault("Do Nothing", new DoNothing(subsystems));
         autoChooser.addObject("Drive Forward 50\"", new Move50Auto(subsystems));
-        autoChooser.addObject("Three Tote Auto", new ThreeToteAuto(subsystems));
+        autoChooser.addObject("Three Tote Auto Qual", new ThreeToteAuto(subsystems,
+                ThreeToteAuto.Strategy.QUALS));
+        autoChooser.addObject("Three Tote Auto Elim", new ThreeToteAuto(subsystems,
+                ThreeToteAuto.Strategy.ELIM));
         SmartDashboard.putData("Autonomous Selector", autoChooser);
-
     }
 
     public void autonomousInit() {

@@ -28,10 +28,18 @@ import com.milkenknights.frc2015.subsystems.autonomous.ZeroGyroAction;
  * to the side.  Uses AutonomousList.
  */
 public class ThreeToteAuto extends AutonomousList {
+    public enum Strategy {
+        QUALS, ELIM
+    }
+    
+    Strategy strategy;
+    
     LinkedList<AutonomousAction> actions;
     
-    public ThreeToteAuto(Subsystems subsystems) {
+    public ThreeToteAuto(Subsystems subsystems, Strategy strategy) {
         super(subsystems);
+        
+        this.strategy = strategy;
         
         actions = new LinkedList<AutonomousAction>();
 
@@ -72,7 +80,7 @@ public class ThreeToteAuto extends AutonomousList {
             
             actions.add(new AutonWait(0.05));
             
-            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+35, 1.3));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+36, 1.3));
 
             actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+71, 1.3));
             actions.add(new WaitForDriveDistance(subsystems, (i*cycle_dist)+68, true));
@@ -88,8 +96,12 @@ public class ThreeToteAuto extends AutonomousList {
                 Constants.ELEVATOR.ACCURACY_THRESHOLD));
         
         actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
-
-        actions.add(new PIDPivotAction(subsystems, 65, 5));
+        
+        double endPivot = 65;
+        if (strategy == Strategy.QUALS) {
+            endPivot = 110;
+        }
+        actions.add(new PIDPivotAction(subsystems, endPivot, 5));
 
         actions.add(new ResetDriveEncoders(subsystems));
         
