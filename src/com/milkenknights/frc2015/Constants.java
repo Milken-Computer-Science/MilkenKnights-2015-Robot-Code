@@ -83,9 +83,9 @@ public class Constants {
 
     public class DRIVE {
         public static final double  INCHES_PER_PULSE = 4 * Math.PI / 360;
-        public static final double  STRAIGHT_P = 0.015;
+        public static final double  STRAIGHT_P = 0.025;
         public static final double  STRAIGHT_F = 0.18;
-        public static final double  PIVOT_P = 0.034;
+        public static final double  PIVOT_P = 0.05;
     }
     
     public class ELEVATOR {

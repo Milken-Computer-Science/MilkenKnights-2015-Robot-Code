@@ -61,7 +61,7 @@ public class ThreeToteAuto extends AutonomousList {
                     Constants.ELEVATOR.HEIGHTS.KNOCK_BIN,
                     Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
-            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+36, 1.3));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+31, 1.3));
             
             actions.add(new IntakeWheelsSet(subsystems,
                     WheelsState.SLOW_INTAKE));
@@ -85,7 +85,7 @@ public class ThreeToteAuto extends AutonomousList {
             
             actions.add(new AutonWait(0.05));
             
-            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+38, 1.3));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+42, 4.5));
 
             actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+71, 1.3));
             actions.add(new WaitForDriveDistance(subsystems, (i*cycle_dist)+68, true));
