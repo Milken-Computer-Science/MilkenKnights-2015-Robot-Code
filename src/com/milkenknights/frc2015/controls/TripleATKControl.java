@@ -48,12 +48,10 @@ public class TripleATKControl extends ControlSystem {
             elevatorCommand = 0;
         }
         
-        // aux atk 2 grabs the bottom-most tote.  Drops the elevator to the bottom, opens the
-        // intake, and closes flaps.
+        // aux atk 2 grabs the bottom-most tote.  Drops the elevator to the bottom and closes flaps.
         if (atka.getRawButton(2)) {
             subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
             subsystems.elevator().setFlapsState(FlapsState.CLOSED);
-            subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
             elevatorCommand = 0;
         }
 
