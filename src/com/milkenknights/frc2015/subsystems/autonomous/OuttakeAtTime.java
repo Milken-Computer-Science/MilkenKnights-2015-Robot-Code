@@ -26,6 +26,9 @@ public class OuttakeAtTime extends AutonomousAction {
 
     @Override
     protected EndState periodicCode() {
+        if (Timer.getFPGATimestamp() - startTime >= waitTime - 0.25) {
+            subsystems.drive().setStraightPIDSetpoint(20);
+        }
         if (Timer.getFPGATimestamp() - startTime >= waitTime) {
             subsystems.groundIntake().setWheelsState(GroundIntakeSubsystem.WheelsState.OUTPUT);
             return EndState.END;
