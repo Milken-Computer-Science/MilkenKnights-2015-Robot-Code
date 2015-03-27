@@ -40,6 +40,7 @@ public class TripleATKControl extends ControlSystem {
         subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
                 -atkr.getAxis(Joystick.AxisType.kY));
         
+        // aux atk 1 opens everything and stops intake wheels if they are spining.
         if (atka.getRawButton(1)) {
             subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
             subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
@@ -47,6 +48,8 @@ public class TripleATKControl extends ControlSystem {
             elevatorCommand = 0;
         }
         
+        // aux atk 2 grabs the bottom-most tote.  Drops the elevator to the bottom, opens the
+        // intake, and closes flaps.
         if (atka.getRawButton(2)) {
             subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
             subsystems.elevator().setFlapsState(FlapsState.CLOSED);
@@ -54,6 +57,8 @@ public class TripleATKControl extends ControlSystem {
             elevatorCommand = 0;
         }
 
+        // aux atk 3 prepares us for intaking a tote.  Raises the elevator, opens the intake, and
+        // closes flaps.
         if (atka.getRawButton(3)) {
             subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
             subsystems.elevator().setFlapsState(FlapsState.CLOSED);
@@ -61,6 +66,8 @@ public class TripleATKControl extends ControlSystem {
             elevatorCommand = 0;
         }
         
+        // While aux atk 4 is held, spin the intake wheels in.  If a tote has been detected, slow
+        // down the spinning. Also opens the intake.
         if (atka.getRawButton(4)) {
             elevatorCommand = 0;
             released4 = true;
@@ -75,6 +82,8 @@ public class TripleATKControl extends ControlSystem {
             released4 = false;
         }
         
+        // While aux atk 5 is held, spin the intake wheels in.  If a tote has been detected, slow
+        // down the spinning. Also closes the intake.
         if (atka.getRawButton(5)) {
             elevatorCommand = 0;
             released5 = true;
@@ -105,17 +114,25 @@ public class TripleATKControl extends ControlSystem {
         }
         */
         
+        // aux atk 6 splits our stack
         if (atka.getRawButton(6)) {
             subsystems.elevator().setFlapsState(FlapsState.OPEN);
             subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE);
             elevatorCommand = 3;
         }
         
+        // aux atk 7 is "problem" mode-- moves our elevator to a higher height, opens ground intake,
+        // and closes the flaps.
         if (atka.getRawButton(7)) {
-            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE+8);
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN+6);
+            subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
+            subsystems.elevator().setFlapsState(FlapsState.CLOSED);
             elevatorCommand = 0;
         }
         
+        // aux atk 8 held down puts the elevator in manual mode, controlled by aux atk y axis.
+        // When it is released, our new setpoint becomes whatever the elevator is at the end of
+        // manual mode.
         if (atka.getRawButton(8)) {
             elevatorCommand = 0;
             subsystems.elevator().setPIDMode(false);
@@ -125,6 +142,8 @@ public class TripleATKControl extends ControlSystem {
             subsystems.elevator().setPIDMode(true);
         }
         
+        // aux atk 9 pushes out whatever is being held. Closes the intake, and outputs while being
+        // held down.
         if (atka.getRawButton(9)) {
             elevatorCommand = 0;
             released9 = true;
