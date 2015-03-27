@@ -16,6 +16,7 @@ import com.milkenknights.frc2015.subsystems.autonomous.ElevatorMoveBackground;
 import com.milkenknights.frc2015.subsystems.autonomous.FlapsAction;
 import com.milkenknights.frc2015.subsystems.autonomous.IntakeActuatorsSet;
 import com.milkenknights.frc2015.subsystems.autonomous.IntakeWheelsSet;
+import com.milkenknights.frc2015.subsystems.autonomous.OuttakeAtTime;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDPivotAction;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightAction;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDStraightBackground;
@@ -42,6 +43,8 @@ public class ThreeToteAuto extends AutonomousList {
         this.strategy = strategy;
         
         actions = new LinkedList<AutonomousAction>();
+        
+        actions.add(new OuttakeAtTime(subsystems, 14.5));
 
         actions.add(new ZeroGyroAction(subsystems));
         actions.add(new ResetDriveEncoders(subsystems));
