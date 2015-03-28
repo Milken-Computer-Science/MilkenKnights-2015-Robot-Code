@@ -53,7 +53,7 @@ public class TripleATKControl extends ControlSystem {
         }
         
         // aux atk 2 grabs the bottom-most tote.  Drops the elevator to the bottom and closes flaps.
-        // This is "gentle" and should be used to grab bins.
+        // This is "gentle" and should be used when holding totes.
         if (atka.getRawButton(2)) {
             subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN, false);
             subsystems.elevator().setFlapsState(FlapsState.CLOSED);
@@ -172,7 +172,7 @@ public class TripleATKControl extends ControlSystem {
  
         switch (elevatorCommand) {
         case 0:
-            if (subsystems.elevator().getPosition() >= Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE - Constants.ELEVATOR.ACCURACY_THRESHOLD) {
+            if (subsystems.elevator().getPosition() >= Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE - Constants.ELEVATOR.ACCURACY_THRESHOLD - 4) {
                 subsystems.serial().setReadyHumanPlayer(true);
             } else {
                 subsystems.serial().setReadyHumanPlayer(false);
