@@ -114,7 +114,7 @@ public class ThreeToteAuto extends AutonomousList {
         actions.add(new ResetDriveEncoders(subsystems));
         
         actions.add(new FlapsAction(subsystems, false));
-        actions.add(new PIDStraightAction(subsystems, 82, 5));
+        actions.add(new PIDStraightAction(subsystems, 70, 5));
 
         actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.OUTPUT));
         
