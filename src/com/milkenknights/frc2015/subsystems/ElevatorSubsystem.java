@@ -29,6 +29,8 @@ public class ElevatorSubsystem extends MSubsystem {
 
     Solenoid flaps;
 
+    /** If we are in strong mode, give the elevator lots of momentum.  Otherwise, be gentle. */
+    boolean strongMode = true;
     boolean pidMode = true;
     double setpoint = 0;
     double manSpeed = 0;
@@ -117,8 +119,11 @@ public class ElevatorSubsystem extends MSubsystem {
      * 
      * @param setpoint
      *            The desired setpoint of the elevator.
+     * @param strong
+     *            true if we should go to the setpoint in "strong" mode, false for "gentle"
      */
-    public void setSetpoint(double setpoint) {
+    public void setSetpoint(double setpoint, boolean strong) {
+        strongMode = strong;
         if (setpoint >= Constants.ELEVATOR.HEIGHTS.MAX) {
             this.setpoint = Constants.ELEVATOR.HEIGHTS.MAX;
         } else if (setpoint <= Constants.ELEVATOR.HEIGHTS.MIN) {
@@ -126,6 +131,14 @@ public class ElevatorSubsystem extends MSubsystem {
         } else {
             this.setpoint = setpoint;
         }
+    }
+    
+    /**
+     * Go to a setpoint in "strong" mode (default).
+     * @see setSetpoint(double, boolean)
+     */
+    public void setSetpoint(double setpoint) {
+        setSetpoint(setpoint, true);
     }
 
     /**
@@ -186,7 +199,7 @@ public class ElevatorSubsystem extends MSubsystem {
     public boolean getPIDMode() {
         return pidMode;
     }
-
+    
     /**
      * Set the manual speed of the elevator
      * 
@@ -206,14 +219,28 @@ public class ElevatorSubsystem extends MSubsystem {
             double l_error = (setpoint - encLeft.pidGet());
             double r_error = (setpoint - encRight.pidGet());
             
-            double l_speed = limit(l_error * Constants.ELEVATOR.P, .85);
-            double r_speed = limit(r_error * Constants.ELEVATOR.P, .85);
+            double l_speed = setpoint - encLeft.getRate();
+            double r_speed = setpoint - encRight.getRate();
             
-            double l_steer = limit((r_error - l_error) * Constants.ELEVATOR.STEERING_P, .15);
-            double r_steer = limit((l_error - r_error) * Constants.ELEVATOR.STEERING_P, .15);
+            double l_p, r_p, l_d, r_d;
+            if (strongMode) {
+                l_p = limit(l_error * Constants.ELEVATOR.P_STRONG, .85);
+                r_p = limit(r_error * Constants.ELEVATOR.P_STRONG, .85);
+                l_d = 0;
+                r_d = 0;
+            } else {
+                l_p = limit(l_error * Constants.ELEVATOR.P_GENTLE, 0.6);
+                r_p = limit(r_error * Constants.ELEVATOR.P_GENTLE, 0.6);
+                
+                l_d = limit(l_speed * Constants.ELEVATOR.D_GENTLE, 0.25);
+                r_d = limit(r_speed * Constants.ELEVATOR.D_GENTLE, 0.25);
+            }
+            
+            double l_s = limit((r_error - l_error) * Constants.ELEVATOR.STEERING_P, .15);
+            double r_s = limit((l_error - r_error) * Constants.ELEVATOR.STEERING_P, .15);
 
-            elevatorTalonLeft.set(l_speed + l_steer);
-            elevatorTalonRight.set(-(r_speed + r_steer));
+            elevatorTalonLeft.set(l_p + l_d + l_s);
+            elevatorTalonRight.set(-(r_p + r_d + r_s));
         } else {
             elevatorTalonLeft.set(manSpeed);
             elevatorTalonRight.set(-manSpeed);
