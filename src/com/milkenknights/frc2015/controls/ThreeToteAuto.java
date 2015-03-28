@@ -67,7 +67,7 @@ public class ThreeToteAuto extends AutonomousList {
                     Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
             // knock over the bin in front of us
-            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+27.5, 1.3));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+29, 2));
             
             // as we pass over the knocked over bin, suck it in
             actions.add(new IntakeWheelsSet(subsystems,

@@ -56,3 +56,6 @@ changed bin grab distance from 31 to 27.5
 
 speed limit at the end is 0.6
 -qual match: didn't enclose enough of first bin
+
+changed bin grab distance from 27.5 to 29
+changed bin grab thresh from 1.3 to 2
