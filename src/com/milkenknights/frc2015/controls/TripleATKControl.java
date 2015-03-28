@@ -40,12 +40,16 @@ public class TripleATKControl extends ControlSystem {
         subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
                 -atkr.getAxis(Joystick.AxisType.kY));
         
-        // aux atk 1 opens everything and stops intake wheels if they are spining.
+        // aux atk 1 held down puts the elevator in manual mode, controlled by aux atk y axis.
+        // When it is released, our new setpoint becomes whatever the elevator is at the end of
+        // manual mode.
         if (atka.getRawButton(1)) {
-            subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
-            subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
-            subsystems.elevator().setFlapsState(FlapsState.OPEN);
             elevatorCommand = 0;
+            subsystems.elevator().setPIDMode(false);
+            subsystems.elevator().setManualSpeed(atka.getAxis(Joystick.AxisType.kY));
+            subsystems.elevator().setSetpoint(subsystems.elevator().getPosition());
+        } else {
+            subsystems.elevator().setPIDMode(true);
         }
         
         // aux atk 2 grabs the bottom-most tote.  Drops the elevator to the bottom and closes flaps.
@@ -129,16 +133,12 @@ public class TripleATKControl extends ControlSystem {
             elevatorCommand = 0;
         }
         
-        // aux atk 8 held down puts the elevator in manual mode, controlled by aux atk y axis.
-        // When it is released, our new setpoint becomes whatever the elevator is at the end of
-        // manual mode.
-        if (atka.getRawButton(8)) {
+        // aux atk 8 OR left/right atk 2 open everything and stops intake wheels if they are spining.
+        if (atka.getRawButton(8) || atkl.getRawButton(2) || atkr.getRawButton(2)) {
+            subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
+            subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
+            subsystems.elevator().setFlapsState(FlapsState.OPEN);
             elevatorCommand = 0;
-            subsystems.elevator().setPIDMode(false);
-            subsystems.elevator().setManualSpeed(atka.getAxis(Joystick.AxisType.kY));
-            subsystems.elevator().setSetpoint(subsystems.elevator().getPosition());
-        } else {
-            subsystems.elevator().setPIDMode(true);
         }
         
         // aux atk 9 pushes out whatever is being held. Closes the intake, and outputs while being
