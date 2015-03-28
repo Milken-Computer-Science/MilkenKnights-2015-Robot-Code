@@ -111,7 +111,7 @@ public class Constants {
     }
 
     public class GROUND_INTAKE {
-        public static final double  INTAKE_SPEED = 1;
+        public static final double  INTAKE_SPEED = 0.75;
         public static final double  INTAKE_SLOW_SPEED = 0.5; 
     }
     
