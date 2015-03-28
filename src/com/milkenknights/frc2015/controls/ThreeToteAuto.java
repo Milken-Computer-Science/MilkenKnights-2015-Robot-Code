@@ -129,11 +129,7 @@ public class ThreeToteAuto extends AutonomousList {
         // move to the auto zone
         actions.add(new FlapsAction(subsystems, false));
         
-        for (double d = 40; d <= 82; d += 20) {
-            actions.add(new PIDStraightAction(subsystems, d, 10));
-        }
-        
-        actions.add(new PIDStraightAction(subsystems, 82, 3));
+        actions.add(new PIDStraightAction(subsystems, 82, 0.75, 3));
         
         // once we get there, spit out the totes and start moving backwards so we aren't
         // touching the stack
