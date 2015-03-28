@@ -41,8 +41,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        //autoControlSystem = (ControlSystem) autoChooser.getSelected();
-        autoControlSystem = new ThreeToteAuto(subsystems, ThreeToteAuto.Strategy.ELIM);
+        autoControlSystem = (ControlSystem) autoChooser.getSelected();
         
         if (autoControlSystem == null) {
             autoControlSystem = new DoNothing(subsystems);

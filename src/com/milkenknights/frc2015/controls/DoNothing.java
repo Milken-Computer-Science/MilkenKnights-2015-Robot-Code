@@ -6,8 +6,8 @@ import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.WheelsState;
 import com.milkenknights.frc2015.subsystems.Subsystems;
 
+/** Stops all of the subsystems from actively doing anything. */
 public class DoNothing extends ControlSystem {
-
     public DoNothing(Subsystems subsystems) {
         super(subsystems);
     }
