@@ -132,8 +132,8 @@ public class TripleATKControl extends ControlSystem {
             elevatorCommand = 0;
         }
         
-        // aux atk 8 opens everything and stops intake wheels if they are spining.
-        if (atka.getRawButton(8)) {
+        // aux atk 8 OR left/right atk 2 open everything and stops intake wheels if they are spining.
+        if (atka.getRawButton(8) || atkl.getRawButton(2) || atkr.getRawButton(2)) {
             subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
             subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
             subsystems.elevator().setFlapsState(FlapsState.OPEN);
