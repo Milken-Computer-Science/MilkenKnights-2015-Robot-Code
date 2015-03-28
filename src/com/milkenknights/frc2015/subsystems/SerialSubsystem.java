@@ -31,7 +31,7 @@ public class SerialSubsystem extends MSubsystem {
 
     public SerialSubsystem() {
         try {
-            arduino = new SerialPort(Constants.SERIAL.BAUD_RATE, SerialPort.Port.kUSB);
+            arduino = new SerialPort(9600, SerialPort.Port.kUSB);
         } catch (Exception e) {
             DebugLogger.log(DebugLogger.LVL_WARN, this, "Arduino not connected!");
             SmartDashboard.putBoolean("Arduino Connected", false);
