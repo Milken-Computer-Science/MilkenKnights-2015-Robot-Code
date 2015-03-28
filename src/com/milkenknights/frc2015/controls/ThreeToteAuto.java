@@ -90,8 +90,8 @@ public class ThreeToteAuto extends AutonomousList {
             
             actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+42, 4.5));
 
-            actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+71, 1.3));
-            actions.add(new WaitForDriveDistance(subsystems, (i*cycle_dist)+68, true));
+            actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+67.5, 1.3));
+            actions.add(new WaitForDriveDistance(subsystems, (i*cycle_dist)+64.5, true));
             
             actions.add(new IntakeActuatorsSet(subsystems,
                     GroundIntakeSubsystem.ActuatorsState.CLOSED));
