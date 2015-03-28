@@ -12,6 +12,7 @@ import com.milkenknights.frc2015.subsystems.DriveSubsystem.DriveMode;
 public class PIDStraightBackground extends AutonomousAction {
     DriveSubsystem driveSubsystem;
     double setpoint;
+    double speedLimit;
     double tolerance;
     
     boolean firstLoop;
@@ -20,18 +21,30 @@ public class PIDStraightBackground extends AutonomousAction {
      * Make a new PIDStraightBackground
      * @param driveSubsystem the DriveSubsystem instance to use
      * @param setpoint the distance to travel
+     * @param speedLimit the speed limit
      * @param tolerance how close to the desired distance we need to be
      */
-    public PIDStraightBackground(Subsystems subsystems, double setpoint,
+    public PIDStraightBackground(Subsystems subsystems, double setpoint, double speedLimit,
             double tolerance) {
         this.driveSubsystem = subsystems.drive();
         this.setpoint = setpoint;
+        this.speedLimit = speedLimit;
         this.tolerance = tolerance;
+    }
+    
+    /**
+     * Make a new PIDStraightBackground
+     * @param driveSubsystem the DriveSubsystem instance to use
+     * @param setpoint the distance to travel
+     * @param tolerance how close to the desired distance we need to be
+     */
+    public PIDStraightBackground(Subsystems subsystems, double setpoint, double tolerance) {
+        this(subsystems, setpoint, 1, tolerance);
     }
     
     @Override
     protected void startCode() {
-        driveSubsystem.setStraightPIDSetpoint(setpoint);
+        driveSubsystem.setStraightPIDSetpoint(setpoint, speedLimit);
         driveSubsystem.setDriveMode(DriveMode.PIDSTRAIGHT);
         firstLoop = true;
     }

@@ -30,6 +30,8 @@ public class DriveSubsystem extends MSubsystem {
 
     double pidStraightSetpoint;
     double pidPivotSetpoint;
+    
+    private double pidLimit = 1;
 
     public enum DriveMode {
         TANK, PIDSTRAIGHT, PIDPIVOT
@@ -88,14 +90,24 @@ public class DriveSubsystem extends MSubsystem {
     }
 
     /**
-     * Set the setpoint for PID straight driving mode. This should be how far
-     * forward you want the robot to move.
+     * Set the setpoint for PID straight driving mode. This should be how far forward you want the
+     * robot to move.  By default, sets the limit to 1.
      *
-     * @param setpoint
-     *            The desired PID straight setpoint.
+     * @param setpoint The desired PID straight setpoint.
      */
     public void setStraightPIDSetpoint(double setpoint) {
+        setStraightPIDSetpoint(setpoint, 1);
+    }
+    
+    /**
+     * Set the setpoint for PID straight driving mode. This should be how far forward you want the
+     * robot to move.  Also has the option to limit the speed of the robot.
+     * @param setpoint The desired PID straight sepoint.
+     * @param maxSpeed The maximum speed the robot should travel at-- should be between 0 and 1.
+     */
+    public void setStraightPIDSetpoint(double setpoint, double speedLimit) {
         pidStraightSetpoint = setpoint;
+        pidLimit = speedLimit;
     }
 
     /**
@@ -182,11 +194,33 @@ public class DriveSubsystem extends MSubsystem {
         return Math.abs(encLeft.getRate());
     }
     
+    
     /**
      * Zeroes the yaw of the gyro.
      */
     public void zeroGyroYaw() {
         gyro.zeroYaw();
+    }
+    
+    /**
+     * Bounds a value to a certain number
+     * 
+     * @param val
+     *            The value to bound
+     * @param lim
+     *            The bound
+     * @return The bounded number
+     */
+    private double limit(double val, double lim) {
+        if (Math.abs(val) <= lim) {
+            return val;
+        } else if (val > 0) {
+            return lim;
+        } else if (val < 0) {
+            return -lim;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -214,7 +248,7 @@ public class DriveSubsystem extends MSubsystem {
                 ff = -Constants.DRIVE.STRAIGHT_F;
             }
             
-            drive.drive(outputMagnitude + ff, curve);
+            drive.drive(limit(outputMagnitude + ff, pidLimit), curve);
             break;
         case PIDPIVOT:
             double m_result = Constants.DRIVE.PIVOT_P * pivotPIDError();
