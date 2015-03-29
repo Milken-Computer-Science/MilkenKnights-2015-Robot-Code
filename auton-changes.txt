@@ -99,3 +99,6 @@ changed bin grab distance from 34 to 37
 changed bin grab distance treshold from 1 to 1.75
 elevotor prepare distance from 17 to 19
 changed angle realign from -2 to -1.5
+-qual match: got stuck while moving elevator down to grab second tote
+
+added a 0.2 second wait, then slow intake, after intaking a tote
