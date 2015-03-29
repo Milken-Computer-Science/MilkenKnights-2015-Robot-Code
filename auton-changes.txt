@@ -84,4 +84,9 @@ changed final travel distance from 92 to 100
 
 changed bin knockover distance from 30 to 28
 changed bin knockover distance threshold from 2 to 1
+-still didn't suck in first bin
 
+changed bin knockover distance from 28 to 31
+-hit the third tote
+
+changed 0,5 in angle realign to -2, 4
