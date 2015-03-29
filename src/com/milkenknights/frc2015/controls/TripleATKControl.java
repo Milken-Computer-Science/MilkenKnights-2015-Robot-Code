@@ -50,7 +50,7 @@ public class TripleATKControl extends ControlSystem {
         } else {
             // TANK DRIVE
             // controlled by left and right ATK y axes
-            //if trigger pressed go straight
+            // if trigger pressed go straight
             if (!atkl.getRawButton(1)) {
                 subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
                         -atkr.getAxis(Joystick.AxisType.kY));
