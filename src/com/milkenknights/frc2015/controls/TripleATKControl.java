@@ -23,6 +23,8 @@ public class TripleATKControl extends ControlSystem {
     private boolean released4;
     private boolean released5;
     private boolean released9;
+    
+    private boolean isCheesy;
 
     public TripleATKControl(Subsystems subsystems) {
         super(subsystems);
@@ -34,12 +36,32 @@ public class TripleATKControl extends ControlSystem {
     }
     
     public void periodic() {
-        // TANK DRIVE
-        // controlled by left and right ATK y axes
         subsystems.drive().setDriveMode(DriveSubsystem.DriveMode.TANK);
-        subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
-                -atkr.getAxis(Joystick.AxisType.kY));
+        if (isCheesy) {
+            // CHEESY DRIVE
+            // left atk y axis controls power
+            // right atk x axis controls turning
+            // left atk trigger held down enables quickturn
+            subsystems.drive().cheesyDrive(-atkl.getAxis(Joystick.AxisType.kY),
+                    atkr.getAxis(Joystick.AxisType.kX),
+                    atkl.getRawButton(1));
+        } else {
+            // TANK DRIVE
+            // controlled by left and right ATK y axes
+            subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
+                    -atkr.getAxis(Joystick.AxisType.kY));
+        }
         
+        // left atk 8 switches to cheesy drive
+        if (atkl.getRawButton(8)) {
+            isCheesy = true;
+        }
+        
+        // left atk 9 switches to tank drive
+        if (atkl.getRawButton(9)) {
+            isCheesy = false;
+        }
+
         // aux atk 1 held down puts the elevator in manual mode, controlled by aux atk y axis.
         // When it is released, our new setpoint becomes whatever the elevator is at the end of
         // manual mode.
@@ -221,5 +243,6 @@ public class TripleATKControl extends ControlSystem {
     @Override
     public void init() {
         DebugLogger.log(DebugLogger.LVL_INFO, this, "Teleop Init");
+        isCheesy = true;
     }
 }
