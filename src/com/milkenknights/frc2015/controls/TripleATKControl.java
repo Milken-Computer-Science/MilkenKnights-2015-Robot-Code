@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class TripleATKControl extends ControlSystem {
     Joystick atkr, atkl, atka;
-
+    
     private int elevatorCommand;
     private boolean released4;
     private boolean released5;
@@ -37,7 +37,9 @@ public class TripleATKControl extends ControlSystem {
     
     public void periodic() {
         subsystems.drive().setDriveMode(DriveSubsystem.DriveMode.TANK);
-        if (isCheesy) {
+        // cheesy drive permanently disabled for now
+        //if (isCheesy) {
+        if (false) {
             // CHEESY DRIVE
             // left atk y axis controls power
             // right atk x axis controls turning
@@ -48,10 +50,16 @@ public class TripleATKControl extends ControlSystem {
         } else {
             // TANK DRIVE
             // controlled by left and right ATK y axes
-            subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
-                    -atkr.getAxis(Joystick.AxisType.kY));
+            //if trigger pressed go straight
+            if (!atkl.getRawButton(1)) {
+                subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
+                        -atkr.getAxis(Joystick.AxisType.kY));
+            } else {
+                subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
+                        -atkl.getAxis(Joystick.AxisType.kY));
+            }
         }
-        
+                
         // left atk 8 switches to cheesy drive
         if (atkl.getRawButton(8)) {
             isCheesy = true;
@@ -243,6 +251,6 @@ public class TripleATKControl extends ControlSystem {
     @Override
     public void init() {
         DebugLogger.log(DebugLogger.LVL_INFO, this, "Teleop Init");
-        isCheesy = true;
+        isCheesy = false;
     }
 }
