@@ -183,14 +183,6 @@ public class TripleATKControl extends ControlSystem {
             subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
         }
         
-        /*
-        if (atka.getRawButton(10)) {
-            subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
-            subsystems.elevator().setFlapsState(FlapsState.CLOSED);
-            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE + 4);
-            elevatorCommand = 0;
-        }
-        */
         
         // aux atk 10 is the same as button 2-- it moves the elevator down to the lowest point, but
         // this one is strong and should be used to grab a bin.
@@ -199,6 +191,15 @@ public class TripleATKControl extends ControlSystem {
             subsystems.elevator().setFlapsState(FlapsState.CLOSED);
             elevatorCommand = 0;
         }
+        
+        // aux atk 11 brings the elevator to a height for knocking down bins
+        if (atka.getRawButton(11)) {
+            subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
+            subsystems.elevator().setFlapsState(FlapsState.CLOSED);
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE + 4);
+            elevatorCommand = 0;
+        }
+
  
         switch (elevatorCommand) {
         case 0:
