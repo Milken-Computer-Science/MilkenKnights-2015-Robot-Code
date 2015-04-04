@@ -1,7 +1,6 @@
 package com.milkenknights.frc2015.subsystems.autonomous;
 
 import com.milkenknights.common.AutonomousAction;
-import com.milkenknights.common.AutonomousAction.EndState;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
 import com.milkenknights.frc2015.subsystems.Subsystems;
 

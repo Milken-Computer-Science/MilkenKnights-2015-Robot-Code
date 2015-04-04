@@ -1,7 +1,6 @@
 package com.milkenknights.frc2015.controls;
 
 import com.milkenknights.common.AutonomousAction.CurrentState;
-import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.Subsystems;
 import com.milkenknights.frc2015.subsystems.autonomous.PIDTrapezoidal;
 

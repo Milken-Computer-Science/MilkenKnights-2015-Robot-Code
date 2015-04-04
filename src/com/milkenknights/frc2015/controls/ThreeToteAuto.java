@@ -10,7 +10,6 @@ import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.ActuatorsState
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem.WheelsState;
 import com.milkenknights.frc2015.subsystems.Subsystems;
 import com.milkenknights.frc2015.subsystems.autonomous.AutonWait;
-import com.milkenknights.frc2015.subsystems.autonomous.DebugAction;
 import com.milkenknights.frc2015.subsystems.autonomous.ElevatorMoveAction;
 import com.milkenknights.frc2015.subsystems.autonomous.ElevatorMoveBackground;
 import com.milkenknights.frc2015.subsystems.autonomous.FlapsAction;
