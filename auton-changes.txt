@@ -1,0 +1,104 @@
+original code worked twice in a row
+
+instead of just moving backwards, we button 9 for 1 second then move backwards
+-tote stack barely hit edge of field, and we didn’t have time to move backwards
+
+changed final pivot from 50->55
+flaps now open before we start driving straight, instead of afterwards
+-totes hit the knocked over second bin when being shot out (anamoly)
+
+changed final pivot from 55->65
+-it worked
+
+alternate qualification mode: final pivot goes to 110 instead of 65
+-12 volt battery: autonomous ended right before we button 9’d
+-after fresh battery: totes got pushed, but the top tote slipped off because it wasn’t seated on the second tote. it wasn’t seated on the second tote because while pivoting and moving the elevator down at the end, it hit the edge of the last bin and got dislodged
+
+realignment distance after pushing bin from 35->36
+-had enough time to spit
+
+we now start moving backwards at the same time as the spit happens
+-worked
+
+realignment distance changed from 36->38
+while we pivot back to 0, we move the elevator to height 17
+-worked
+
+@ventura
+straight p from 0.015 to 0.022
+pivot p from 0.034 to 0.046
+tote grab distance changed from 36 to 31
+changed backup distance from 38 to 40
+straight p from 0.022 to 0.0237
+pivot p from 0.046 to 0.0495
+-had problems
+
+straight p from 0.0237 to 0.025
+pivot p from 0.0495 to 0.05
+backup distance from 40 to 42
+-backup distance paused before moving forward
+
+changed backup distance thres from 1.3 to 2.5
+-ACTUAL PRACTICE MATCH: still had pauses
+
+changed backup distrance thres from 2.5 to 4.5
+-ACTUAL PRACTICE MATCH: pausing problems
+
+changed final travel distance from 82 to 70
+-practice match: overshot when grabbing second tote
+
+changed tote backgruond distance from 71 to 67.5
+changed tote wait distance from 68 to 64.5
+-qual match: second bin moved forward too much when it was knocked over and it hit and misaligned the third tote
+
+changed bin grab distance from 31 to 27.5
+-qual match: we moved too fast at the end
+
+speed limit at the end is 0.6
+-qual match: didn't enclose enough of first bin
+
+changed bin grab distance from 27.5 to 29
+changed bin grab thresh from 1.3 to 2
+-qual match: ran into last tote instead of picking it up
+
+practice field
+changed backup distance from 42 to 38, but changed threshold from 4.5 to 8.5
+(same distance but it will move faster)
+-ran out of time
+
+changed backup distance threshold from 8.5 to 11.5
+changed pivot p from 0.05 to 0.048
+-worked, but the realignment was still a bit too long, and we didn't spit at the end
+
+changed backup distance threshold from 11.5 to 14.5
+at the very end of autonomous, we don't stop spitting
+-worked but we tripped up on the last tote
+
+elevator action after the for loop changed from background to foreground
+changed final travel distance from 82 to 92
+-hit last tote
+
+changed bin knockover distance from 29 to 30
+changed final travel distance from 92 to 100
+-first bin hit and misaligned second tote when being knocked down
+
+changed bin knockover distance from 30 to 28
+changed bin knockover distance threshold from 2 to 1
+-still didn't suck in first bin
+
+changed bin knockover distance from 28 to 31
+-hit the third tote
+
+changed 0d, 5thresh in angle realign to -2d, 4thresh
+-qual match: got stuck on second tote
+
+when taking in the tote, changed slow intake to regular speed intake
+-qual match: when we closed intake to take in the bin, we hadn't got the bin yet
+
+changed bin grab distance from 34 to 37
+changed bin grab distance treshold from 1 to 1.75
+elevotor prepare distance from 17 to 19
+changed angle realign from -2 to -1.5
+-qual match: got stuck while moving elevator down to grab second tote
+
+added a 0.2 second wait, then slow intake, after intaking a tote

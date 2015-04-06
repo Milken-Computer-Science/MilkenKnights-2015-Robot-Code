@@ -18,11 +18,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class TripleATKControl extends ControlSystem {
     Joystick atkr, atkl, atka;
-
+    
     private int elevatorCommand;
     private boolean released4;
     private boolean released5;
     private boolean released9;
+    
+    private boolean isCheesy;
 
     public TripleATKControl(Subsystems subsystems) {
         super(subsystems);
@@ -34,12 +36,40 @@ public class TripleATKControl extends ControlSystem {
     }
     
     public void periodic() {
-        // TANK DRIVE
-        // controlled by left and right ATK y axes
         subsystems.drive().setDriveMode(DriveSubsystem.DriveMode.TANK);
-        subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
-                -atkr.getAxis(Joystick.AxisType.kY));
+        // cheesy drive permanently disabled for now
+        //if (isCheesy) {
+        if (false) {
+            // CHEESY DRIVE
+            // left atk y axis controls power
+            // right atk x axis controls turning
+            // left atk trigger held down enables quickturn
+            subsystems.drive().cheesyDrive(-atkl.getAxis(Joystick.AxisType.kY),
+                    atkr.getAxis(Joystick.AxisType.kX),
+                    atkl.getRawButton(1));
+        } else {
+            // TANK DRIVE
+            // controlled by left and right ATK y axes
+            // if trigger pressed go straight
+            if (!atkl.getRawButton(1)) {
+                subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
+                        -atkr.getAxis(Joystick.AxisType.kY));
+            } else {
+                subsystems.drive().tankDrive(-atkl.getAxis(Joystick.AxisType.kY),
+                        -atkl.getAxis(Joystick.AxisType.kY));
+            }
+        }
+                
+        // left atk 8 switches to cheesy drive
+        if (atkl.getRawButton(8)) {
+            isCheesy = true;
+        }
         
+        // left atk 9 switches to tank drive
+        if (atkl.getRawButton(9)) {
+            isCheesy = false;
+        }
+
         // aux atk 1 held down puts the elevator in manual mode, controlled by aux atk y axis.
         // When it is released, our new setpoint becomes whatever the elevator is at the end of
         // manual mode.
@@ -54,7 +84,7 @@ public class TripleATKControl extends ControlSystem {
         
         // aux atk 2 grabs the bottom-most tote.  Drops the elevator to the bottom and closes flaps.
         // This is "gentle" and should be used when holding totes.
-        if (atka.getRawButton(2)) {
+        if (atka.getRawButton(10)) {
             subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN, false);
             subsystems.elevator().setFlapsState(FlapsState.CLOSED);
             elevatorCommand = 0;
@@ -153,22 +183,23 @@ public class TripleATKControl extends ControlSystem {
             subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
         }
         
-        /*
-        if (atka.getRawButton(10)) {
+        
+        // aux atk 10 is the same as button 2-- it moves the elevator down to the lowest point, but
+        // this one is strong and should be used to grab a bin.
+        if (atka.getRawButton(2)) {
+            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
+            subsystems.elevator().setFlapsState(FlapsState.CLOSED);
+            elevatorCommand = 0;
+        }
+        
+        // aux atk 11 brings the elevator to a height for knocking down bins
+        if (atka.getRawButton(11)) {
             subsystems.groundIntake().setActuators(ActuatorsState.OPEN);
             subsystems.elevator().setFlapsState(FlapsState.CLOSED);
             subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.READY_TO_INTAKE + 4);
             elevatorCommand = 0;
         }
-        */
-        
-        // aux atk 10 is the same as button 2-- it moves the elevator down to the lowest point, but
-        // this one is strong and should be used to grab a bin.
-        if (atka.getRawButton(10)) {
-            subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
-            subsystems.elevator().setFlapsState(FlapsState.CLOSED);
-            elevatorCommand = 0;
-        }
+
  
         switch (elevatorCommand) {
         case 0:
@@ -221,5 +252,6 @@ public class TripleATKControl extends ControlSystem {
     @Override
     public void init() {
         DebugLogger.log(DebugLogger.LVL_INFO, this, "Teleop Init");
+        isCheesy = false;
     }
 }

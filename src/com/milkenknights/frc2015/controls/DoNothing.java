@@ -1,5 +1,6 @@
 package com.milkenknights.frc2015.controls;
 
+import com.milkenknights.frc2015.Constants;
 import com.milkenknights.frc2015.subsystems.DriveSubsystem;
 import com.milkenknights.frc2015.subsystems.ElevatorSubsystem;
 import com.milkenknights.frc2015.subsystems.GroundIntakeSubsystem;
@@ -17,7 +18,7 @@ public class DoNothing extends ControlSystem {
         subsystems.drive().setDriveMode(DriveSubsystem.DriveMode.TANK);
         subsystems.drive().tankDrive(0, 0);
         
-        subsystems.elevator().setSetpoint(subsystems.elevator().getPosition());
+        subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
         subsystems.elevator().setFlapsState(ElevatorSubsystem.FlapsState.CLOSED);
         
         subsystems.groundIntake().setWheelsState(WheelsState.STOPPED);
