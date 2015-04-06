@@ -66,7 +66,7 @@ public class ThreeToteAuto extends AutonomousList {
                     Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
             // knock over the bin in front of us
-            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+27.5, 1.3));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+37, 1.75));
             
             // as we pass over the knocked over bin, suck it in
             actions.add(new IntakeWheelsSet(subsystems,
@@ -87,16 +87,16 @@ public class ThreeToteAuto extends AutonomousList {
             
             // save time by moving down the elevator in preparation to pick up the next tote
             actions.add(new ElevatorMoveBackground(subsystems,
-                    17,
+                    19,
                     Constants.ELEVATOR.ACCURACY_THRESHOLD));
             
             // put ourselves back in a straight line
-            actions.add(new PIDPivotAction(subsystems, 0, 5));
+            actions.add(new PIDPivotAction(subsystems, -1.5, 4));
             
             actions.add(new AutonWait(0.05));
             
             // move back by a small amount to help us realign to a more precise angle
-            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+42, 4.5));
+            actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)+38, 14.5));
 
             // move forward to enclose the next tote
             actions.add(new PIDStraightBackground(subsystems, (i*cycle_dist)+67.5, 1.3));
@@ -106,10 +106,14 @@ public class ThreeToteAuto extends AutonomousList {
             actions.add(new IntakeActuatorsSet(subsystems,
                     GroundIntakeSubsystem.ActuatorsState.CLOSED));
             actions.add(new IntakeWheelsSet(subsystems,
+                    WheelsState.INTAKE));
+            actions.add(new AutonWait(0.2));
+            actions.add(new IntakeWheelsSet(subsystems,
                     WheelsState.SLOW_INTAKE));
+
         }
         
-        actions.add(new ElevatorMoveBackground(subsystems, 
+        actions.add(new ElevatorMoveAction(subsystems, 
                 Constants.ELEVATOR.HEIGHTS.ONE_TOTE, 
                 Constants.ELEVATOR.ACCURACY_THRESHOLD));
         
@@ -128,7 +132,7 @@ public class ThreeToteAuto extends AutonomousList {
         // move to the auto zone
         actions.add(new FlapsAction(subsystems, false));
         
-        actions.add(new PIDStraightAction(subsystems, 82, 0.75, 3));
+        actions.add(new PIDStraightAction(subsystems, 100, 0.75, 3));
         
         // once we get there, spit out the totes and start moving backwards so we aren't
         // touching the stack
@@ -136,7 +140,7 @@ public class ThreeToteAuto extends AutonomousList {
         
         actions.add(new PIDStraightAction(subsystems, 40, 4));
 
-        actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
+        //actions.add(new IntakeWheelsSet(subsystems, GroundIntakeSubsystem.WheelsState.STOPPED));
     }
 
     @Override
