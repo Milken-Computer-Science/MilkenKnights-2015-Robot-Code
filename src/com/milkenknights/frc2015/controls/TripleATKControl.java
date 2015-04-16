@@ -33,13 +33,15 @@ public class TripleATKControl extends ControlSystem {
         atka = new Joystick(2);
 
         elevatorCommand = 0;
+        
+        // this is also in the init() method-- the default is cheesy
+        isCheesy = true;
     }
     
     public void periodic() {
         subsystems.drive().setDriveMode(DriveSubsystem.DriveMode.TANK);
         // cheesy drive permanently disabled for now
-        //if (isCheesy) {
-        if (false) {
+        if (isCheesy) {
             // CHEESY DRIVE
             // left atk y axis controls power
             // right atk x axis controls turning
@@ -252,6 +254,6 @@ public class TripleATKControl extends ControlSystem {
     @Override
     public void init() {
         DebugLogger.log(DebugLogger.LVL_INFO, this, "Teleop Init");
-        isCheesy = false;
+        isCheesy = true;
     }
 }
