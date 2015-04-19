@@ -14,12 +14,13 @@ public class Constants {
         public static final int     ELEVATOR_LEFT_TALON = 2;
         public static final int     DRIVE_LEFT_A_TALON = 3;
         public static final int     DRIVE_LEFT_B_TALON = 4;
-        public static final int     UNUSED_TALON_5 = 5;
-        public static final int     UNUSED_TALON_6 = 6;
+        public static final int     BINGRABBER_LEFT_TALON = 5;
+        public static final int     BINGRABBER_RIGHT_TALON = 6;
         public static final int     DRIVE_RIGHT_B_TALON = 7;
         public static final int     DRIVE_RIGHT_A_TALON = 8;
         public static final int     ELEVATOR_RIGHT_TALON = 9;
         public static final int     GROUNDINTAKE_RIGHT_TALON = 10;
+        
     }
     
     public class I2C {
@@ -68,6 +69,14 @@ public class Constants {
         public static final int     GROUNDINTAKE_LEFT = 0;
         public static final int     GROUNDINTAKE_RIGHT = 1;
         public static final int     ELEVATOR_FLAPS = 2;
+        public static final int     BINLIFTER_LEFT_LIFTER = 3;
+        public static final int     BINLIFTER_RIGHT_LIFTER = 4;
+        public static final int     BINLIFTER_LEFT_FLAP = 5;
+        public static final int     BINLIFTER_RIGHT_FLAP = 6;
+        public static final int     BINLIFTER_LEFT_CLAMP = 7;
+        public static final int     BINLIFTER_RIGHT_CLAMP = 8;
+        public static final int     BINLIFTER_LEFT_MOVER = 9;
+        public static final int     BINLIFTER_RIGHT_MOVER = 10;
     }
     
     public class PRESSURE_TRANSDUCER {
@@ -114,5 +123,10 @@ public class Constants {
         public static final double  INTAKE_SPEED = 0.75;
         public static final double  INTAKE_SLOW_SPEED = 0.5; 
     }
+    
+    public class BIN_GRABBER {
+        public static final double MAX_CURRENT = 0;
+    }
+    
     
 }

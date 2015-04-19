@@ -12,18 +12,24 @@ public class Subsystems {
     ElevatorSubsystem elevatorSubsystem;
     GroundIntakeSubsystem groundIntakeSubsystem;
     SerialSubsystem serialSubsystem;
+    BinGrabberSubsystem binGrabberSubsystem;
+    BinLifterSubsystem binLifterSubsystem;
 
     public Subsystems() {
         driveSubsystem = new DriveSubsystem();
         elevatorSubsystem = new ElevatorSubsystem();
         groundIntakeSubsystem = new GroundIntakeSubsystem();
         serialSubsystem = new SerialSubsystem();
+        binGrabberSubsystem = new BinGrabberSubsystem();
+        binLifterSubsystem = new BinLifterSubsystem();
         
         subsystems = new LinkedList<MSubsystem>();
         subsystems.add(driveSubsystem);
         subsystems.add(elevatorSubsystem);
         subsystems.add(groundIntakeSubsystem);
         subsystems.add(serialSubsystem);
+        subsystems.add(binGrabberSubsystem);
+        subsystems.add(binLifterSubsystem);
     }
     
     public void update() {
@@ -60,5 +66,13 @@ public class Subsystems {
      */
     public SerialSubsystem serial() {
         return serialSubsystem;
+    }
+    
+    public BinGrabberSubsystem binGrabber() {
+        return binGrabberSubsystem;
+    }
+    
+    public BinLifterSubsystem binLifter() {
+        return binLifterSubsystem;
     }
 }
