@@ -53,6 +53,7 @@ public class ThreeToteAutoAlt extends AutonomousList {
             
             // close flaps and lift up the tote
             actions.add(new FlapsAction(subsystems, true));
+            //actions.add(new PIDStraightAction(subsystems, (i*cycle_dist)-7, 5));
             actions.add(new IntakeActuatorsSet(subsystems, ActuatorsState.OPEN));
 
             actions.add(new ElevatorMoveAction(subsystems,

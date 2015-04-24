@@ -110,7 +110,6 @@ public class ThreeToteAuto extends AutonomousList {
             actions.add(new AutonWait(0.2));
             actions.add(new IntakeWheelsSet(subsystems,
                     WheelsState.SLOW_INTAKE));
-
         }
         
         actions.add(new ElevatorMoveAction(subsystems, 

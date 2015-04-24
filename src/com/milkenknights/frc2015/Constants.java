@@ -83,7 +83,8 @@ public class Constants {
 
     public class DRIVE {
         public static final double  INCHES_PER_PULSE = 4 * Math.PI / 360;
-        public static final double  STRAIGHT_P = 0.025;
+        public static final double  STRAIGHT_P = 0.04;
+        public static final double  STRAIGHT_D = 0.0095;
         public static final double  STRAIGHT_F = 0.18;
         public static final double  PIVOT_P = 0.048;
     }
@@ -107,7 +108,7 @@ public class Constants {
             public static final double  STEP = 12;
             public static final double  ONE_TOTE = 12;
             public static final double  KNOCK_BIN = 28.65;
-            public static final double  CLEAR_BIN = 30;
+            public static final double  CLEAR_BIN = 27;
         }
     }
 

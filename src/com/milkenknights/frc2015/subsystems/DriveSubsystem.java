@@ -330,7 +330,11 @@ public class DriveSubsystem extends MSubsystem {
             drive.tankDrive(leftSpeed, rightSpeed, true);
             break;
         case PIDSTRAIGHT:
-            double outputMagnitude = (getStraightPIDSetpoint() - encLeft.pidGet()) * Constants.DRIVE.STRAIGHT_P;
+            double drive_p = (getStraightPIDSetpoint() - encLeft.pidGet()) *
+                    Constants.DRIVE.STRAIGHT_P;
+            double drive_d = -encLeft.getRate() * Constants.DRIVE.STRAIGHT_D;
+            
+            double outputMagnitude = drive_p + drive_d;
             
             double curve = pivotPIDError() * Constants.DRIVE.PIVOT_P;
             if (outputMagnitude < 0) {

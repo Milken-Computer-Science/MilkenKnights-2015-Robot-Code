@@ -5,6 +5,7 @@ import com.milkenknights.frc2015.controls.DoNothing;
 import com.milkenknights.frc2015.controls.Move50Auto;
 import com.milkenknights.frc2015.controls.ControlSystem;
 import com.milkenknights.frc2015.controls.ThreeToteAuto;
+import com.milkenknights.frc2015.controls.ThreeToteAutoAlt;
 import com.milkenknights.frc2015.controls.TripleATKControl;
 import com.milkenknights.frc2015.subsystems.Subsystems;
 
@@ -41,7 +42,8 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        autoControlSystem = (ControlSystem) autoChooser.getSelected();
+        //autoControlSystem = (ControlSystem) autoChooser.getSelected();
+        autoControlSystem = new ThreeToteAuto(subsystems, ThreeToteAuto.Strategy.ELIM);
         
         if (autoControlSystem == null) {
             autoControlSystem = new DoNothing(subsystems);
