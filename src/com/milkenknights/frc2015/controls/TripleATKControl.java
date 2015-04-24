@@ -82,7 +82,7 @@ public class TripleATKControl extends ControlSystem {
             subsystems.elevator().setPIDMode(true);
         }
         
-        // aux atk 2 grabs the bottom-most tote.  Drops the elevator to the bottom and closes flaps.
+        // aux atk 10 grabs the bottom-most tote.  Drops the elevator to the bottom and closes flaps.
         // This is "gentle" and should be used when holding totes.
         if (atka.getRawButton(10)) {
             subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN, false);
@@ -184,7 +184,7 @@ public class TripleATKControl extends ControlSystem {
         }
         
         
-        // aux atk 10 is the same as button 2-- it moves the elevator down to the lowest point, but
+        // aux atk 2 is the same as button 2-- it moves the elevator down to the lowest point, but
         // this one is strong and should be used to grab a bin.
         if (atka.getRawButton(2)) {
             subsystems.elevator().setSetpoint(Constants.ELEVATOR.HEIGHTS.MIN);
