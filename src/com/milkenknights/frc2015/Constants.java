@@ -107,6 +107,7 @@ public class Constants {
             public static final double  STEP = 12;
             public static final double  ONE_TOTE = 12;
             public static final double  KNOCK_BIN = 28.65;
+            public static final double  CLEAR_BIN = 30;
         }
     }
 
